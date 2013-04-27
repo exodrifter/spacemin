@@ -72,24 +72,16 @@ package
 		
 		override public function update():void
 		{
-		//	if (cube.x > 75)
-		//	{
-		for each (var t:Trash in trash)
-				{
-					t._obj.SetLinearVelocity(new b2Vec2(-cube._obj.GetLinearVelocity().x, t._obj.GetLinearVelocity().y));
-					//trace(75 - cube.x);
-				}
-				//cube._obj.SetLinearVelocity(new b2Vec2(-cube._obj.GetLinearVelocity().x, cube._obj.GetLinearVelocity().y));
-				
-		//	} else {
-		//		cube._obj.SetLinearVelocity(new b2Vec2(oldPlayerX - cube.x, cube._obj.GetLinearVelocity().y));
-		//		for each (var e:Trash in trash)
-		//		{
-		//			e._obj.SetLinearVelocity(new b2Vec2(oldPlayerX - cube.x, e._obj.GetLinearVelocity().y));
-					//trace(oldPlayerX - cube.x);
-		//		}
-		//	}
-			trace(cube._obj.GetLinearVelocity().x);
+			for each (var t:Trash in trash)
+			{
+				t._obj.SetLinearVelocity(new b2Vec2(-cube._obj.GetLinearVelocity().x, t._obj.GetLinearVelocity().y));
+			}
+			trace(cube._obj.GetPosition().x);
+			if (cube._obj.GetPosition().x > 2) {
+				cube._obj.SetPosition(new b2Vec2(2,cube._obj.GetPosition().y));
+			} else if (cube._obj.GetPosition().x < 0) {
+				cube._obj.SetPosition(new b2Vec2(0,cube._obj.GetPosition().y));
+			}
 			
 			oldPlayerX = cube.x;
 			cube._obj.SetAngularVelocity(3);

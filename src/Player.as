@@ -35,5 +35,10 @@ package
 		{
 			_grounded = grounded;
 		}
+		
+		public function isGrounded():Boolean
+		{
+			return _grounded;
+		}
 	}
 }
