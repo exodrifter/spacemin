@@ -7,8 +7,10 @@ package
 	import Box2D.Collision.Shapes.*;
 	import Box2D.Common.Math.*;
 
-	public class B2FlxSprite extends FlxSprite
+	public class Trash extends FlxSprite
 	{
+		[Embed(source = 'res/TestBlock.png')] private var TrashImage:Class;
+		
 		private var ratio:Number = 30;
 
 		public var _fixDef:b2FixtureDef;
@@ -20,7 +22,7 @@ package
 		private var _world:b2World;
 
 		//Physics params default value
-		public var _friction:Number = 0.8;
+		public var _friction:Number = 0;
 		public var _restitution:Number = 0.3;
 		public var _density:Number = 0.7;
 
@@ -30,14 +32,19 @@ package
 		public var _type:uint = b2Body.b2_dynamicBody;
 
 
-		public function B2FlxSprite(X:Number, Y:Number, Width:Number, Height:Number, w:b2World):void
+		public function Trash(X:Number, w:b2World):void
 		{
-			super(X,Y);
+			super(X,150);
 
-			_width = Width;
-			_height = Height;
+			_width = 4;
+			_height = 4;
 			_world = w
+			
+			createBody();
+			loadGraphic(TrashImage);
 		}
+		
+
 
 		override public function update():void
 		{
@@ -47,7 +54,7 @@ package
 			super.update();
 		}
 
-		public  function createBody():void
+		public function createBody():void
 		{			
 			var boxShape:b2PolygonShape = new b2PolygonShape();
 			boxShape.SetAsBox((_width/2) / ratio, (_height/2) /ratio);
