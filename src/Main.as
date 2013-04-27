@@ -16,7 +16,8 @@ package
 		
 		public function Main():void
 		{
-			super(SCREEN_X, SCREEN_Y, MenuState, ZOOM, LOGIC_FRAMERATE, RENDER_FRAMERATE, USE_SYSTEM_CURSOR);
+			super(SCREEN_X, SCREEN_Y, MenuState, ZOOM, LOGIC_FRAMERATE,
+					RENDER_FRAMERATE, USE_SYSTEM_CURSOR);
 			forceDebugger = true;
 		}
 	}
