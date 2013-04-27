@@ -26,6 +26,7 @@ package
 		
 		public var oldPlayerX:Number;
 		public var oldElapsed:Number;
+		public var trash:FlxGroup;
 
 		override public function create():void
 		{
@@ -39,7 +40,7 @@ package
 			floor._obj.SetUserData("ground");
 			
 			//cube:
-			cube = new Player(200, 200, 20, 20, _world);
+			cube = new Player(50, 200, 20, 20, _world);
 			cube._obj.SetUserData("player");
 			
 			this.add(cube);
@@ -53,7 +54,12 @@ package
 
 		override public function update():void
 		{
-			cube._obj.SetLinearVelocity(new b2Vec2(oldPlayerX - cube.x, cube._obj.GetLinearVelocity().y));
+			if (cube.x > 75)
+			{
+				cube._obj.SetLinearVelocity(new b2Vec2(75 - cube.x, cube._obj.GetLinearVelocity().y));
+			} else {
+				cube._obj.SetLinearVelocity(new b2Vec2(oldPlayerX - cube.x, cube._obj.GetLinearVelocity().y));
+			}
 			oldPlayerX = cube.x;
 			cube._obj.SetAngularVelocity(3);
 			_world.Step(FlxG.elapsed, 10, 10);
