@@ -22,7 +22,7 @@ package
 
 		//ration of pixels to meters
 		public static const RATIO:Number = 30;
-		public var cube:B2FlxSprite;
+		public var cube:Player;
 		
 		public var oldPlayerX:Number;
 		public var oldElapsed:Number;
@@ -36,11 +36,11 @@ package
 			var floor:B2FlxTileblock = new B2FlxTileblock(0, 230, 400, 20, _world)
 			floor.createBody();
 			floor.loadTiles(ImgCube);
+			floor._obj.SetUserData("ground");
 			
 			//cube:
-			cube = new B2FlxSprite(200, 200, 20, 20, _world);
-			cube.createBody();
-			cube.loadGraphic(ImgCube);
+			cube = new Player(200, 200, 20, 20, _world);
+			cube._obj.SetUserData("player");
 			
 			this.add(cube);
 			this.add(floor);
@@ -77,7 +77,7 @@ package
 
 
 		private function setupWorld():void
-		{			
+		{
 			//gravity
 			var gravity:b2Vec2 = new b2Vec2(0, 9.8);
 
@@ -85,7 +85,10 @@ package
 			var ignoreSleeping:Boolean = true;
 
 			_world = new b2World(gravity, ignoreSleeping);
-
-		}		
+			
+			// Setup collision callbacks
+			var contactListener:ContactListener = new ContactListener(this);
+            _world.SetContactListener(contactListener);
+		}
 	}
 }
