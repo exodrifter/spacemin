@@ -22,7 +22,10 @@ package
 
 		//ration of pixels to meters
 		public static const RATIO:Number = 30;
-		public var cube:B2FlxSprite;	
+		public var cube:B2FlxSprite;
+		
+		public var oldPlayerX:Number;
+		public var oldElapsed:Number;
 
 		override public function create():void
 		{
@@ -45,15 +48,16 @@ package
 			//debugDraw();
 			
 			FlxG.camera.antialiasing = true;
-
+			oldPlayerX = cube.x;
 		}
 
 		override public function update():void
 		{
+			cube._obj.SetLinearVelocity(new b2Vec2(oldPlayerX - cube.x, cube._obj.GetLinearVelocity().y));
+			oldPlayerX = cube.x;
+			cube._obj.SetAngularVelocity(3);
 			_world.Step(FlxG.elapsed, 10, 10);
 			super.update();
-			
-			cube._obj.SetAngularVelocity(3);
 		}
 
 		/*private function debugDraw():void
