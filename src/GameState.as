@@ -22,18 +22,12 @@ package
 
 		//ration of pixels to meters
 		public static const RATIO:Number = 30;
-<<<<<<< HEAD
 		
-		
-		
-=======
 		public var cube:Player;
->>>>>>> f2fb5ecaec9ae414cbf05edeeaa085dcb5715eb3
+		public var trash:Vector.<Trash>;
 		
 		public var oldPlayerX:Number;
 		public var oldElapsed:Number;
-		public var trash:Vector.<Trash>;
-		public var cube:B2FlxSprite;
 
 		override public function create():void
 		{
