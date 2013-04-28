@@ -17,6 +17,14 @@ package
 		[Embed(source = 'res/ball.png')] private var ImgBall:Class;
 		[Embed(source = 'res/rect.png')] private var ImgRect:Class;
 
+		// Is the game paused?
+		public var _paused:Boolean;
+		// Pause Menu
+		private var _title:FlxText = new FlxText(Main.SCREEN_X2-50, 20, 100, "PAUSED");
+		private var _resume:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 100, "Resume", unpause);
+		private var _quit:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 120, "Quit", MenuState.toMenu);
+		private var _settings:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 140, "Settings", MenuState.toSettings);
+		
 		// The physics world
 		public var _world:b2World;
 
@@ -70,6 +78,28 @@ package
 		
 		override public function update():void
 		{
+			if (FlxG.keys.justPressed("ESCAPE")) {
+				_paused = !_paused;
+				if (_paused) {
+					_title.setFormat(null, 16, 0xffffff, "center", 0);
+					add(_title);
+					add(MenuState.setSounds(_resume));
+					add(MenuState.setSounds(_quit));
+					add(MenuState.setSounds(_settings));
+					FlxG.camera.antialiasing = false;
+				} else {
+					unpause();
+				}
+			}
+			if (_paused) {
+				FlxG.mouse.show();
+				super.update();
+				
+				return;
+			} else {
+				FlxG.mouse.hide();
+			}
+			
 			var playerJoints:b2JointEdge = _player._obj.GetJointList();
 			var count:int = 1;
 			if(playerJoints != null)
@@ -95,11 +125,14 @@ package
 				_player._obj.SetPosition(new b2Vec2(2,_player._obj.GetPosition().y));
 			}
 			
+			/*
 			if (_player._obj.GetAngularVelocity() <= .06 && _player.isGrounded())
 			{
 				_player._obj.ApplyTorque(.06 * count);
 			}else
 				_player._obj.SetAngularVelocity(3);
+			*/
+			_player._obj.SetLinearVelocity(new b2Vec2(3 + 5 * count, _player._obj.GetLinearVelocity().y));
 			_world.Step(FlxG.elapsed, 6, 3);
 			super.update();
 			spawnTrash(_trash, _world);
@@ -138,6 +171,15 @@ package
 			// Setup collision callbacks
 			var contactListener:ContactListener = new ContactListener(this);
             _world.SetContactListener(contactListener);
+		}
+		
+		private function unpause() {
+			_paused = false;
+			remove(_title);
+			remove(_resume);
+			remove(_quit);
+			remove(_settings);
+			FlxG.camera.antialiasing = true;
 		}
 	}
 }
