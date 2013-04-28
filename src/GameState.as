@@ -19,12 +19,16 @@ package
 		[Embed(source = 'res/rect.png')] private var ImgRect:Class;
 
 		// Is the game paused?
-		public var _paused:Boolean;
+		public var _paused:Boolean = false;
 		// Pause Menu
 		private var _title:FlxText = new FlxText(Main.SCREEN_X2-50, 20, 100, "PAUSED");
 		private var _resume:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 100, "Resume", unpause);
 		private var _quit:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 120, "Quit", MenuState.toMenu);
 		private var _settings:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 140, "Settings", MenuState.toSettings);
+		
+		// Has the game ended?
+		private static var _endgame:Boolean = false;
+		private var _endtitle:FlxText = new FlxText(Main.SCREEN_X2-50, 20, 100, "GAME OVER");
 		
 		// The physics world
 		public var _world:b2World;
@@ -52,6 +56,7 @@ package
 		{
 			// Set up the world
 			setupWorld();
+			_endgame = false;
 			
 			_toRemove = new Vector.<b2Body>();
 			_toAddToPlayer = new Vector.<b2FixtureDef>();
@@ -85,7 +90,7 @@ package
 		
 		public function spawnPlatform():void
 		{
-			_platform_spawn_height = 230+(int)(Math.random()*30)-15
+			_platform_spawn_height = 230+(int)(Math.random()*50)-25
 			var platform:Platform = new Platform(Main.SCREEN_X, _platform_spawn_height, _world, _player);
 			_platforms.push(platform);
 			this.add(platform);
@@ -103,6 +108,12 @@ package
 		
 		override public function update():void
 		{
+			if (_endgame) {
+				_paused = false;
+				FlxG.mouse.show();
+				super.update();
+				return;
+			}
 			// Handle pause
 			if (FlxG.keys.justPressed("ESCAPE")) {
 				_paused = !_paused;
@@ -123,6 +134,11 @@ package
 				return;
 			} else {
 				FlxG.mouse.hide();
+			}
+			
+			// Handle end game
+			if (_player.getScreenXY().y > Main.SCREEN_Y) {
+				endgame();
 			}
 			
 			// Spawn Platforms
@@ -179,7 +195,7 @@ package
 				var j:b2FixtureDef = _toAddToPlayer.pop();
 				huh._fixture = _player._obj.CreateFixture(j);
 				_player._weight += 1;
-				trace(huh._fixture.GetAABB().GetCenter().x + " " + huh._fixture.GetAABB().GetCenter().x);
+				//trace(huh._fixture.GetAABB().GetCenter().x + " " + huh._fixture.GetAABB().GetCenter().x);
 				add(huh);
 			}
 		}
@@ -206,6 +222,14 @@ package
 			remove(_quit);
 			remove(_settings);
 			FlxG.camera.antialiasing = true;
+		}
+		
+		public function endgame():void {
+			_endgame= true;
+			_endtitle.setFormat(null, 16, 0xffffff, "center", 0);
+			add(_endtitle);
+			add(_quit);
+			FlxG.camera.antialiasing = false;
 		}
 	}
 }

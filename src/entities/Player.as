@@ -18,6 +18,7 @@ package entities
 		public function Player(X:Number, Y:Number, Width:Number, Height:Number, W:b2World):void
 		{
 			super(X, Y, Width, Height, W);
+			this._restitution = 0;
 			this._friction = 10;
 			this._density = .7;
 			this.createBody();

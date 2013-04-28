@@ -22,7 +22,7 @@ package entities
 			super(X, 170, _width, _height, w);
 			this._player = player;
 			super._friction = 0;
-			super._restitution = 0.3;
+			super._restitution = 0.0;
 			super._density = 0.3;
 			if (_trashFixDef == null)
 			{

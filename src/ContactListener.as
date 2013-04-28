@@ -22,9 +22,9 @@ package
 	{
 		private var _gamestate:GameState;
 		
-		private var _ground:Boolean, _player:Boolean;
+		private var _ground:Boolean, _player:Boolean, _trash:Boolean;
 		
-		private var _trash:Boolean, _trashBody:b2Body, _touchedTrash:b2Body;
+		private var _platformBody:b2Body, _trashBody:b2Body, _touchedTrash:b2Body;
 		
 		private var ratio:Number = 30;
 		
@@ -41,6 +41,11 @@ package
 			DetectContact(contact);
 			
 			if (_player && _ground) {
+				trace(_gamestate._player.getScreenXY().y+" "+(_platformBody.GetWorldCenter().y * ratio-100));
+				if (_gamestate._player.getScreenXY().y > (_platformBody.GetWorldCenter().y*ratio-100))
+				{
+					_gamestate.endgame();
+				}
 				_gamestate._player.ground(true);
 			}
 			
@@ -69,8 +74,6 @@ package
 					newTrashPosition.x = x * Math.cos(-_gamestate._player._obj.GetAngle()) - y * Math.sin(-_gamestate._player._obj.GetAngle());
 					newTrashPosition.y = x * Math.sin(-_gamestate._player._obj.GetAngle()) + y * Math.cos(-_gamestate._player._obj.GetAngle());
 
-					
-					
 					newTrashShape.SetAsOrientedBox(Trash._width/2/ratio, Trash._height/2/ratio,newTrashPosition);
 					newTrashDef.density = _trashBody.GetFixtureList().GetDensity();
 					newTrashDef.shape = newTrashShape;
@@ -137,6 +140,7 @@ package
 			if (contact.GetFixtureA().GetBody().GetUserData() == "ground"
 					|| contact.GetFixtureB().GetBody().GetUserData() == "ground") {
 				_ground = true;
+				_platformBody = contact.GetFixtureA().GetBody().GetUserData() == "ground" ? contact.GetFixtureA().GetBody() : contact.GetFixtureB().GetBody()
 			}
 			if (contact.GetFixtureA().GetBody().GetUserData() == "player"
 					|| contact.GetFixtureB().GetBody().GetUserData() == "player") {
