@@ -35,8 +35,8 @@ package entities
 		{
 			super(X,150);
 
-			_width = 4;
-			_height = 4;
+			_width = 50;
+			_height = 50;
 			_world = w
 			
 			createBody();
