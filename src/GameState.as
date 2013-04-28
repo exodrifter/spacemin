@@ -114,6 +114,7 @@ package
 				var huh:ShapeSprite = new ShapeSprite();
 				var j:b2FixtureDef = _toAddToPlayer.pop();
 				huh._fixture = _player._obj.CreateFixture(j);
+				_player._weight += 1;
 				trace(huh._fixture.GetAABB().GetCenter().x + " " + huh._fixture.GetAABB().GetCenter().x);
 				add(huh);
 			}
