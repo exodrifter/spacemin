@@ -41,7 +41,6 @@ package
 			DetectContact(contact);
 			
 			if (_player && _ground) {
-				trace(_gamestate._player.getScreenXY().y+" "+(_platformBody.GetWorldCenter().y * ratio-100));
 				if (_gamestate._player.getScreenXY().y > (_platformBody.GetWorldCenter().y*ratio-100))
 				{
 					_gamestate.endgame();
@@ -81,7 +80,7 @@ package
 					newTrashDef.friction = _touchedTrash.GetFixtureList().GetFriction();
 					newTrashDef.restitution = _touchedTrash.GetFixtureList().GetRestitution();
 					_gamestate._toAddToPlayer.push(newTrashDef);
-					for (var q:int = 0; q < _gamestate._trash.length; q++)
+					for (q = 0; q < _gamestate._trash.length; q++)
 					{
 						if (_gamestate._trash[q]._obj == _trashBody)
 						{
