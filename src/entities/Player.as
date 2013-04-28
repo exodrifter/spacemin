@@ -11,10 +11,21 @@ package entities
 		
 		private var _pressed:Boolean = false, _grounded:Boolean = false;
 		
+		public static var playerFilter:b2FilterData = null;
+		
 		public function Player(X:Number, Y:Number, Width:Number, Height:Number, W:b2World):void
 		{
 			super(X, Y, Width, Height, W);
+			this._friction = 10;
+			this._density = .7;
 			this.createBody();
+			if (playerFilter == null)
+			{
+				playerFilter = new b2FilterData();
+				playerFilter.categoryBits = 0x0002;
+				playerFilter.maskBits = ~0x0002;
+			}
+			this._obj.GetFixtureList().SetFilterData(playerFilter.Copy());
 			this.loadGraphic(ImgCube);
 			this._obj.SetUserData("player");
 		}

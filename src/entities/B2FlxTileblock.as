@@ -15,6 +15,7 @@ package entities
 		public var _fixDef:b2FixtureDef;
 		public var _bodyDef:b2BodyDef
 		public var _obj:b2Body;
+		
 
 		private var _width:Number;
 		private var _height:Number;

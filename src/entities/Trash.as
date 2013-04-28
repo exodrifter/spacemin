@@ -7,51 +7,43 @@ package entities
 	import Box2D.Collision.Shapes.*;
 	import Box2D.Common.Math.*;
 
-	public class Trash extends FlxSprite
+	public class Trash extends B2FlxSprite
 	{
-		[Embed(source = '../res/TestBlock.png')] private var TrashImage:Class;
+		[Embed(source = '../res/TestTrash.png')] private var TrashImage:Class;
+
+		public static var trashFilter:b2FilterData = null;
+		public static var _trashFixDef:b2FixtureDef = null;
+		public static var _width:Number = 4;
+		public static var _height:Number = 4;
 		
-		private var ratio:Number = 30;
-
-		public var _fixDef:b2FixtureDef;
-		public var _bodyDef:b2BodyDef
-		public var _obj:b2Body;
-
-		private var _width:Number;
-		private var _height:Number;
-		private var _world:b2World;
-
-		//Physics params default value
-		public var _friction:Number = 0;
-		public var _restitution:Number = 0.3;
-		public var _density:Number = 0.7;
-
-		//Default angle
-		public var _angle:Number = 0;
-		//Default body type
-		public var _type:uint = b2Body.b2_dynamicBody;
-
 		public function Trash(X:Number, w:b2World):void
 		{
-			super(X,150);
-
-			_width = 50;
-			_height = 50;
-			_world = w
+			super(X, 170, _width, _height, w);
+			super._friction = 0;
+			super._restitution = 0.3;
+			super._density = 0.3;
+			if (_trashFixDef == null)
+			{
+				_trashFixDef = new b2FixtureDef();
+				_trashFixDef.density = super._density;
+				_trashFixDef.friction = super._friction;
+				_trashFixDef.restitution = super._restitution;
+			}
 			
 			createBody();
+			if (trashFilter == null)
+			{
+				trashFilter = new b2FilterData();
+				trashFilter.categoryBits = 0x0004;
+				trashFilter.maskBits = ~0x0004;
+			}
+			this._obj.GetFixtureList().SetFilterData(trashFilter.Copy());
 			loadGraphic(TrashImage);
+			this._obj.SetUserData("trash");
 		}
 
-		override public function update():void
-		{
-			x = (_obj.GetPosition().x * ratio) - width/2 ;
-			y = (_obj.GetPosition().y * ratio) - height/2;
-			angle = _obj.GetAngle() * (180 / Math.PI);
-			super.update();
-		}
-
-		public function createBody():void
+		
+/*		override public function createBody():void
 		{			
 			var boxShape:b2PolygonShape = new b2PolygonShape();
 			boxShape.SetAsBox((_width/2) / ratio, (_height/2) /ratio);
@@ -61,6 +53,7 @@ package entities
 			_fixDef.restitution = _restitution;
 			_fixDef.friction = _friction;
 			_fixDef.shape = boxShape;
+			_fixDef.filter.categoryBits = 0x0001;
 
 			_bodyDef = new b2BodyDef();
 			_bodyDef.position.Set((x + (_width/2)) / ratio, (y + (_height/2)) / ratio);
@@ -69,6 +62,6 @@ package entities
 
 			_obj = _world.CreateBody(_bodyDef);
 			_obj.CreateFixture(_fixDef);
-		}
+		}*/
 	}
 }
