@@ -43,7 +43,7 @@ package
 			if (_player && _ground) {
 				_gamestate._player.ground(true);
 			}
-			8
+			
 			if (_player && _trash) {
 				var worthless:Boolean = false;
 				for (var q:int = 0; q < _gamestate._trash.length; q++)

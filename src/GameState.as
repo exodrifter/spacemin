@@ -3,6 +3,7 @@ package
 	import adobe.utils.CustomActions;
 	import Box2D.Dynamics.Joints.b2JointEdge;
 	import org.flixel.*;
+	import org.flixel.plugin.TimerManager;
 
 	import Box2D.Dynamics.*;
 	import Box2D.Collision.*;
@@ -35,6 +36,8 @@ package
 		public var _player:Player;
 		// The trash in the game
 		public var _trash:Vector.<Trash>;
+		// The platforms in the game
+		public var _platforms:Vector.<Platform>;
 		
 		public var _toRemove:Vector.<b2Body>;
 		
@@ -42,6 +45,9 @@ package
 		
 		public static var debug:Boolean;
 
+		public var _platform_time:Number;
+		public var _platform_timer:Number;
+		
 		override public function create():void
 		{
 			// Set up the world
@@ -55,8 +61,15 @@ package
 			this.add(_player);
 
 			// Floor:
+			_platforms = new Vector.<Platform>();
 			var floor:Platform = new Platform(0, 230, _world, _player);
 			this.add(floor);
+			_platforms.push(floor);
+			var floor2:Platform = new Platform(300, 230, _world, _player);
+			this.add(floor2);
+			_platforms.push(floor2);
+			_platform_time = 2;
+			_platform_timer = 0;
 
 			FlxG.camera.antialiasing = true;
 			
@@ -67,6 +80,16 @@ package
 
 		// Should be between 0 and 1
 		public var spawnRate:Number = .98;
+		
+		private static var _platform_spawn_height:int = 230;
+		
+		public function spawnPlatform():void
+		{
+			_platform_spawn_height = 230+(int)(Math.random()*30)-15
+			var platform:Platform = new Platform(Main.SCREEN_X, _platform_spawn_height, _world, _player);
+			_platforms.push(platform);
+			this.add(platform);
+		}
 		
 		public function spawnTrash(list:Vector.<Trash>, W:b2World):void
 		{
@@ -101,6 +124,15 @@ package
 			} else {
 				FlxG.mouse.hide();
 			}
+			
+			// Spawn Platforms
+			if(_platform_timer > _platform_time) {
+				spawnPlatform();
+				_platform_timer = 0;
+				_platform_time += 0.1;
+			}
+			_platform_timer += FlxG.elapsed;
+			
 			
 			var playerJoints:b2JointEdge = _player._obj.GetJointList();
 			var count:int = 1;

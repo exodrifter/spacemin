@@ -13,7 +13,7 @@ package entities
 		
 		public function Platform(X:Number, Y:Number, W:b2World, player:Player) 
 		{
-			super(X, Y, 400, 200, W);
+			super(X, Y, 250, 200, W);
 			this._player = player;
 			this.createBody();
 			if (platformFilter == null)
