@@ -39,6 +39,8 @@ package
 		public var _toRemove:Vector.<b2Body>;
 		
 		public var _toAddToPlayer:Vector.<b2FixtureDef>;
+		
+		public static var debug:Boolean;
 
 		override public function create():void
 		{
@@ -148,13 +150,6 @@ package
 				_player._weight += 1;
 				trace(huh._fixture.GetAABB().GetCenter().x + " " + huh._fixture.GetAABB().GetCenter().x);
 				add(huh);
-			}
-			var stuff:b2Fixture = _player._obj.GetFixtureList();
-			var welp:int = 0;
-			while (stuff != null)
-			{
-				welp++;
-				stuff = stuff.GetNext();
 			}
 		}
 
