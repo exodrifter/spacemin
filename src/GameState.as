@@ -68,11 +68,11 @@ package
 		// Should be between 0 and 1
 		public var spawnRate:Number = .98;
 		
-		public function spawnTrash(list:Vector.<Trash>, w:b2World):void
+		public function spawnTrash(list:Vector.<Trash>, W:b2World):void
 		{
 			if (Math.random() > spawnRate)
 			{
-				var newTrash:Trash = new Trash((Math.random() * (FlxG.width + 1)), w);
+				var newTrash:Trash = new Trash((Math.random() * (FlxG.width + 1)), W, _player);
 				list.push(newTrash);
 				this.add(newTrash);
 			}
@@ -80,6 +80,7 @@ package
 		
 		override public function update():void
 		{
+			// Handle pause
 			if (FlxG.keys.justPressed("ESCAPE")) {
 				_paused = !_paused;
 				if (_paused) {
@@ -96,7 +97,6 @@ package
 			if (_paused) {
 				FlxG.mouse.show();
 				super.update();
-				
 				return;
 			} else {
 				FlxG.mouse.hide();
@@ -119,8 +119,7 @@ package
 					_trash[i].destroy();
 					_trash[i].kill();
 					_trash.splice(i, 1);
-				} else
-				_trash[i]._obj.SetLinearVelocity(new b2Vec2(-_player._obj.GetLinearVelocity().x, _trash[i]._obj.GetLinearVelocity().y));
+				}
 			}
 		
 			if (_player._obj.GetPosition().x > 2 || _player._obj.GetPosition().x < 2) {
@@ -134,14 +133,14 @@ package
 			}else
 				_player._obj.SetAngularVelocity(3);
 			*/
-			_player._obj.SetLinearVelocity(new b2Vec2(3 + 5 * count, _player._obj.GetLinearVelocity().y));
+			_player._obj.SetLinearVelocity(new b2Vec2(3 + 0.2 * _player._weight, _player._obj.GetLinearVelocity().y));
 			_world.Step(FlxG.elapsed, 6, 3);
 			super.update();
 			spawnTrash(_trash, _world);
 			while (_toRemove.length != 0)
 			{
 				_world.DestroyBody(_toRemove.pop());
-			}	
+			}
 			while (_toAddToPlayer.length != 0)
 			{
 				var huh:ShapeSprite = new ShapeSprite();
@@ -168,7 +167,7 @@ package
             _world.SetContactListener(contactListener);
 		}
 		
-		private function unpause() {
+		private function unpause():void {
 			_paused = false;
 			remove(_title);
 			remove(_resume);

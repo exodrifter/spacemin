@@ -15,10 +15,12 @@ package entities
 		public static var _trashFixDef:b2FixtureDef = null;
 		public static var _width:Number = 4;
 		public static var _height:Number = 4;
+		public var _player:Player;
 		
-		public function Trash(X:Number, w:b2World):void
+		public function Trash(X:Number, w:b2World, player:Player):void
 		{
 			super(X, 170, _width, _height, w);
+			this._player = player;
 			super._friction = 0;
 			super._restitution = 0.3;
 			super._density = 0.3;
@@ -42,7 +44,12 @@ package entities
 			this._obj.SetUserData("trash");
 		}
 
-		
+		override public function update():void
+		{
+			super.update();
+			this._obj.SetLinearVelocity(new b2Vec2(-_player._obj.GetLinearVelocity().x, this._obj.GetLinearVelocity().y));
+		}
+
 /*		override public function createBody():void
 		{			
 			var boxShape:b2PolygonShape = new b2PolygonShape();
