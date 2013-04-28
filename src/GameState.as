@@ -1,4 +1,3 @@
-
 package
 {
 	import org.flixel.*;
@@ -11,23 +10,25 @@ package
 	import Box2D.Collision.Shapes.*;
 	import Box2D.Common.Math.*;
 
-
 	public class GameState extends FlxState
 	{
 		[Embed(source = 'res/box.png')] private var ImgCube:Class;
 		[Embed(source = 'res/ball.png')] private var ImgBall:Class;
 		[Embed(source = 'res/rect.png')] private var ImgRect:Class;
 
+		// The physics world
 		private var _world:b2World;
 
-		//ration of pixels to meters
+		// Ratio of pixels to meters
 		public static const RATIO:Number = 30;
 		
-		public var cube:Player;
-		public var trash:Vector.<Trash>;
+		// The player object
+		public var _player:Player;
+		// The trash in the game
+		public var _trash:Vector.<Trash>;
 		
-		public var oldPlayerX:Number;
-		public var oldElapsed:Number;
+		// The player's old x position
+		public var _oldPlayerX:Number;
 
 		override public function create():void
 		{
@@ -40,24 +41,24 @@ package
 			floor.loadTiles(ImgCube);
 			floor._obj.SetUserData("ground");
 			
-			//cube:
-			cube = new Player(50, 200, 20, 20, _world);
-			cube._obj.SetUserData("player");
+			// Player:
+			_player = new Player(50, 200, 20, 20, _world);
+			_player._obj.SetUserData("player");
 			
-			this.add(cube);
+			this.add(_player);
 			this.add(floor);
 
 			//debugDraw();
 			
 			FlxG.camera.antialiasing = true;
-			oldPlayerX = cube.x;
+			_oldPlayerX = _player.x;
 			
-			trash = new Vector.<Trash>();
-			while (trash.length != 1)
-				spawnTrash(trash, _world);
+			_trash = new Vector.<Trash>();
+			while (_trash.length != 1)
+				spawnTrash(_trash, _world);
 		}
 
-				// Should be between 0 and 1
+		// Should be between 0 and 1
 		public var spawnRate:Number = .99;
 		
 		public function spawnTrash(list:Vector.<Trash>, w:b2World):void
@@ -72,38 +73,21 @@ package
 		
 		override public function update():void
 		{
-			for each (var t:Trash in trash)
+			for each (var t:Trash in _trash)
 			{
-				t._obj.SetLinearVelocity(new b2Vec2(-cube._obj.GetLinearVelocity().x, t._obj.GetLinearVelocity().y));
+				t._obj.SetLinearVelocity(new b2Vec2(-_player._obj.GetLinearVelocity().x, t._obj.GetLinearVelocity().y));
 			}
-			trace(cube._obj.GetPosition().x);
-			if (cube._obj.GetPosition().x > 2) {
-				cube._obj.SetPosition(new b2Vec2(2,cube._obj.GetPosition().y));
-			} else if (cube._obj.GetPosition().x < 0) {
-				cube._obj.SetPosition(new b2Vec2(0,cube._obj.GetPosition().y));
+			if (_player._obj.GetPosition().x > 2) {
+				_player._obj.SetPosition(new b2Vec2(2,_player._obj.GetPosition().y));
+			} else if (_player._obj.GetPosition().x < 0) {
+				_player._obj.SetPosition(new b2Vec2(0,_player._obj.GetPosition().y));
 			}
 			
-			oldPlayerX = cube.x;
-			cube._obj.SetAngularVelocity(3);
+			_oldPlayerX = _player.x;
+			_player._obj.SetAngularVelocity(3);
 			_world.Step(FlxG.elapsed, 10, 10);
 			super.update();
 		}
-
-		/*private function debugDraw():void
-		{
-			var spriteToDrawOn:Sprite = new Sprite();
-			addChild(spriteToDrawOn);
-			
-			var artistForHire:b2DebugDraw = new b2DebugDraw();
-			artistForHire.SetSprite(spriteToDrawOn);
-			artistForHire.SetXFormScale(30);
-			artistForHire.SetFlags(b2DebugDraw.e_shapeBit);
-			artistForHire.SetLineThickness(2.0);
-			artistForHire.SetFillAlpha(0.6);
-			
-			_world.SetDebugDraw(artistForHire);
-		}*/
-
 
 		private function setupWorld():void
 		{

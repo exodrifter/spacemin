@@ -31,7 +31,6 @@ package
 		//Default body type
 		public var _type:uint = b2Body.b2_dynamicBody;
 
-
 		public function Trash(X:Number, w:b2World):void
 		{
 			super(X,150);
@@ -43,8 +42,6 @@ package
 			createBody();
 			loadGraphic(TrashImage);
 		}
-		
-
 
 		override public function update():void
 		{
@@ -62,7 +59,7 @@ package
 			_fixDef = new b2FixtureDef();
 			_fixDef.density = _density;
 			_fixDef.restitution = _restitution;
-			_fixDef.friction = _friction;						
+			_fixDef.friction = _friction;
 			_fixDef.shape = boxShape;
 
 			_bodyDef = new b2BodyDef();

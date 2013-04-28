@@ -3,6 +3,9 @@ package
 	import Box2D.Dynamics.b2ContactListener;
 	import Box2D.Dynamics.Contacts.*;
 	
+	/**
+	 * Contains a few callbacks that are used to check for certain collisions
+	 */
 	public class ContactListener extends b2ContactListener
 	{
 		private var _gamestate:GameState;
@@ -22,7 +25,7 @@ package
 			DetectContact(contact);
 			
 			if (_player && _ground) {
-				_gamestate.cube.ground(true);
+				_gamestate._player.ground(true);
 			}
 		}
 
@@ -34,10 +37,9 @@ package
 			DetectContact(contact);
 			
 			if (_player && _ground) {
-				_gamestate.cube.ground(false);
+				_gamestate._player.ground(false);
 			}
 		}
-		
 		
 		private function DetectContact(contact:b2Contact):void
 		{
