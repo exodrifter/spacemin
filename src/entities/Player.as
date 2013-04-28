@@ -16,6 +16,7 @@ package entities
 			super(X, Y, Width, Height, W);
 			this.createBody();
 			this.loadGraphic(ImgCube);
+			this._obj.SetUserData("player");
 		}
 		
 		override public function update():void

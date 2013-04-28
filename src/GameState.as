@@ -31,24 +31,17 @@ package
 
 		override public function create():void
 		{
-			//Set up the world
+			// Set up the world
 			setupWorld();
 
-			//Floor:
-			var floor:B2FlxTileblock = new B2FlxTileblock(0, 230, 800, 20, _world)
-			floor.createBody();
-			floor.loadTiles(ImgCube);
-			floor._obj.SetUserData("ground");
-			
-			// Player:
-			_player = new Player(50, 200, 20, 20, _world);
-			_player._obj.SetUserData("player");
-			
-			this.add(_player);
+			// Floor:
+			var floor:Platform = new Platform(0, 230, 250, 20, _world);
 			this.add(floor);
 
-			//debugDraw();
-			
+			// Player:
+			_player = new Player(50, 200, 20, 20, _world);
+			this.add(_player);
+
 			FlxG.camera.antialiasing = true;
 			_oldPlayerX = _player.x;
 			
