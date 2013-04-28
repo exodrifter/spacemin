@@ -50,13 +50,13 @@ package
 			_toRemove = new Vector.<b2Body>();
 			_toAddToPlayer = new Vector.<b2FixtureDef>();
 
-			// Floor:
-			var floor:Platform = new Platform(0, 230, 400, 20, _world);
-			this.add(floor);
-
 			// Player:
 			_player = new Player(50, 200, 20, 20, _world);
 			this.add(_player);
+
+			// Floor:
+			var floor:Platform = new Platform(0, 230, _world, _player);
+			this.add(floor);
 
 			FlxG.camera.antialiasing = true;
 			
