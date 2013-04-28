@@ -9,9 +9,11 @@ package entities
 	{
 		[Embed(source = '../res/box.png')] private var ImgCube:Class;
 		
-		private var _pressed:Boolean = false, _grounded:Boolean = false;
-		
 		public static var playerFilter:b2FilterData = null;
+		
+		private var _pressed:Boolean = false, _grounded:Boolean = false, _canJump:Boolean = false;
+		/** The total weight of the trah connected to this player */
+		public var _weight:Number = 0;
 		
 		public function Player(X:Number, Y:Number, Width:Number, Height:Number, W:b2World):void
 		{
@@ -33,10 +35,11 @@ package entities
 		override public function update():void
 		{
 			super.update();
-			if (FlxG.keys.any()) {
-				if(!_pressed && _grounded) {
-					this._obj.ApplyImpulse(new b2Vec2(0, -2), this._obj.GetPosition());
+			if (FlxG.keys.any() && !FlxG.keys.ESCAPE) {
+				if (!_pressed && _canJump) {
+					this._obj.ApplyImpulse(new b2Vec2(0, -2 - 0.01 * (_weight+1)), this._obj.GetPosition());
 					_pressed = true;
+					_canJump = false;
 				}
 			} else {
 				_pressed = false;
@@ -46,11 +49,17 @@ package entities
 		public function ground(grounded:Boolean):void
 		{
 			_grounded = grounded;
+			_canJump = _canJump || _grounded;
 		}
 		
 		public function isGrounded():Boolean
 		{
 			return _grounded;
+		}
+		
+		public function canJump():Boolean
+		{
+			return _canJump;
 		}
 	}
 }
