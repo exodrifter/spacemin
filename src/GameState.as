@@ -91,10 +91,8 @@ package
 				_trash[i]._obj.SetLinearVelocity(new b2Vec2(-_player._obj.GetLinearVelocity().x, _trash[i]._obj.GetLinearVelocity().y));
 			}
 		
-			if (_player._obj.GetPosition().x > 2) {
+			if (_player._obj.GetPosition().x > 2 || _player._obj.GetPosition().x < 2) {
 				_player._obj.SetPosition(new b2Vec2(2,_player._obj.GetPosition().y));
-			} else if (_player._obj.GetPosition().x < 0) {
-				_player._obj.SetPosition(new b2Vec2(0,_player._obj.GetPosition().y));
 			}
 			
 			if (_player._obj.GetAngularVelocity() <= .06 && _player.isGrounded())
