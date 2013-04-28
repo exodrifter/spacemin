@@ -1,4 +1,4 @@
-package  
+package entities
 {
 	import org.flixel.*;
 	
@@ -7,7 +7,7 @@ package
 	
 	public class Player extends B2FlxSprite
 	{
-		[Embed(source = 'res/box.png')] private var ImgCube:Class;
+		[Embed(source = '../res/box.png')] private var ImgCube:Class;
 		
 		private var _pressed:Boolean = false, _grounded:Boolean = false;
 		
