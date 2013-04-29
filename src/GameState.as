@@ -261,7 +261,7 @@ package
 			_world.Step(FlxG.elapsed, 6, 3);
 			var nx:Number = _player._obj.GetWorldCenter().x;
 			_distace_traveled += _distace_delta;
-			_distance.text = "" + ((int)(_distace_traveled));
+			_distance.text = ((int)(_distace_traveled/1000))+"."+((int)(_distace_traveled%1000/100))+" km";
 			super.update();
 			while (_toRemove.length != 0)
 			{
@@ -303,7 +303,7 @@ package
 			_finalscore.setFormat(null, 8, 0xffffff, "center", 0);
 			_finalscore.text = "Points: " + FlxG.score;
 			_finaldistance.setFormat(null, 8, 0xffffff, "center", 0);
-			_finaldistance.text = "Distance: " + (int)(_distace_traveled) + " / 3000";
+			_finaldistance.text = "Distance: " + ((int)(_distace_traveled/1000)) + "." + ((int)(_distace_traveled%1000/100)) + " km / 3km";
 			_finaltotal.setFormat(null, 16, 0xffffff, "center", 0);
 			_finaltotal.text = "Total: " + (FlxG.score+(int)(_distace_traveled/3000));
 			_front_ui_group.add(_endtitle);
