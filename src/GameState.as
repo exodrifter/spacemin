@@ -45,8 +45,10 @@ package
 		public var _endgame:Boolean = false;
 		private var _retry:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 200, "Retry", MenuState.toGame);
 		private var _quitend:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 220, "Quit", MenuState.toMenu);
-		private var _endtitle:FlxText = new FlxText(Main.SCREEN_X2-50, 20, 100, "GAME OVER");
-		private var _finalscore:FlxText = new FlxText(Main.SCREEN_X2 - 50, 60, 100, "0");
+		private var _endtitle:FlxText = new FlxText(Main.SCREEN_X2 - 50, 20, 100, "GAME OVER");
+		private var _finalscore:FlxText = new FlxText(Main.SCREEN_X2 - 200, 94, 400, "Points: ");
+		private var _finaldistance:FlxText = new FlxText(Main.SCREEN_X2 - 200, 107, 400, "Distance: ");
+		private var _finaltotal:FlxText = new FlxText(Main.SCREEN_X2 - 200, 120, 400, "Total: ");
 
 		// The physics world
 		public var _world:b2World;
@@ -300,11 +302,17 @@ package
 			remove(_distance);
 			remove(_score);
 			_endgame = true;
-			_finalscore.setFormat(null, 16, 0xffffff, "center", 0);
-			_finalscore.text = "" + FlxG.score;
 			_endtitle.setFormat(null, 16, 0xffffff, "center", 0);
+			_finalscore.setFormat(null, 8, 0xffffff, "center", 0);
+			_finalscore.text = "Points: " + FlxG.score;
+			_finaldistance.setFormat(null, 8, 0xffffff, "center", 0);
+			_finaldistance.text = "Distance: " + (int)(_distace_traveled) + " / 3000";
+			_finaltotal.setFormat(null, 16, 0xffffff, "center", 0);
+			_finaltotal.text = "Total: " + (FlxG.score+(int)(_distace_traveled/3000));
 			_front_ui_group.add(_endtitle);
 			_front_ui_group.add(_finalscore);
+			_front_ui_group.add(_finaldistance);
+			_front_ui_group.add(_finaltotal);
 			_front_ui_group.add(MenuState.setSounds(_retry));
 			_front_ui_group.add(MenuState.setSounds(_quitend));
 			
