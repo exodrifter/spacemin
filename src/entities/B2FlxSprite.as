@@ -15,8 +15,8 @@ package entities
 		public var _bodyDef:b2BodyDef
 		public var _obj:b2Body;
 
-		private var _width:Number;
-		private var _height:Number;
+		public var _width:Number;
+		public var _height:Number;
 		private var _world:b2World;
 
 		//Physics params default value

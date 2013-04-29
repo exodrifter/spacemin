@@ -14,6 +14,7 @@ package
 	import entities.Platform;
 	import entities.Player;
 	import entities.Trash;
+	import org.flixel.FlxPoint;
 	import org.flixel.FlxG;
 	import org.flixel.FlxCamera;
 	
@@ -27,9 +28,9 @@ package
 		
 		private var _gamestate:GameState;
 		
-		private var _ground:Boolean, _player:Boolean, _trash:Boolean;
+		private var _ground:Boolean, _player:Boolean;
 		
-		private var _platformBody:b2Body, _trashBody:b2Body, _touchedTrash:b2Body;
+		private var _platformBody:b2Body;
 		
 		private var ratio:Number = 30;
 		
@@ -71,77 +72,6 @@ package
 				}
 				_gamestate._player.ground(true);
 			}
-			
-			if (_player && _trash) {
-				var worthless:Boolean = false;
-				for (var q:int = 0; q < _gamestate._trash.length; q++)
-				{
-					if (_gamestate._trash[q]._obj == _trashBody && !_gamestate._trash[q].alive)
-					{
-						worthless = true;
-					}
-				}
-				if (!worthless)
-				{
-					//	var weldJointDef:b2WeldJointDef = new b2WeldJointDef();
-					//	weldJointDef.Initialize(_touchedTrash, _trashBody, _touchedTrash.GetWorldCenter());
-					//	_gamestate._world .CreateJoint(weldJointDef);
-					var newTrashDef:b2FixtureDef = new b2FixtureDef();
-					var newTrashShape:b2PolygonShape = new b2PolygonShape();
-					var newTrashPosition:b2Vec2 = _trashBody.GetWorldCenter().Copy();
-					
-					newTrashPosition.Subtract(_gamestate._player._obj.GetPosition());
-					
-					var x:Number = newTrashPosition.x;
-					var y:Number = newTrashPosition.y;
-					newTrashPosition.x = x * Math.cos(-_gamestate._player._obj.GetAngle()) - y * Math.sin(-_gamestate._player._obj.GetAngle());
-					newTrashPosition.y = x * Math.sin(-_gamestate._player._obj.GetAngle()) + y * Math.cos(-_gamestate._player._obj.GetAngle());
-
-					newTrashShape.SetAsOrientedBox(Trash._width/2/ratio, Trash._height/2/ratio,newTrashPosition);
-					newTrashDef.density = _trashBody.GetFixtureList().GetDensity();
-					newTrashDef.shape = newTrashShape;
-					newTrashDef.filter = Player.playerFilter.Copy();
-					newTrashDef.friction = _touchedTrash.GetFixtureList().GetFriction();
-					newTrashDef.restitution = _touchedTrash.GetFixtureList().GetRestitution();
-					_gamestate._toAddToPlayer.push(newTrashDef);
-					for (q = 0; q < _gamestate._trash.length; q++)
-					{
-						if (_gamestate._trash[q]._obj == _trashBody)
-						{
-							_gamestate._toRemove.push(_gamestate._trash[q]._obj);
-							_gamestate._trash[q].destroy();
-							_gamestate._trash[q].kill();
-					
-							_gamestate._trash.splice(q, 1);
-						}
-					}
-					/*
-					var newTrashDef:b2FixtureDef = new b2FixtureDef();
-					var fuckingStuff:b2PolygonShape = new b2PolygonShape();
-					var iHateAS3:b2Vec2 = _trashBody.GetPosition().Copy();
-					iHateAS3.Subtract(_gamestate._player._obj.GetWorldCenter());
-					fuckingStuff.SetAsOrientedBox(Trash._width/2/ratio, Trash._height/2/ratio, iHateAS3, -_gamestate._player._obj.GetAngle());
-					newTrashDef.shape = fuckingStuff;
-					newTrashDef.density = _trashBody.GetFixtureList().GetDensity();
-					newTrashDef.filter = Player.playerFilter.Copy();
-					newTrashDef.friction = _touchedTrash.GetFixtureList().GetFriction();
-					newTrashDef.restitution = _touchedTrash.GetFixtureList().GetRestitution();
-					_gamestate._toAddToPlayer.push(newTrashDef);
-					for (var q:int = 0; q < _gamestate._trash.length; q++)
-					{
-						if (_gamestate._trash[q]._obj == _trashBody)
-						{
-							_gamestate._toRemove.push(_gamestate._trash[q]._obj);
-							_gamestate._trash[q].destroy();
-							_gamestate._trash[q].kill();
-					
-							_gamestate._trash.splice(q, 1);
-						}
-					}
-				*/
-				}
-			}
-			
 		}
 
 		/**
@@ -159,7 +89,6 @@ package
 		{
 			_ground = false;
 			_player = false;
-			_trash = false;
 			if (contact.GetFixtureA().GetBody().GetUserData() == "ground"
 					|| contact.GetFixtureB().GetBody().GetUserData() == "ground") {
 				_ground = true;
@@ -168,19 +97,6 @@ package
 			if (contact.GetFixtureA().GetBody().GetUserData() == "player"
 					|| contact.GetFixtureB().GetBody().GetUserData() == "player") {
 				_player = true;
-			}
-			if (contact.GetFixtureA().GetBody().GetUserData() == "trash")
-			{
-				_trash = true;
-				_trashBody = contact.GetFixtureA().GetBody();
-				_touchedTrash = contact.GetFixtureB().GetBody();
-
-			}
-			if (contact.GetFixtureB().GetBody().GetUserData() == "trash") {
-				_trash = true;
-				_trashBody = contact.GetFixtureB().GetBody();
-				_touchedTrash = contact.GetFixtureA().GetBody();
-
 			}
 		}
 	}

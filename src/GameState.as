@@ -45,14 +45,10 @@ package
 		
 		// The player object
 		public var _player:Player;
-		// The trash in the game
-		public var _trash:Vector.<Trash>;
 		// The platforms in the game
 		public var _platforms:Vector.<Platform>;
 		
 		public var _toRemove:Vector.<b2Body>;
-		
-		public var _toAddToPlayer:Vector.<b2FixtureDef>;
 		
 		public static var debug:Boolean;
 
@@ -66,7 +62,6 @@ package
 			_endgame = false;
 			
 			_toRemove = new Vector.<b2Body>();
-			_toAddToPlayer = new Vector.<b2FixtureDef>();
 
 			// UI:
 			_score.setFormat(null, 16, 0xffffff, "center", 0);
@@ -86,15 +81,12 @@ package
 			_platforms.push(floor2);
 			_platform_time = 2;
 			_platform_timer = 0;
-
-			_trash = new Vector.<Trash>();
-			while (_trash.length != 15)
-				spawnTrash(_trash, _world);
 			FlxG.score = 0;
-		}
+			}
 
 		// Should be between 0 and 1
-		public var spawnRate:Number = .98;
+		public static var minTrash:int = 3;
+		public static var maxTrash:int = 7;
 		
 		private static var _platform_spawn_height:int = 230;
 		
@@ -109,16 +101,6 @@ package
 			var platform:Platform = new Platform(Main.SCREEN_X, _platform_spawn_height, _world, _player);
 			_platforms.push(platform);
 			this.add(platform);
-		}
-		
-		public function spawnTrash(list:Vector.<Trash>, W:b2World):void
-		{
-			if (Math.random() > spawnRate)
-			{
-				var newTrash:Trash = new Trash((Math.random() * (FlxG.width + 1)), W, _player);
-				list.push(newTrash);
-				this.add(newTrash);
-			}
 		}
 		
 		override public function update():void
@@ -164,50 +146,18 @@ package
 				_platform_time += 0.1;
 			}
 			_platform_timer += FlxG.elapsed;
-			
-			
-			var playerJoints:b2JointEdge = _player._obj.GetJointList();
-			var count:int = 1;
-			if(playerJoints != null)
-				while (playerJoints.next != null )
-				{
-					count++;
-					playerJoints = playerJoints.next;
-				}
-				
-			for (var i:int = 0; i < _trash.length;i++ )
-			{
-				if (_trash[i].x < 0)
-				{
-					_toRemove.push(_trash[i]._obj);
-					_trash[i].destroy();
-					_trash[i].kill();
-					_trash.splice(i, 1);
-				}
-			}
 		
 			if (_player._obj.GetPosition().x > 2 || _player._obj.GetPosition().x < 2) {
 				_player._obj.SetPosition(new b2Vec2(2,_player._obj.GetPosition().y));
 			}
+
 			
-			_player._obj.SetLinearVelocity(new b2Vec2(3 + 0.75 * _player._weight, _player._obj.GetLinearVelocity().y));
+			_player._obj.SetLinearVelocity(new b2Vec2(3 + 50 * _player._weight, _player._obj.GetLinearVelocity().y));
 			_world.Step(FlxG.elapsed, 6, 3);
 			super.update();
-			spawnTrash(_trash, _world);
 			while (_toRemove.length != 0)
 			{
 				_world.DestroyBody(_toRemove.pop());
-			}
-			if (_toAddToPlayer.length > 0) {
-				FlxG.play(_pickup_sound);
-			}
-			while (_toAddToPlayer.length != 0)
-			{
-				var huh:ShapeSprite = new ShapeSprite();
-				var j:b2FixtureDef = _toAddToPlayer.pop();
-				huh._fixture = _player._obj.CreateFixture(j);
-				_player._weight += 1;
-				add(huh);
 			}
 		}
 

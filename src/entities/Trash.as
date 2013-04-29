@@ -13,13 +13,13 @@ package entities
 
 		public static var trashFilter:b2FilterData = null;
 		public static var _trashFixDef:b2FixtureDef = null;
-		public static var _width:Number = 4;
-		public static var _height:Number = 4;
+		public static var _minSize:Number = 5;
 		public var _player:Player;
 		
-		public function Trash(X:Number, w:b2World, player:Player):void
+		public function Trash(X:Number, Y:Number, w:b2World, player:Player):void
 		{
-			super(X, 170, _width, _height, w);
+			super(X, Y, 5, 5, w);
+			super.scale = new FlxPoint(_width*1.2, _height*1.2);
 			this._player = player;
 			super._friction = 0;
 			super._restitution = 0.0;
