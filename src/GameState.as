@@ -196,7 +196,6 @@ package
 				scenery.push(newScenery);
 				_platform_group.add(newScenery);
 				newScenery._obj.SetLinearVelocity(new b2Vec2(-_player._obj.GetLinearVelocity().x, newScenery._obj.GetLinearVelocity().y));
-				trace(scenery.length);
 			}
 		}
 

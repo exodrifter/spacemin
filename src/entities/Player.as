@@ -75,7 +75,6 @@ package entities
 					_obj.SetAngularVelocity(targetAngularVelocity);
 				}
 			}
-			trace(_obj.GetAngularVelocity());
 		}
 		
 		public function ground(grounded:Boolean):void
