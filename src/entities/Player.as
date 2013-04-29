@@ -8,6 +8,7 @@ package entities
 	public class Player extends B2FlxSprite
 	{
 		[Embed(source = '../res/box.png')] private var ImgCube:Class;
+		[Embed(source = '../res/boxb.png')] private var ImgLand:Class;
 		[Embed(source="../res/jump.mp3")] private static var _jump_sound:Class;
 		[Embed(source="../res/land.mp3")] private static var _land_sound:Class;
 		
@@ -48,6 +49,7 @@ package entities
 						this._obj.SetLinearVelocity(new b2Vec2(this._obj.GetLinearVelocity().x, -10 - 0.1 * (_weight+1)));
 						_pressed = true;
 						_canJump = false;
+						loadGraphic(ImgLand);
 					} else {
 						FlxG.play(_land_sound);
 						_landing = true;
@@ -64,6 +66,7 @@ package entities
 		{
 			_grounded = grounded;
 			_canJump = _canJump || _grounded;
+			loadGraphic(ImgCube);
 			_landing = false;
 		}
 		
