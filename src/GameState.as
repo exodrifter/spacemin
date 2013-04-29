@@ -96,7 +96,7 @@ package
 
 			_toRemove = new Vector.<b2Body>();
 			
-			DaMoon = new MOON(360, 20, _world, this);
+			
 			
 
 			// UI:
@@ -127,7 +127,26 @@ package
 			_bga = new ParallaxLayer(this, 0.25, ParallaxLayer.BG_A);
 			_distance.setFormat(null, 8, 0x663333, "center", 0);
 			add(_distance);
+			var moonEmitter:FlxEmitter = new FlxEmitter(0, 0, 40);
+			DaMoon = new MOON(360, 20, _world, this, moonEmitter);
+			moonEmitter.setYSpeed( -90, -200);
+			moonEmitter.setXSpeed( -100, 60);
+			moonEmitter.lifespan = 5;
+			moonEmitter.gravity = 8 * 30 ;
+			var maxPWidth:int = 15;
+			var minPWidth:int = 4;
+			for (var i:int = 0; i < 40; i++)
+			{
+				var particle2:FlxParticle = new FlxParticle();
+				
+				particle2.scale = new FlxPoint(Math.random() * (maxPWidth - minPWidth) + minPWidth, Math.random() * (maxPWidth - minPWidth) + minPWidth);
+				particle2.loadGraphic(TrashImage);
+
+				particle2.kill();
+				moonEmitter.add(particle2);
+			}
 			add(DaMoon);
+			add(moonEmitter);
 			_bgb = new ParallaxLayer(this, 0.75, ParallaxLayer.BG_B);
 			add(_bga);
 			add(_bgb);
@@ -180,8 +199,8 @@ package
 		}
 
 		// Should be between 0 and 1
-		public static var minScenery:int = 0;
-		public static var maxScenery:int = 4; 
+		public static var minScenery:int = 1;
+		public static var maxScenery:int = 6; 
 		
 		private static var _platform_spawn_height:int = 230;
 
