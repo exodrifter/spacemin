@@ -131,7 +131,7 @@ package
 			DaMoon = new MOON(360, 20, _world, this, moonEmitter);
 			moonEmitter.setYSpeed( -90, -200);
 			moonEmitter.setXSpeed( -100, 60);
-			moonEmitter.lifespan = 5;
+			moonEmitter.lifespan = 10;
 			moonEmitter.gravity = 8 * 30 ;
 			var maxPWidth:int = 15;
 			var minPWidth:int = 4;

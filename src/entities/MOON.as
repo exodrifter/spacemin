@@ -46,7 +46,12 @@ package entities
 				_obj.ApplyForce(new b2Vec2(-.05, -.08), _obj.GetPosition());
 			//	if (_obj.GetLinearVelocity().y >= 6)
 			//		_obj.SetLinearVelocity(new b2Vec2(-.6, 6));
+			} else
+			{
+				_obj.SetLinearVelocity(new b2Vec2( -0.07, 0 ));
 			}
+			if (game._endgame == true)
+				_obj.SetLinearVelocity(new b2Vec2());
 			if (!emitted && y > 170)
 			{
 				moonEmitter.at(this);
