@@ -17,6 +17,7 @@ package
 		[Embed(source = 'res/box.png')] private var ImgCube:Class;
 		[Embed(source = 'res/ball.png')] private var ImgBall:Class;
 		[Embed(source = 'res/rect.png')] private var ImgRect:Class;
+		[Embed(source = 'res/TestTrash.png')] private var TrashImage:Class;
 		
 		[Embed(source="res/gameover.mp3")] private static var _gameover_sound:Class;
 		[Embed(source="res/pickup.mp3")] private static var _pickup_sound:Class;
@@ -55,6 +56,9 @@ package
 		public var _platform_time:Number;
 		public var _platform_timer:Number;
 		
+		public var bloodEmiter:FlxEmitter;
+
+		
 		override public function create():void
 		{
 			// Set up the world
@@ -65,7 +69,17 @@ package
 
 			// UI:
 			_score.setFormat(null, 16, 0xffffff, "center", 0);
-			add(_score)
+			add(_score);
+			
+			bloodEmiter = new FlxEmitter(0, 0, 10);
+			bloodEmiter.setXSpeed( -100, 100);
+			bloodEmiter.setYSpeed(100, 300);
+			for ( var u:int = 0; u < 10; u++)
+			{
+				var particle:FlxParticle = new FlxParticle();
+				particle.loadGraphic(TrashImage);
+				bloodEmiter.add(particle);
+			}
 
 			// Player:
 			_player = new Player(50, 200, 20, 20, _world, this);
@@ -82,11 +96,18 @@ package
 			_platform_time = 2;
 			_platform_timer = 0;
 			FlxG.score = 0;
-			}
+		}
+		public function spawnBlood()
+		{
+			var numOfParticles:int = Math.random() * (10 - 4) + 4;
+			trace(numOfParticles);
+			bloodEmiter.at(_player);
+			bloodEmiter.start(true, .1, .1, numOfParticles);
+		}
 
 		// Should be between 0 and 1
 		public static var minTrash:int = 3;
-		public static var maxTrash:int = 7;
+		public static var maxTrash:int = 7; 
 		
 		private static var _platform_spawn_height:int = 230;
 		
