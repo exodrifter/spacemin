@@ -21,7 +21,9 @@ package
 		[Embed(source = 'res/Moon.png')] private var Moon:Class;
 		[Embed(source = 'res/house.png')] private var house:Class;
 		[Embed(source = 'res/car.png')] private var car:Class;
-		
+		[Embed(source = 'res/tree.png')] private var tree:Class;
+		[Embed(source = 'res/garbagecan.png')] private var garbagecan:Class;
+		[Embed(source = 'res/streetlight.png')] private var streetlight:Class;
 
 		[Embed(source="res/gameover.mp3")] private static var _gameover_sound:Class;
 		[Embed(source="res/pickup.mp3")] private static var _pickup_sound:Class;
@@ -106,7 +108,7 @@ package
 			scenery = new Vector.<B2FlxSprite>();
 
 			sceneryImages = new Vector.<Class>();
-			sceneryImages.push(house,car);
+			sceneryImages.push(house,car,tree,streetlight,garbagecan);
 			bloodEmiter = new FlxEmitter(0, 0, 50);
 			bloodEmiter.setXSpeed( -190, -30);
 			bloodEmiter.setYSpeed(-100, -125);
