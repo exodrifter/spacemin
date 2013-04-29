@@ -24,7 +24,8 @@ package
 		[Embed(source="res/pickup.mp3")] private static var _pickup_sound:Class;
 
 		// Game UI
-		private var _score:FlxText = new FlxText(Main.SCREEN_X2 - 50, 70, 100, "0");
+		private var _score:FlxText = new FlxText(Main.SCREEN_X2 - 50, 60, 100, "0");
+		private var _distance:FlxText = new FlxText(Main.SCREEN_X2 - 50, 155, 100, "0");
 
 		// Is the game paused?
 		public var _paused:Boolean = false;
@@ -38,7 +39,7 @@ package
 		public var _endgame:Boolean = false;
 		private var _retry:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 100, "Retry", MenuState.toGame);
 		private var _endtitle:FlxText = new FlxText(Main.SCREEN_X2-50, 20, 100, "GAME OVER");
-		private var _finalscore:FlxText = new FlxText(Main.SCREEN_X2 - 50, 70, 100, "0");
+		private var _finalscore:FlxText = new FlxText(Main.SCREEN_X2 - 50, 60, 100, "0");
 
 		// The physics world
 		public var _world:b2World;
@@ -80,7 +81,7 @@ package
 			_toRemove = new Vector.<b2Body>();
 
 			// UI:
-			_score.setFormat(null, 16, 0xffffff, "center", 0);
+			_score.setFormat(null, 16, 0xff7777, "center", 0);
 			add(_score);
 
 			scenery = new Vector.<B2FlxSprite>();
@@ -100,6 +101,8 @@ package
 
 			// Backgrounds
 			_bga = new ParallaxLayer(this, 0.25, ParallaxLayer.BG_A);
+			_distance.setFormat(null, 8, 0x663333, "center", 0);
+			add(_distance);
 			_bgb = new ParallaxLayer(this, 0.75, ParallaxLayer.BG_B);
 			add(_bga);
 			add(_bgb);
@@ -119,8 +122,8 @@ package
 			_platforms.push(floor2);
 
 			// Reset game variables
-			_platform_time = 9;
-			_platform_timer = 2;
+			_platform_time = 700;
+			_platform_timer = 300;
 			FlxG.score = 0;
 			_distace_traveled = 0;
 			_distace_delta = 0;
@@ -195,7 +198,7 @@ package
 			if(_platform_timer > _platform_time) {
 				spawnPlatform();
 				_platform_timer = 0;
-				_platform_time = _platform_time * 1.1;
+				_platform_time = _platform_time * 1.05;
 			}
 			_platform_timer += _distace_delta;
 
@@ -209,6 +212,7 @@ package
 			_world.Step(FlxG.elapsed, 6, 3);
 			var nx:Number = _player._obj.GetWorldCenter().x;
 			_distace_traveled += _distace_delta;
+			_distance.text = "" + ((int)(_distace_traveled));
 			super.update();
 			while (_toRemove.length != 0)
 			{
@@ -243,6 +247,7 @@ package
 			if (_endgame) {
 				return;
 			}
+			remove(_distance);
 			_endgame = true;
 			_finalscore.setFormat(null, 16, 0xffffff, "center", 0);
 			_finalscore.text = "" + FlxG.score;
