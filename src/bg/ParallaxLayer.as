@@ -37,9 +37,8 @@ package bg
 			_bg = bg;
 			_group = new FlxGroup();
 			_parts = new Vector.<FlxSprite>;
-			for (var x:int; x < Main.SCREEN_X + 200; x += 200) {
-				var sprite:FlxSprite = getNextPart();
-				sprite.x = x;
+			for (var x:int = 0; x < Main.SCREEN_X + 200; x += 200) {
+				var sprite:FlxSprite = getNextPart(x);
 				_parts.push(sprite);
 				_group.add(sprite);
 				_gamestate.add(_group);
@@ -48,53 +47,52 @@ package bg
 
 		override public function update():void {
 			var offset:Number = _gamestate._distace_delta * _ratio;
-			trace("OFFSET:" + offset);
+			if (_gamestate._paused || _gamestate._endgame) {
+				return;
+			}
 			for each (var sprite:FlxSprite in _parts) {
 				sprite.x -= offset;
 			}
 			if (_parts[0].x + 200 < 0) {
 				_group.remove(_parts[0]);
 				_parts.splice(0, 1);
-				var spr:FlxSprite = getNextPart();
+			}
+			if (_parts[_parts.length-1].x + 200 < Main.SCREEN_X + 100) {
+				var spr:FlxSprite = getNextPart(_parts[_parts.length-1].x+200);
 				_parts.push(spr);
 				_group.add(spr);
 			}
 		}
 
-		public function getNextPart():FlxSprite {
+		public function getNextPart(offset:Number):FlxSprite {
 			var n:int = 0;
 			if (_bg == BG_A) {
 				n = (int)(Math.random() * 5);
 				switch(n) {
 				case 0:
-					return new FlxSprite(Main.SCREEN_X+200, Main.SCREEN_Y-200, _bg_a1);
+					return new FlxSprite(offset, Main.SCREEN_Y-200, _bg_a1);
 				case 1:
-					return new FlxSprite(Main.SCREEN_X+200, Main.SCREEN_Y-200, _bg_a2);
+					return new FlxSprite(offset, Main.SCREEN_Y-200, _bg_a2);
 				case 2:
-					return new FlxSprite(Main.SCREEN_X+200, Main.SCREEN_Y-200, _bg_a3);
+					return new FlxSprite(offset, Main.SCREEN_Y-200, _bg_a3);
 				case 3:
-					return new FlxSprite(Main.SCREEN_X+200, Main.SCREEN_Y-200, _bg_a4);
+					return new FlxSprite(offset, Main.SCREEN_Y-200, _bg_a4);
 				case 4:
-					return new FlxSprite(Main.SCREEN_X+200, Main.SCREEN_Y-200, _bg_a5);
+					return new FlxSprite(offset, Main.SCREEN_Y-200, _bg_a5);
 				}
 			} else if (_bg == BG_B) {
-				n = (int)(Math.random() * 6);
-				if (n > 4) {
-					n = (int)(Math.random() * 6);
-				}
+				n = (int)(Math.random() * 5);
 				switch(n) {
 				case 0:
-					return new FlxSprite(Main.SCREEN_X+200, Main.SCREEN_Y-100, _bg_b1);
+					return new FlxSprite(offset, Main.SCREEN_Y-100, _bg_b1);
 				case 1:
-					return new FlxSprite(Main.SCREEN_X+200, Main.SCREEN_Y-100, _bg_b2);
+					return new FlxSprite(offset, Main.SCREEN_Y-100, _bg_b2);
 				case 2:
-					return new FlxSprite(Main.SCREEN_X+200, Main.SCREEN_Y-100, _bg_b3);
+					return new FlxSprite(offset, Main.SCREEN_Y-100, _bg_b3);
 				case 3:
-					return new FlxSprite(Main.SCREEN_X+200, Main.SCREEN_Y-100, _bg_b4);
+					return new FlxSprite(offset, Main.SCREEN_Y-100, _bg_b4);
 				case 4:
-					return new FlxSprite(Main.SCREEN_X+200, Main.SCREEN_Y-100, _bg_b5);
-				case 5:
-					return new FlxSprite(Main.SCREEN_X+200, Main.SCREEN_Y-100, _bg_b);
+					return new FlxSprite(offset, Main.SCREEN_Y-100, _bg_b5);
 				}
 			}
 			return null;

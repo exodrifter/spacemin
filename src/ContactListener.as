@@ -50,7 +50,6 @@ package
 				if (_gamestate._player.isLanding()) {
 					var xp:Number = _gamestate._player.getScreenXY().x
 					var xg:Number = _platformBody.GetWorldCenter().x * 30
-					trace(xp + " " + xg);
 					if (xp < xg && xg - xp > 95) {
 						FlxG.score += 5;
 						FlxG.shake(0.025, 0.2, null, true, FlxCamera.SHAKE_BOTH_AXES);

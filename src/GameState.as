@@ -16,10 +16,10 @@ package
 	public class GameState extends FlxState
 	{
 		[Embed(source = 'res/box.png')] private var ImgCube:Class;
-		[Embed(source = 'res/ball.png')] private var ImgBall:Class;
-		[Embed(source = 'res/rect.png')] private var ImgRect:Class;
 		[Embed(source = 'res/TestTrash.png')] private var TrashImage:Class;
-
+		[Embed(source = 'res/table.png')] private var table:Class;
+		[Embed(source = 'res/plane.png')] private var plane:Class;
+		[Embed(source = 'res/Moon.png')] private var Moon:Class;
 		[Embed(source="res/gameover.mp3")] private static var _gameover_sound:Class;
 		[Embed(source="res/pickup.mp3")] private static var _pickup_sound:Class;
 
@@ -38,6 +38,7 @@ package
 		public var _endgame:Boolean = false;
 		private var _retry:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 100, "Retry", MenuState.toGame);
 		private var _endtitle:FlxText = new FlxText(Main.SCREEN_X2-50, 20, 100, "GAME OVER");
+		private var _finalscore:FlxText = new FlxText(Main.SCREEN_X2 - 50, 70, 100, "0");
 
 		// The physics world
 		public var _world:b2World;
@@ -64,7 +65,9 @@ package
 		public var bloodEmiter:FlxEmitter;
 		public static var minParticleSize:Number = 3;
 		public static var maxParticleSize:Number = 7;
-		
+
+		public var scenery:Vector.<B2FlxSprite>;
+
 		private var _bga:ParallaxLayer;
 		private var _bgb:ParallaxLayer;
 
@@ -80,24 +83,24 @@ package
 			_score.setFormat(null, 16, 0xffffff, "center", 0);
 			add(_score);
 
+			scenery = new Vector.<B2FlxSprite>();
 			bloodEmiter = new FlxEmitter(0, 0, 50);
-			bloodEmiter.setXSpeed( -130, 90);
-			bloodEmiter.setYSpeed(-175, -250);
+			bloodEmiter.setXSpeed( -190, -30);
+			bloodEmiter.setYSpeed(-100, -125);
 			bloodEmiter.lifespan = .25;
 			for ( var u:int = 0; u < 50; u++)
 			{
-				var particle:FlxParticle = new FlxParticle();
+				var particle:movingParticle = new movingParticle(this);
 				var size:Number = Math.random() * (maxParticleSize - minParticleSize) + minParticleSize;
 				particle.scale = new FlxPoint(size, size);
 				particle.loadGraphic(TrashImage);
 				particle.kill();
 				bloodEmiter.add(particle);
-				trace(size);
 			}
 
 			// Backgrounds
-			_bga = new ParallaxLayer(this, 10, ParallaxLayer.BG_A);
-			_bgb = new ParallaxLayer(this, 20, ParallaxLayer.BG_B);
+			_bga = new ParallaxLayer(this, 0.25, ParallaxLayer.BG_A);
+			_bgb = new ParallaxLayer(this, 0.75, ParallaxLayer.BG_B);
 			add(_bga);
 			add(_bgb);
 
@@ -122,16 +125,15 @@ package
 			_distace_traveled = 0;
 			_distace_delta = 0;
 		}
+
 		public function spawnBlood():void
 		{
 			var numOfParticles:int = Math.random() * (10 - 4) + 4;
-			trace(numOfParticles);
 			bloodEmiter.at(_player);
 			for ( var i:int = 0; i < numOfParticles; i++)
 			{
 				bloodEmiter.emitParticle();
 			}
-			trace(bloodEmiter.visible);
 		}
 
 		// Should be between 0 and 1
@@ -201,11 +203,11 @@ package
 				_player._obj.SetPosition(new b2Vec2(2,_player._obj.GetPosition().y));
 			}
 
-			_player._obj.SetLinearVelocity(new b2Vec2(3 +0.75*Math.sqrt(_distace_traveled), _player._obj.GetLinearVelocity().y));
+			_distace_delta = _player._obj.GetLinearVelocity().x;
+			_player._obj.SetLinearVelocity(new b2Vec2(3 +.75 *Math.sqrt(Math.sqrt(_distace_traveled)), _player._obj.GetLinearVelocity().y));
 			var ox:Number = _player._obj.GetWorldCenter().x;
 			_world.Step(FlxG.elapsed, 6, 3);
 			var nx:Number = _player._obj.GetWorldCenter().x;
-			_distace_delta = nx - ox
 			_distace_traveled += _distace_delta;
 			super.update();
 			while (_toRemove.length != 0)
@@ -241,9 +243,12 @@ package
 			if (_endgame) {
 				return;
 			}
-			_endgame= true;
+			_endgame = true;
+			_finalscore.setFormat(null, 16, 0xffffff, "center", 0);
+			_finalscore.text = "" + FlxG.score;
 			_endtitle.setFormat(null, 16, 0xffffff, "center", 0);
 			add(_endtitle);
+			add(_finalscore);
 			add(_retry);
 			add(_quit);
 			FlxG.play(_gameover_sound);
