@@ -18,6 +18,7 @@ package entities
 		public function Player(X:Number, Y:Number, Width:Number, Height:Number, W:b2World):void
 		{
 			super(X, Y, Width, Height, W);
+			this._restitution = 0;
 			this._friction = 10;
 			this._density = .7;
 			this.createBody();
@@ -37,7 +38,7 @@ package entities
 			super.update();
 			if (FlxG.keys.any() && !FlxG.keys.ESCAPE) {
 				if (!_pressed && _canJump) {
-					this._obj.ApplyImpulse(new b2Vec2(0, -2 - 0.01 * (_weight+1)), this._obj.GetPosition());
+					this._obj.SetLinearVelocity(new b2Vec2(this._obj.GetLinearVelocity().x, -6 - 0.05 * (_weight+1)));
 					_pressed = true;
 					_canJump = false;
 				}

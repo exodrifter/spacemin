@@ -22,9 +22,9 @@ package
 	{
 		private var _gamestate:GameState;
 		
-		private var _ground:Boolean, _player:Boolean;
+		private var _ground:Boolean, _player:Boolean, _trash:Boolean;
 		
-		private var _trash:Boolean, _trashBody:b2Body, _touchedTrash:b2Body;
+		private var _platformBody:b2Body, _trashBody:b2Body, _touchedTrash:b2Body;
 		
 		private var ratio:Number = 30;
 		
@@ -41,9 +41,13 @@ package
 			DetectContact(contact);
 			
 			if (_player && _ground) {
+				if (_gamestate._player.getScreenXY().y > (_platformBody.GetWorldCenter().y*ratio-110))
+				{
+					_gamestate.endgame();
+				}
 				_gamestate._player.ground(true);
 			}
-			8
+			
 			if (_player && _trash) {
 				var worthless:Boolean = false;
 				for (var q:int = 0; q < _gamestate._trash.length; q++)
@@ -69,8 +73,6 @@ package
 					newTrashPosition.x = x * Math.cos(-_gamestate._player._obj.GetAngle()) - y * Math.sin(-_gamestate._player._obj.GetAngle());
 					newTrashPosition.y = x * Math.sin(-_gamestate._player._obj.GetAngle()) + y * Math.cos(-_gamestate._player._obj.GetAngle());
 
-					
-					
 					newTrashShape.SetAsOrientedBox(Trash._width/2/ratio, Trash._height/2/ratio,newTrashPosition);
 					newTrashDef.density = _trashBody.GetFixtureList().GetDensity();
 					newTrashDef.shape = newTrashShape;
@@ -78,7 +80,7 @@ package
 					newTrashDef.friction = _touchedTrash.GetFixtureList().GetFriction();
 					newTrashDef.restitution = _touchedTrash.GetFixtureList().GetRestitution();
 					_gamestate._toAddToPlayer.push(newTrashDef);
-					for (var q:int = 0; q < _gamestate._trash.length; q++)
+					for (q = 0; q < _gamestate._trash.length; q++)
 					{
 						if (_gamestate._trash[q]._obj == _trashBody)
 						{
@@ -137,6 +139,7 @@ package
 			if (contact.GetFixtureA().GetBody().GetUserData() == "ground"
 					|| contact.GetFixtureB().GetBody().GetUserData() == "ground") {
 				_ground = true;
+				_platformBody = contact.GetFixtureA().GetBody().GetUserData() == "ground" ? contact.GetFixtureA().GetBody() : contact.GetFixtureB().GetBody()
 			}
 			if (contact.GetFixtureA().GetBody().GetUserData() == "player"
 					|| contact.GetFixtureB().GetBody().GetUserData() == "player") {
