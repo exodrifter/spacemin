@@ -8,7 +8,7 @@ package
 	 */
 	public class MenuState extends FlxState
 	{
-		private var _title:FlxText = new FlxText(Main.SCREEN_X2-50, 20, 100, Main.GAME_NAME);
+		private var _title:FlxText = new FlxText(Main.SCREEN_X2-200, 20, 400, Main.GAME_NAME);
 		private var _start:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 100, "Start", toGame);
 		private var _scores:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 120, "Highscores", toScores);
 		private var _settings:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 140, "Settings", toSettings);
