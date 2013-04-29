@@ -47,8 +47,20 @@ package
 			if (_player && _ground) {
 				FlxG.play(_ground_sound);
 				if (_gamestate._player.isLanding()) {
-					FlxG.shake(0.025, 0.2, null, true, FlxCamera.SHAKE_BOTH_AXES)
+					var xp:Number = _gamestate._player.getScreenXY().x
+					var xg:Number = _platformBody.GetWorldCenter().x * 30
+					trace(xp + " " + xg);
+					if (xp < xg && xg - xp > 95) {
+						FlxG.score += 5;
+						FlxG.shake(0.025, 0.2, null, true, FlxCamera.SHAKE_BOTH_AXES)
+					} else if (xp > xg && xp - xg > 95) {
+						FlxG.score += 1;
+						FlxG.shake(0.025, 0.2, null, true, FlxCamera.SHAKE_BOTH_AXES)
+					} else {
+						FlxG.shake(0.01, 0.2, null, true, FlxCamera.SHAKE_VERTICAL_ONLY)
+					}
 					_platformBody.SetType(b2Body.b2_dynamicBody);
+					
 				}
 				if (_gamestate._player.getScreenXY().y > (_platformBody.GetWorldCenter().y*ratio-110))
 				{
