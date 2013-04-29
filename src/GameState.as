@@ -29,6 +29,8 @@ package
 		// Game UI
 		private var _score:FlxText = new FlxText(Main.SCREEN_X2 - 50, 60, 100, "0");
 		private var _distance:FlxText = new FlxText(Main.SCREEN_X2 - 50, 155, 100, "0");
+		private var _offscreen:FlxText = new FlxText(11, 5, 100, "0");
+		private var _offscreen_disp:Boolean = false;
 
 		// Is the game paused?
 		public var _paused:Boolean = false;
@@ -92,6 +94,8 @@ package
 			// UI:
 			_score.setFormat(null, 16, 0xff7777, "center", 0);
 			add(_score);
+			_offscreen.setFormat(null, 8, 0x663333, "center", 0);
+			add(_offscreen);
 
 			scenery = new Vector.<B2FlxSprite>();
 
@@ -114,8 +118,8 @@ package
 			// Backgrounds
 			_bga = new ParallaxLayer(this, 0.25, ParallaxLayer.BG_A);
 			_distance.setFormat(null, 8, 0x663333, "center", 0);
-			add(DaMoon);
 			add(_distance);
+			add(DaMoon);
 			_bgb = new ParallaxLayer(this, 0.75, ParallaxLayer.BG_B);
 			add(_bga);
 			
@@ -216,7 +220,14 @@ package
 				FlxG.mouse.hide();
 			}
 
-			_score.text = ""+FlxG.score;
+			// Update UI
+			_score.text = "" + FlxG.score;
+			if (_player.getScreenXY().y < 0 ) {
+				add(_offscreen);
+			} else {
+				remove(_offscreen);
+			}
+			_offscreen.text = "" + ((int)(-_player.getScreenXY().y));
 
 			// Handle end game
 			if (_player.getScreenXY().y > Main.SCREEN_Y) {
