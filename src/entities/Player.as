@@ -41,7 +41,7 @@ package entities
 		override public function update():void
 		{
 			super.update();
-			if (FlxG.keys.any() && !FlxG.keys.ESCAPE) {
+			if ((FlxG.keys.any() || FlxG.mouse.pressed()) && !FlxG.keys.ESCAPE) {
 				if (!_pressed && !_gamestate._endgame && !_gamestate._paused) {
 					if (_canJump) {
 						FlxG.play(_jump_sound);

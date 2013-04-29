@@ -61,7 +61,6 @@ package
 						FlxG.play(_score_sound);
 					} else {
 						FlxG.shake(0.01, 0.2, null, true, FlxCamera.SHAKE_VERTICAL_ONLY);
-						FlxG.play(_ground_sound);
 					}
 					_platformBody.SetType(b2Body.b2_dynamicBody);
 					
@@ -71,6 +70,7 @@ package
 					_gamestate.endgame();
 				}
 				_gamestate._player.ground(true);
+				FlxG.play(_ground_sound);
 			}
 		}
 
