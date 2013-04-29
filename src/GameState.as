@@ -56,6 +56,7 @@ package
 		public var _player:Player;
 		// The platforms in the game
 		public var _platforms:Vector.<Platform>;
+		private var _platform_group:FlxGroup;
 
 		public var _toRemove:Vector.<b2Body>;
 
@@ -122,7 +123,6 @@ package
 			add(DaMoon);
 			_bgb = new ParallaxLayer(this, 0.75, ParallaxLayer.BG_B);
 			add(_bga);
-			
 			add(_bgb);
 
 			// Player:
@@ -132,12 +132,14 @@ package
 
 			// Floor:
 			_platforms = new Vector.<Platform>();
+			_platform_group = new FlxGroup();
 			var floor:Platform = new Platform(0, 230, _world, _player, this);
-			this.add(floor);
+			_platform_group.add(floor);
 			_platforms.push(floor);
 			var floor2:Platform = new Platform(300, 230, _world, _player, this);
-			this.add(floor2);
+			_platform_group.add(floor2);
 			_platforms.push(floor2);
+			add(_platform_group);
 
 			// Reset game variables
 			_platform_time = 700;
@@ -173,7 +175,7 @@ package
 			}
 			var platform:Platform = new Platform(Main.SCREEN_X, _platform_spawn_height, _world, _player, this);
 			_platforms.push(platform);
-			this.add(platform);
+			_platform_group.add(platform);
 			var numScene:int = Math.floor(Math.random() * (maxScenery - minScenery) + minScenery);
 			for (var g:int; g < numScene; g++)
 			{
@@ -184,7 +186,7 @@ package
 				newScenery._fixDef.filter = Player.playerFilter;
 				newScenery.createBody();
 				scenery.push(newScenery);
-				add(newScenery);
+				_platform_group.add(newScenery);
 				newScenery._obj.SetLinearVelocity(new b2Vec2(-_player._obj.GetLinearVelocity().x, newScenery._obj.GetLinearVelocity().y));
 				trace(scenery.length);
 			}
