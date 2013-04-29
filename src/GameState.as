@@ -296,8 +296,6 @@ package
 			if (_endgame) {
 				return;
 			}
-			FlxG.mouse.screenX = Main.SCREEN_X2;
-			FlxG.mouse.screenY = Main.SCREEN_Y2;
 			remove(_distance);
 			remove(_score);
 			_endgame = true;

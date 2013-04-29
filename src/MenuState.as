@@ -24,8 +24,8 @@ package
 			_title.setFormat(null, 16, 0xffffff, "center", 0);
 			add(_title);
 			add(setSounds(_start));
-			add(setSounds(_scores));
-			add(setSounds(_settings));
+			//add(setSounds(_scores));
+			//add(setSounds(_settings));
 		}
 		
 		public static function setSounds(button:FlxButton):FlxButton
