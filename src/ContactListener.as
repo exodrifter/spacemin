@@ -63,7 +63,7 @@ package
 						FlxG.shake(0.01, 0.2, null, true, FlxCamera.SHAKE_VERTICAL_ONLY);
 					}
 					_platformBody.SetType(b2Body.b2_dynamicBody);
-					
+					_gamestate.spawnBlood();
 				}
 				else if (_gamestate._player.getScreenXY().y > (_platformBody.GetWorldCenter().y*ratio-110))
 				{
