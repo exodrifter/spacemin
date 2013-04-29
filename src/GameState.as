@@ -128,10 +128,10 @@ package
 
 			// Floor:
 			_platforms = new Vector.<Platform>();
-			var floor:Platform = new Platform(0, 230, _world, _player);
+			var floor:Platform = new Platform(0, 230, _world, _player, this);
 			this.add(floor);
 			_platforms.push(floor);
-			var floor2:Platform = new Platform(300, 230, _world, _player);
+			var floor2:Platform = new Platform(300, 230, _world, _player, this);
 			this.add(floor2);
 			_platforms.push(floor2);
 
@@ -167,7 +167,7 @@ package
 			} else if (_platform_spawn_height < Main.SCREEN_Y-100) {
 				_platform_spawn_height = Main.SCREEN_Y-100;
 			}
-			var platform:Platform = new Platform(Main.SCREEN_X, _platform_spawn_height, _world, _player);
+			var platform:Platform = new Platform(Main.SCREEN_X, _platform_spawn_height, _world, _player, this);
 			_platforms.push(platform);
 			this.add(platform);
 			var numScene:int = Math.floor(Math.random() * (maxScenery - minScenery) + minScenery);

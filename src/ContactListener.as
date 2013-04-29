@@ -11,6 +11,7 @@ package
 	import Box2D.Dynamics.b2FixtureDef;
 	import Box2D.Dynamics.Contacts.*;
 	import Box2D.Dynamics.Joints.b2WeldJointDef;
+	import entities.B2FlxSprite;
 	import entities.Platform;
 	import entities.Player;
 	import entities.Trash;
@@ -52,15 +53,19 @@ package
 					var xp:Number = _gamestate._player.getScreenXY().x
 					var xg:Number = _platformBody.GetWorldCenter().x * 30
 					if (xp < xg && xg - xp > 95) {
-						FlxG.score += 5;
+						FlxG.score += 1;
 						FlxG.shake(0.025, 0.2, null, true, FlxCamera.SHAKE_BOTH_AXES);
 						FlxG.play(_score_sound);
 					} else if (xp > xg && xp - xg > 95) {
-						FlxG.score += 1;
+						FlxG.score += 2;
 						FlxG.shake(0.025, 0.2, null, true, FlxCamera.SHAKE_BOTH_AXES);
 						FlxG.play(_score_sound);
 					} else {
 						FlxG.shake(0.01, 0.2, null, true, FlxCamera.SHAKE_VERTICAL_ONLY);
+					}
+					for each (var sprite:B2FlxSprite in _gamestate.scenery) {
+						sprite._obj.SetAngularVelocity(Math.random() - 0.5);
+						sprite._obj.SetLinearVelocity(new b2Vec2(sprite._obj.GetLinearVelocity().x, -3));
 					}
 					_platformBody.SetType(b2Body.b2_dynamicBody);
 					_gamestate.spawnBlood();
