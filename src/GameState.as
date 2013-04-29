@@ -220,9 +220,11 @@ package
 			{
 				var newScenery:B2FlxSprite = new B2FlxSprite(Math.random() * (250) + Main.SCREEN_X, _platform_spawn_height - 30, 40, 40, _world);
 				newScenery.loadGraphic(sceneryImages[Math.floor(Math.random() * sceneryImages.length)]);
-				newScenery._width = newScenery.width;
+				newScenery._width = newScenery.width * .75;
 				newScenery._height = newScenery.height;
-				newScenery._fixDef.filter = Player.playerFilter;
+				newScenery._fixDef.filter = Player.playerFilter.Copy();
+				newScenery._fixDef.filter.maskBits = 0x0011;
+				newScenery._fixDef.filter.categoryBits = 0x0010;
 				newScenery.createBody();
 				scenery.push(newScenery);
 				_platform_group.add(newScenery);
