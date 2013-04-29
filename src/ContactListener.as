@@ -23,6 +23,7 @@ package
 	public class ContactListener extends b2ContactListener
 	{
 		[Embed(source = "res/ground.mp3")] private static var _ground_sound:Class;
+		[Embed(source="res/score.mp3")] private static var _score_sound:Class;
 		
 		private var _gamestate:GameState;
 		
@@ -45,19 +46,21 @@ package
 			DetectContact(contact);
 			
 			if (_player && _ground) {
-				FlxG.play(_ground_sound);
 				if (_gamestate._player.isLanding()) {
 					var xp:Number = _gamestate._player.getScreenXY().x
 					var xg:Number = _platformBody.GetWorldCenter().x * 30
 					trace(xp + " " + xg);
 					if (xp < xg && xg - xp > 95) {
 						FlxG.score += 5;
-						FlxG.shake(0.025, 0.2, null, true, FlxCamera.SHAKE_BOTH_AXES)
+						FlxG.shake(0.025, 0.2, null, true, FlxCamera.SHAKE_BOTH_AXES);
+						FlxG.play(_score_sound);
 					} else if (xp > xg && xp - xg > 95) {
 						FlxG.score += 1;
-						FlxG.shake(0.025, 0.2, null, true, FlxCamera.SHAKE_BOTH_AXES)
+						FlxG.shake(0.025, 0.2, null, true, FlxCamera.SHAKE_BOTH_AXES);
+						FlxG.play(_score_sound);
 					} else {
-						FlxG.shake(0.01, 0.2, null, true, FlxCamera.SHAKE_VERTICAL_ONLY)
+						FlxG.shake(0.01, 0.2, null, true, FlxCamera.SHAKE_VERTICAL_ONLY);
+						FlxG.play(_ground_sound);
 					}
 					_platformBody.SetType(b2Body.b2_dynamicBody);
 					
