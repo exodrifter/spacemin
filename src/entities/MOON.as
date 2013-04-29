@@ -18,7 +18,7 @@ package entities
 			_width = width;
 			_height = height;
 			this.createBody();
-			var moonFilter = new b2FilterData();
+			var moonFilter:b2FilterData = new b2FilterData();
 			moonFilter.categoryBits = 0x0000;
 			moonFilter.maskBits = ~0x0000;
 			this._obj.GetFixtureList().SetFilterData(moonFilter.Copy());

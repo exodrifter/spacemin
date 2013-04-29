@@ -14,6 +14,8 @@ package entities
 		
 		public static var playerFilter:b2FilterData = null;
 		
+		public static const targetAngularVelocity:Number = 7;
+		
 		private var _pressed:Boolean = false, _grounded:Boolean = false, _canJump:Boolean = false, _landing:Boolean = false;
 		/** The total weight of the trah connected to this player */
 		public var _weight:Number = 0;
@@ -60,6 +62,20 @@ package entities
 			} else {
 				_pressed = false;
 			}
+			
+			// Adjust angular velocity
+			if (_obj.GetAngularVelocity() > targetAngularVelocity) {
+				_obj.SetAngularVelocity(_obj.GetAngularVelocity() - 40 * FlxG.elapsed);
+				if (_obj.GetAngularVelocity() < targetAngularVelocity) {
+					_obj.SetAngularVelocity(targetAngularVelocity);
+				}
+			} else if (_obj.GetAngularVelocity() < targetAngularVelocity) {
+				_obj.SetAngularVelocity(_obj.GetAngularVelocity() + 10* FlxG.elapsed);
+				if (_obj.GetAngularVelocity() > targetAngularVelocity) {
+					_obj.SetAngularVelocity(targetAngularVelocity);
+				}
+			}
+			trace(_obj.GetAngularVelocity());
 		}
 		
 		public function ground(grounded:Boolean):void
