@@ -22,6 +22,7 @@ package entities
 		
 		private var _gamestate:GameState;
 		
+		
 		public function Player(X:Number, Y:Number, Width:Number, Height:Number, W:b2World, G:GameState):void
 		{
 			super(X, Y, Width, Height, W);
@@ -39,6 +40,7 @@ package entities
 			this._obj.GetFixtureList().SetFilterData(playerFilter.Copy());
 			this.loadGraphic(ImgCube);
 			this._obj.SetUserData("player");
+			maxAngular = 7;
 		}
 		
 		override public function update():void
@@ -62,7 +64,6 @@ package entities
 			} else {
 				_pressed = false;
 			}
-			
 			// Adjust angular velocity
 			if (_obj.GetAngularVelocity() > targetAngularVelocity) {
 				_obj.SetAngularVelocity(_obj.GetAngularVelocity() - 40 * FlxG.elapsed);
