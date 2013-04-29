@@ -96,6 +96,8 @@ package
 			_platform_spawn_height = 230 + (int)(Math.random() * 50) - 25
 			if (_platform_spawn_height > Main.SCREEN_Y-10) {
 				_platform_spawn_height = Main.SCREEN_Y-10;
+			} else if (_platform_spawn_height < Main.SCREEN_Y-100) {
+				_platform_spawn_height = Main.SCREEN_Y-100;
 			}
 			var platform:Platform = new Platform(Main.SCREEN_X, _platform_spawn_height, _world, _player);
 			_platforms.push(platform);
