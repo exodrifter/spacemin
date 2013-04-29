@@ -10,12 +10,14 @@ package entities
 		[Embed(source = '../res/platform.png')] private var ImgCube:Class;
 		public static var platformFilter:b2FilterData = null;
 		private var _player:Player;
+		private var _gamestate:GameState;
 		
-		public function Platform(X:Number, Y:Number, W:b2World, player:Player) 
+		public function Platform(X:Number, Y:Number, W:b2World, player:Player, gamestate:GameState) 
 		{
 			super(X, Y, 250, 200, W);
 			this._player = player;
 			this.createBody();
+			_gamestate = gamestate;
 			if (platformFilter == null)
 			{
 				platformFilter = new b2FilterData();
@@ -30,7 +32,11 @@ package entities
 		
 		override public function update():void {
 			super.update();
-			this._obj.SetLinearVelocity(new b2Vec2(-_player._obj.GetLinearVelocity().x, this._obj.GetLinearVelocity().y));
+			this._obj.SetLinearVelocity(new b2Vec2( -_player._obj.GetLinearVelocity().x, this._obj.GetLinearVelocity().y));
+			if (this.getScreenXY().x + 250 < 0) {
+				_gamestate.remove(this);
+				_gamestate._toRemove.push(this._obj);
+			}
 		}
 	}
 }
