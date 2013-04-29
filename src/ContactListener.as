@@ -12,6 +12,7 @@ package
 	import Box2D.Dynamics.Contacts.*;
 	import Box2D.Dynamics.Joints.b2WeldJointDef;
 	import entities.B2FlxSprite;
+	import entities.Beam;
 	import entities.Platform;
 	import entities.Player;
 	import entities.Trash;
@@ -56,10 +57,12 @@ package
 						FlxG.score += 1;
 						FlxG.shake(0.025, 0.2, null, true, FlxCamera.SHAKE_BOTH_AXES);
 						FlxG.play(_score_sound);
+						_gamestate.spawnBeam(xp,Main.SCREEN_Y-200);
 					} else if (xp > xg && xp - xg > 95) {
 						FlxG.score += 2;
 						FlxG.shake(0.025, 0.2, null, true, FlxCamera.SHAKE_BOTH_AXES);
 						FlxG.play(_score_sound);
+						_gamestate.spawnBeam(xp,Main.SCREEN_Y-200);
 					} else {
 						FlxG.shake(0.01, 0.2, null, true, FlxCamera.SHAKE_VERTICAL_ONLY);
 					}
