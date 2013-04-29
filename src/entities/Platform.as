@@ -38,7 +38,7 @@ package entities
 				this._obj.SetLinearVelocity(new b2Vec2(-_player._obj.GetLinearVelocity().x, this._obj.GetLinearVelocity().y));
 			}
 			if (this.getScreenXY().x + 250 < 0) {
-				_gamestate.remove(this);
+				_gamestate._platform_group.remove(this);
 				_gamestate._toRemove.push(this._obj);
 			}
 		}

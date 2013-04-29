@@ -31,6 +31,7 @@ package
 		private var _distance:FlxText = new FlxText(Main.SCREEN_X2 - 50, 155, 100, "0");
 		private var _offscreen:FlxText = new FlxText(11, 5, 100, "0");
 		private var _offscreen_disp:Boolean = false;
+		private var _front_ui_group:FlxGroup;
 
 		// Is the game paused?
 		public var _paused:Boolean = false;
@@ -42,7 +43,8 @@ package
 
 		// Has the game ended?
 		public var _endgame:Boolean = false;
-		private var _retry:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 100, "Retry", MenuState.toGame);
+		private var _retry:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 200, "Retry", MenuState.toGame);
+		private var _quitend:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 220, "Quit", MenuState.toMenu);
 		private var _endtitle:FlxText = new FlxText(Main.SCREEN_X2-50, 20, 100, "GAME OVER");
 		private var _finalscore:FlxText = new FlxText(Main.SCREEN_X2 - 50, 60, 100, "0");
 
@@ -56,7 +58,7 @@ package
 		public var _player:Player;
 		// The platforms in the game
 		public var _platforms:Vector.<Platform>;
-		private var _platform_group:FlxGroup;
+		public var _platform_group:FlxGroup;
 
 		public var _toRemove:Vector.<b2Body>;
 
@@ -140,6 +142,10 @@ package
 			_platform_group.add(floor2);
 			_platforms.push(floor2);
 			add(_platform_group);
+
+			// Front UI
+			_front_ui_group = new FlxGroup();
+			add(_front_ui_group);
 
 			// Reset game variables
 			_platform_time = 700;
@@ -289,15 +295,18 @@ package
 			if (_endgame) {
 				return;
 			}
+			FlxG.mouse.screenX = Main.SCREEN_X2;
+			FlxG.mouse.screenY = Main.SCREEN_Y2;
 			remove(_distance);
+			remove(_score);
 			_endgame = true;
 			_finalscore.setFormat(null, 16, 0xffffff, "center", 0);
 			_finalscore.text = "" + FlxG.score;
 			_endtitle.setFormat(null, 16, 0xffffff, "center", 0);
-			add(_endtitle);
-			add(_finalscore);
-			add(_retry);
-			add(_quit);
+			_front_ui_group.add(_endtitle);
+			_front_ui_group.add(_finalscore);
+			_front_ui_group.add(MenuState.setSounds(_retry));
+			_front_ui_group.add(MenuState.setSounds(_quitend));
 			
 			// Halt the scenery
 			for each (var sprite:B2FlxSprite in scenery) {
