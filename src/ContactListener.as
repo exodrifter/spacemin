@@ -41,7 +41,7 @@ package
 			DetectContact(contact);
 			
 			if (_player && _ground) {
-				if (_gamestate._player.getScreenXY().y > (_platformBody.GetWorldCenter().y*ratio-100))
+				if (_gamestate._player.getScreenXY().y > (_platformBody.GetWorldCenter().y*ratio-110))
 				{
 					_gamestate.endgame();
 				}
