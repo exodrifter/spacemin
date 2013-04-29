@@ -52,6 +52,10 @@ package
 		
 		public static var debug:Boolean;
 
+		// The total distance traveled
+		public var _distace_traveled:Number;
+		// The change is distance traveled
+		public var _distace_delta:Number;
 		public var _platform_time:Number;
 		public var _platform_timer:Number;
 		
@@ -79,10 +83,14 @@ package
 			var floor2:Platform = new Platform(300, 230, _world, _player);
 			this.add(floor2);
 			_platforms.push(floor2);
-			_platform_time = 2;
-			_platform_timer = 0;
+			
+			// Reset game variables
+			_platform_time = 9;
+			_platform_timer = 2;
 			FlxG.score = 0;
-			}
+			_distace_traveled = 0;
+			_distace_delta = 0;
+		}
 
 		// Should be between 0 and 1
 		public static var minTrash:int = 3;
@@ -143,17 +151,21 @@ package
 			if(_platform_timer > _platform_time) {
 				spawnPlatform();
 				_platform_timer = 0;
-				_platform_time += 0.1;
+				_platform_time = _platform_time * 1.1;
 			}
-			_platform_timer += FlxG.elapsed;
+			_platform_timer += _distace_delta;
 		
 			if (_player._obj.GetPosition().x > 2 || _player._obj.GetPosition().x < 2) {
 				_player._obj.SetPosition(new b2Vec2(2,_player._obj.GetPosition().y));
 			}
 
-			
-			_player._obj.SetLinearVelocity(new b2Vec2(3 + 50 * _player._weight, _player._obj.GetLinearVelocity().y));
+			_player._obj.SetLinearVelocity(new b2Vec2(3 +0.75*Math.sqrt(_distace_traveled), _player._obj.GetLinearVelocity().y));
+			trace(_player._obj.GetLinearVelocity().x);
+			var ox:Number = _player._obj.GetWorldCenter().x;
 			_world.Step(FlxG.elapsed, 6, 3);
+			var nx:Number = _player._obj.GetWorldCenter().x;
+			_distace_delta = nx - ox
+			_distace_traveled += _distace_delta;
 			super.update();
 			while (_toRemove.length != 0)
 			{
