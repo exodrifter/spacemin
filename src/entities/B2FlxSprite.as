@@ -34,6 +34,7 @@ package entities
 		{
 			super(X,Y);
 
+			_fixDef = new b2FixtureDef();
 			_width = Width;
 			_height = Height;
 			_world = w
@@ -52,7 +53,6 @@ package entities
 			var boxShape:b2PolygonShape = new b2PolygonShape();
 			boxShape.SetAsBox((_width/2) / ratio, (_height/2) /ratio);
 
-			_fixDef = new b2FixtureDef();
 			_fixDef.density = _density;
 			_fixDef.restitution = _restitution;
 			_fixDef.friction = _friction;
