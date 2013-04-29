@@ -14,12 +14,15 @@ package
 	import entities.Platform;
 	import entities.Player;
 	import entities.Trash;
+	import org.flixel.FlxG;
 	
 	/**
 	 * Contains a few callbacks that are used to check for certain collisions
 	 */
 	public class ContactListener extends b2ContactListener
 	{
+		[Embed(source = "res/ground.mp3")] private static var _ground_sound:Class;
+		
 		private var _gamestate:GameState;
 		
 		private var _ground:Boolean, _player:Boolean, _trash:Boolean;
@@ -41,6 +44,7 @@ package
 			DetectContact(contact);
 			
 			if (_player && _ground) {
+				FlxG.play(_ground_sound);
 				if (_gamestate._player.getScreenXY().y > (_platformBody.GetWorldCenter().y*ratio-110))
 				{
 					_gamestate.endgame();

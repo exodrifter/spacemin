@@ -17,6 +17,9 @@ package
 		[Embed(source = 'res/box.png')] private var ImgCube:Class;
 		[Embed(source = 'res/ball.png')] private var ImgBall:Class;
 		[Embed(source = 'res/rect.png')] private var ImgRect:Class;
+		
+		[Embed(source="res/gameover.mp3")] private static var _gameover_sound:Class;
+		[Embed(source="res/pickup.mp3")] private static var _pickup_sound:Class;
 
 		// Is the game paused?
 		public var _paused:Boolean = false;
@@ -27,7 +30,7 @@ package
 		private var _settings:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 140, "Settings", MenuState.toSettings);
 		
 		// Has the game ended?
-		private static var _endgame:Boolean = false;
+		public var _endgame:Boolean = false;
 		private var _endtitle:FlxText = new FlxText(Main.SCREEN_X2-50, 20, 100, "GAME OVER");
 		
 		// The physics world
@@ -62,7 +65,7 @@ package
 			_toAddToPlayer = new Vector.<b2FixtureDef>();
 
 			// Player:
-			_player = new Player(50, 200, 20, 20, _world);
+			_player = new Player(50, 200, 20, 20, _world, this);
 			this.add(_player);
 
 			// Floor:
@@ -192,6 +195,9 @@ package
 			{
 				_world.DestroyBody(_toRemove.pop());
 			}
+			if (_toAddToPlayer.length > 0) {
+				FlxG.play(_pickup_sound);
+			}
 			while (_toAddToPlayer.length != 0)
 			{
 				var huh:ShapeSprite = new ShapeSprite();
@@ -232,6 +238,7 @@ package
 			_endtitle.setFormat(null, 16, 0xffffff, "center", 0);
 			add(_endtitle);
 			add(_quit);
+			FlxG.play(_gameover_sound);
 			FlxG.camera.antialiasing = false;
 		}
 	}
