@@ -184,22 +184,26 @@ package
 			}else
 				_player._obj.SetAngularVelocity(3);
 			*/
-			_player._obj.SetLinearVelocity(new b2Vec2(3 + 0.2 * _player._weight, _player._obj.GetLinearVelocity().y));
+				trace(_player._weight);
+			_player._obj.SetLinearVelocity(new b2Vec2(3 + 5 * _player._weight, _player._obj.GetLinearVelocity().y));
+			
 			_world.Step(FlxG.elapsed, 6, 3);
 			super.update();
 			spawnTrash(_trash, _world);
-			while (_toRemove.length != 0)
-			{
-				_world.DestroyBody(_toRemove.pop());
-			}
+			
 			while (_toAddToPlayer.length != 0)
 			{
 				var huh:ShapeSprite = new ShapeSprite();
 				var j:b2FixtureDef = _toAddToPlayer.pop();
+				huh.scale = j.userData as FlxPoint;
 				huh._fixture = _player._obj.CreateFixture(j);
-				_player._weight += 1;
-				//trace(huh._fixture.GetAABB().GetCenter().x + " " + huh._fixture.GetAABB().GetCenter().x);
+				huh._fixture.GetShape().ComputeMass(huh._fixture.GetMassData(), huh._fixture.GetDensity())
+				_player._weight += huh._fixture.GetMassData().mass;
 				add(huh);
+			}
+			while (_toRemove.length != 0)
+			{
+				_world.DestroyBody(_toRemove.pop());
 			}
 		}
 

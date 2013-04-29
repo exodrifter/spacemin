@@ -14,6 +14,7 @@ package
 	import entities.Platform;
 	import entities.Player;
 	import entities.Trash;
+	import org.flixel.FlxPoint;
 	
 	/**
 	 * Contains a few callbacks that are used to check for certain collisions
@@ -65,31 +66,48 @@ package
 					var newTrashDef:b2FixtureDef = new b2FixtureDef();
 					var newTrashShape:b2PolygonShape = new b2PolygonShape();
 					var newTrashPosition:b2Vec2 = _trashBody.GetWorldCenter().Copy();
-					
-					newTrashPosition.Subtract(_gamestate._player._obj.GetPosition());
-					
-					var x:Number = newTrashPosition.x;
-					var y:Number = newTrashPosition.y;
-					newTrashPosition.x = x * Math.cos(-_gamestate._player._obj.GetAngle()) - y * Math.sin(-_gamestate._player._obj.GetAngle());
-					newTrashPosition.y = x * Math.sin(-_gamestate._player._obj.GetAngle()) + y * Math.cos(-_gamestate._player._obj.GetAngle());
-
-					newTrashShape.SetAsOrientedBox(Trash._width/2/ratio, Trash._height/2/ratio,newTrashPosition);
-					newTrashDef.density = _trashBody.GetFixtureList().GetDensity();
-					newTrashDef.shape = newTrashShape;
-					newTrashDef.filter = Player.playerFilter.Copy();
-					newTrashDef.friction = _touchedTrash.GetFixtureList().GetFriction();
-					newTrashDef.restitution = _touchedTrash.GetFixtureList().GetRestitution();
-					_gamestate._toAddToPlayer.push(newTrashDef);
+					var thatOneTrash:Trash;
 					for (q = 0; q < _gamestate._trash.length; q++)
 					{
 						if (_gamestate._trash[q]._obj == _trashBody)
 						{
-							_gamestate._toRemove.push(_gamestate._trash[q]._obj);
-							_gamestate._trash[q].destroy();
-							_gamestate._trash[q].kill();
-					
-							_gamestate._trash.splice(q, 1);
+							thatOneTrash = _gamestate._trash[q]
 						}
+					}
+					if (thatOneTrash == null); else
+					{
+						newTrashPosition.Subtract(_gamestate._player._obj.GetPosition());
+					
+						var x:Number = newTrashPosition.x;
+						var y:Number = newTrashPosition.y;
+						newTrashPosition.x = x * Math.cos(-_gamestate._player._obj.GetAngle()) - y * Math.sin(-_gamestate._player._obj.GetAngle());
+						newTrashPosition.y = x * Math.sin( -_gamestate._player._obj.GetAngle()) + y * Math.cos(-_gamestate._player._obj.GetAngle());
+					
+						trace(newTrashShape + " " + thatOneTrash + " " + newTrashPosition)
+					
+						newTrashShape.SetAsOrientedBox(thatOneTrash._width/2/ratio, thatOneTrash._height/2/ratio,newTrashPosition);
+						newTrashDef.density = _trashBody.GetFixtureList().GetDensity();
+						newTrashDef.shape = newTrashShape;
+						newTrashDef.filter = Player.playerFilter.Copy();
+						newTrashDef.friction = _touchedTrash.GetFixtureList().GetFriction();
+						newTrashDef.restitution = _touchedTrash.GetFixtureList().GetRestitution();
+						newTrashDef.userData = new FlxPoint(thatOneTrash._width, thatOneTrash._height);
+						_gamestate._toAddToPlayer.push(newTrashDef);
+						for (q = 0; q < _gamestate._trash.length; q++)
+						{
+							if (_gamestate._trash[q]._obj == _trashBody)
+							{
+								_gamestate._toRemove.push(_gamestate._trash[q]._obj);
+								_gamestate._trash[q].destroy();
+								_gamestate._trash[q].kill();
+							
+								_gamestate._trash.splice(q, 1);
+							}
+						}
+						_gamestate._toRemove.push(thatOneTrash._obj);
+						_gamestate._trash.splice(q, 1);
+						thatOneTrash.destroy();
+						thatOneTrash.kill();
 					}
 					/*
 					var newTrashDef:b2FixtureDef = new b2FixtureDef();
