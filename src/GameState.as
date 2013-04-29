@@ -21,6 +21,9 @@ package
 		[Embed(source="res/gameover.mp3")] private static var _gameover_sound:Class;
 		[Embed(source="res/pickup.mp3")] private static var _pickup_sound:Class;
 
+		// Game UI
+		private var _score:FlxText = new FlxText(Main.SCREEN_X2 - 50, 70, 100, "0");
+
 		// Is the game paused?
 		public var _paused:Boolean = false;
 		// Pause Menu
@@ -31,6 +34,7 @@ package
 		
 		// Has the game ended?
 		public var _endgame:Boolean = false;
+		private var _retry:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 100, "Retry", MenuState.toGame);
 		private var _endtitle:FlxText = new FlxText(Main.SCREEN_X2-50, 20, 100, "GAME OVER");
 		
 		// The physics world
@@ -59,6 +63,10 @@ package
 			
 			_toRemove = new Vector.<b2Body>();
 
+			// UI:
+			_score.setFormat(null, 16, 0xffffff, "center", 0);
+			add(_score)
+
 			// Player:
 			_player = new Player(50, 200, 20, 20, _world, this);
 			this.add(_player);
@@ -73,9 +81,8 @@ package
 			_platforms.push(floor2);
 			_platform_time = 2;
 			_platform_timer = 0;
-
-			FlxG.camera.antialiasing = true;
-		}
+			FlxG.score = 0;
+			}
 
 		// Should be between 0 and 1
 		public static var minTrash:int = 3;
@@ -88,6 +95,8 @@ package
 			_platform_spawn_height = 230 + (int)(Math.random() * 50) - 25
 			if (_platform_spawn_height > Main.SCREEN_Y-10) {
 				_platform_spawn_height = Main.SCREEN_Y-10;
+			} else if (_platform_spawn_height < Main.SCREEN_Y-100) {
+				_platform_spawn_height = Main.SCREEN_Y-100;
 			}
 			var platform:Platform = new Platform(Main.SCREEN_X, _platform_spawn_height, _world, _player);
 			_platforms.push(platform);
@@ -111,7 +120,6 @@ package
 					add(MenuState.setSounds(_resume));
 					add(MenuState.setSounds(_quit));
 					add(MenuState.setSounds(_settings));
-					FlxG.camera.antialiasing = false;
 				} else {
 					unpause();
 				}
@@ -123,6 +131,8 @@ package
 			} else {
 				FlxG.mouse.hide();
 			}
+			
+			_score.text = ""+FlxG.score;
 			
 			// Handle end game
 			if (_player.getScreenXY().y > Main.SCREEN_Y) {
@@ -172,7 +182,6 @@ package
 			remove(_resume);
 			remove(_quit);
 			remove(_settings);
-			FlxG.camera.antialiasing = true;
 		}
 		
 		public function endgame():void {
@@ -182,9 +191,9 @@ package
 			_endgame= true;
 			_endtitle.setFormat(null, 16, 0xffffff, "center", 0);
 			add(_endtitle);
+			add(_retry);
 			add(_quit);
 			FlxG.play(_gameover_sound);
-			FlxG.camera.antialiasing = false;
 		}
 	}
 }
