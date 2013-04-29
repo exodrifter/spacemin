@@ -32,7 +32,7 @@ package entities
 			if (MOONFall)
 			{
 				this._obj.SetType(b2Body.b2_dynamicBody);
-				//_obj.ApplyForce(new b2Vec2(-.01, -.2), _obj.GetPosition());
+				_obj.ApplyForce(new b2Vec2(-.05, -.15), _obj.GetPosition());
 			//	if (_obj.GetLinearVelocity().y >= 6)
 			//		_obj.SetLinearVelocity(new b2Vec2(-.6, 6));
 			}

@@ -110,8 +110,8 @@ package
 			sceneryImages = new Vector.<Class>();
 			sceneryImages.push(house,car,tree,streetlight,garbagecan);
 			bloodEmiter = new FlxEmitter(0, 0, 50);
-			bloodEmiter.setXSpeed( -190, -30);
-			bloodEmiter.setYSpeed(-100, -125);
+			bloodEmiter.setXSpeed( -40, 80);
+			bloodEmiter.setYSpeed(-80, -140);
 			bloodEmiter.lifespan = .25;
 			for ( var u:int = 0; u < 50; u++)
 			{
@@ -279,7 +279,7 @@ package
 			_world.Step(FlxG.elapsed, 6, 3);
 			var nx:Number = _player._obj.GetWorldCenter().x;
 			_distace_traveled += _distace_delta;
-			_distance.text = ((int)(_distace_traveled/1000))+"."+((int)(_distace_traveled%1000/100))+" km";
+			_distance.text = ((int)(_distace_traveled/3000))+"."+((int)(_distace_traveled/3%1000/100))+" km";
 			super.update();
 			while (_toRemove.length != 0)
 			{
@@ -321,7 +321,7 @@ package
 			_finalscore.setFormat(null, 8, 0xffffff, "center", 0);
 			_finalscore.text = "Points: " + FlxG.score;
 			_finaldistance.setFormat(null, 8, 0xffffff, "center", 0);
-			_finaldistance.text = "Distance: " + ((int)(_distace_traveled/1000)) + "." + ((int)(_distace_traveled%1000/100)) + " km / 3km";
+			_finaldistance.text = "Distance: " + ((int)(_distace_traveled/3000)) + "." + ((int)(_distace_traveled/3%1000/100)) + " km";
 			_finaltotal.setFormat(null, 16, 0xffffff, "center", 0);
 			_finaltotal.text = "Total: " + (FlxG.score+(int)(_distace_traveled/3000));
 			_front_ui_group.add(_endtitle);
