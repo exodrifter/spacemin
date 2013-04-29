@@ -17,6 +17,9 @@ package
 		[Embed(source = 'res/box.png')] private var ImgCube:Class;
 		[Embed(source = 'res/ball.png')] private var ImgBall:Class;
 		[Embed(source = 'res/rect.png')] private var ImgRect:Class;
+		
+		[Embed(source="res/gameover.mp3")] private static var _gameover_sound:Class;
+		[Embed(source="res/pickup.mp3")] private static var _pickup_sound:Class;
 
 		// Is the game paused?
 		public var _paused:Boolean = false;
@@ -27,7 +30,7 @@ package
 		private var _settings:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 140, "Settings", MenuState.toSettings);
 		
 		// Has the game ended?
-		private static var _endgame:Boolean = false;
+		public var _endgame:Boolean = false;
 		private var _endtitle:FlxText = new FlxText(Main.SCREEN_X2-50, 20, 100, "GAME OVER");
 		
 		// The physics world
@@ -38,14 +41,10 @@ package
 		
 		// The player object
 		public var _player:Player;
-		// The trash in the game
-		public var _trash:Vector.<Trash>;
 		// The platforms in the game
 		public var _platforms:Vector.<Platform>;
 		
 		public var _toRemove:Vector.<b2Body>;
-		
-		public var _toAddToPlayer:Vector.<b2FixtureDef>;
 		
 		public static var debug:Boolean;
 
@@ -59,10 +58,9 @@ package
 			_endgame = false;
 			
 			_toRemove = new Vector.<b2Body>();
-			_toAddToPlayer = new Vector.<b2FixtureDef>();
 
 			// Player:
-			_player = new Player(50, 200, 20, 20, _world);
+			_player = new Player(50, 200, 20, 20, _world, this);
 			this.add(_player);
 
 			// Floor:
@@ -77,36 +75,23 @@ package
 			_platform_timer = 0;
 
 			FlxG.camera.antialiasing = true;
-			
-			_trash = new Vector.<Trash>();
-			while (_trash.length != 15)
-				spawnTrash(_trash, _world);
 		}
 
 		// Should be between 0 and 1
-		public var spawnRate:Number = .98;
+		public static var minTrash:int = 3;
+		public static var maxTrash:int = 7;
 		
 		private static var _platform_spawn_height:int = 230;
 		
 		public function spawnPlatform():void
 		{
 			_platform_spawn_height = 230 + (int)(Math.random() * 50) - 25
-			if (_platform_spawn_height > Main.SCREEN_Y) {
-				_platform_spawn_height = Main.SCREEN_Y - 50;
+			if (_platform_spawn_height > Main.SCREEN_Y-10) {
+				_platform_spawn_height = Main.SCREEN_Y-10;
 			}
 			var platform:Platform = new Platform(Main.SCREEN_X, _platform_spawn_height, _world, _player);
 			_platforms.push(platform);
 			this.add(platform);
-		}
-		
-		public function spawnTrash(list:Vector.<Trash>, W:b2World):void
-		{
-			if (Math.random() > spawnRate)
-			{
-				var newTrash:Trash = new Trash((Math.random() * (FlxG.width + 1)), W, _player);
-				list.push(newTrash);
-				this.add(newTrash);
-			}
 		}
 		
 		override public function update():void
@@ -151,56 +136,15 @@ package
 				_platform_time += 0.1;
 			}
 			_platform_timer += FlxG.elapsed;
-			
-			
-			var playerJoints:b2JointEdge = _player._obj.GetJointList();
-			var count:int = 1;
-			if(playerJoints != null)
-				while (playerJoints.next != null )
-				{
-					count++;
-					playerJoints = playerJoints.next;
-				}
-				
-			for (var i:int = 0; i < _trash.length;i++ )
-			{
-				if (_trash[i].x < 0)
-				{
-					_toRemove.push(_trash[i]._obj);
-					_trash[i].destroy();
-					_trash[i].kill();
-					_trash.splice(i, 1);
-				}
-			}
 		
 			if (_player._obj.GetPosition().x > 2 || _player._obj.GetPosition().x < 2) {
 				_player._obj.SetPosition(new b2Vec2(2,_player._obj.GetPosition().y));
 			}
+
 			
-			/*
-			if (_player._obj.GetAngularVelocity() <= .06 && _player.isGrounded())
-			{
-				_player._obj.ApplyTorque(.06 * count);
-			}else
-				_player._obj.SetAngularVelocity(3);
-			*/
-				trace(_player._weight);
-			_player._obj.SetLinearVelocity(new b2Vec2(3 + 5 * _player._weight, _player._obj.GetLinearVelocity().y));
-			
+			_player._obj.SetLinearVelocity(new b2Vec2(3 + 50 * _player._weight, _player._obj.GetLinearVelocity().y));
 			_world.Step(FlxG.elapsed, 6, 3);
 			super.update();
-			spawnTrash(_trash, _world);
-			
-			while (_toAddToPlayer.length != 0)
-			{
-				var huh:ShapeSprite = new ShapeSprite();
-				var j:b2FixtureDef = _toAddToPlayer.pop();
-				huh.scale = j.userData as FlxPoint;
-				huh._fixture = _player._obj.CreateFixture(j);
-				huh._fixture.GetShape().ComputeMass(huh._fixture.GetMassData(), huh._fixture.GetDensity())
-				_player._weight += huh._fixture.GetMassData().mass;
-				add(huh);
-			}
 			while (_toRemove.length != 0)
 			{
 				_world.DestroyBody(_toRemove.pop());
@@ -210,7 +154,7 @@ package
 		private function setupWorld():void
 		{
 			//gravity
-			var gravity:b2Vec2 = new b2Vec2(0, 9.8);
+			var gravity:b2Vec2 = new b2Vec2(0, 15);
 
 			//Ignore sleeping objects
 			var ignoreSleeping:Boolean = true;
@@ -232,10 +176,14 @@ package
 		}
 		
 		public function endgame():void {
+			if (_endgame) {
+				return;
+			}
 			_endgame= true;
 			_endtitle.setFormat(null, 16, 0xffffff, "center", 0);
 			add(_endtitle);
 			add(_quit);
+			FlxG.play(_gameover_sound);
 			FlxG.camera.antialiasing = false;
 		}
 	}
