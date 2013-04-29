@@ -8,10 +8,13 @@ package entities
 	public class Player extends B2FlxSprite
 	{
 		[Embed(source = '../res/box.png')] private var ImgCube:Class;
+		[Embed(source = '../res/boxb.png')] private var ImgLand:Class;
 		[Embed(source="../res/jump.mp3")] private static var _jump_sound:Class;
 		[Embed(source="../res/land.mp3")] private static var _land_sound:Class;
 		
 		public static var playerFilter:b2FilterData = null;
+		
+		public static const targetAngularVelocity:Number = 7;
 		
 		private var _pressed:Boolean = false, _grounded:Boolean = false, _canJump:Boolean = false, _landing:Boolean = false;
 		/** The total weight of the trah connected to this player */
@@ -50,6 +53,7 @@ package entities
 						this._obj.SetLinearVelocity(new b2Vec2(this._obj.GetLinearVelocity().x, -10 - 0.1 * (_weight+1)));
 						_pressed = true;
 						_canJump = false;
+						loadGraphic(ImgLand);
 					} else {
 						FlxG.play(_land_sound);
 						_landing = true;
@@ -60,16 +64,17 @@ package entities
 			} else {
 				_pressed = false;
 			}
-			trace(_obj.GetAngularVelocity());
-			if (_obj.GetAngularVelocity() > maxAngular)
-			{
-				_obj.SetAngularVelocity(maxAngular);
-				trace("redcue");
-			}
-			if(_obj.GetAngularVelocity() < -maxAngular)
-			{
-				_obj.SetAngularVelocity( -maxAngular);
-				trace("recude");
+			// Adjust angular velocity
+			if (_obj.GetAngularVelocity() > targetAngularVelocity) {
+				_obj.SetAngularVelocity(_obj.GetAngularVelocity() - 40 * FlxG.elapsed);
+				if (_obj.GetAngularVelocity() < targetAngularVelocity) {
+					_obj.SetAngularVelocity(targetAngularVelocity);
+				}
+			} else if (_obj.GetAngularVelocity() < targetAngularVelocity) {
+				_obj.SetAngularVelocity(_obj.GetAngularVelocity() + 10* FlxG.elapsed);
+				if (_obj.GetAngularVelocity() > targetAngularVelocity) {
+					_obj.SetAngularVelocity(targetAngularVelocity);
+				}
 			}
 		}
 		
@@ -77,6 +82,7 @@ package entities
 		{
 			_grounded = grounded;
 			_canJump = _canJump || _grounded;
+			loadGraphic(ImgCube);
 			_landing = false;
 		}
 		

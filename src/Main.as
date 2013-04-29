@@ -9,7 +9,7 @@ package
 	 */
 	public class Main extends FlxGame
 	{
-		public static const GAME_NAME:String = "SpaceMin";
+		public static const GAME_NAME:String = "Minty Relaxation";
 		public static const SCREEN_X:int = 400, SCREEN_Y:int = 250;
 		public static const SCREEN_X2:int = SCREEN_X / 2, SCREEN_Y2:int = SCREEN_Y / 2;
 		public static const ZOOM:int = 2;

@@ -29,6 +29,9 @@ package
 		// Game UI
 		private var _score:FlxText = new FlxText(Main.SCREEN_X2 - 50, 60, 100, "0");
 		private var _distance:FlxText = new FlxText(Main.SCREEN_X2 - 50, 155, 100, "0");
+		private var _offscreen:FlxText = new FlxText(11, 5, 100, "0");
+		private var _offscreen_disp:Boolean = false;
+		private var _front_ui_group:FlxGroup;
 
 		// Is the game paused?
 		public var _paused:Boolean = false;
@@ -40,9 +43,12 @@ package
 
 		// Has the game ended?
 		public var _endgame:Boolean = false;
-		private var _retry:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 100, "Retry", MenuState.toGame);
-		private var _endtitle:FlxText = new FlxText(Main.SCREEN_X2-50, 20, 100, "GAME OVER");
-		private var _finalscore:FlxText = new FlxText(Main.SCREEN_X2 - 50, 60, 100, "0");
+		private var _retry:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 200, "Retry", MenuState.toGame);
+		private var _quitend:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 220, "Quit", MenuState.toMenu);
+		private var _endtitle:FlxText = new FlxText(Main.SCREEN_X2 - 50, 20, 100, "GAME OVER");
+		private var _finalscore:FlxText = new FlxText(Main.SCREEN_X2 - 200, 94, 400, "Points: ");
+		private var _finaldistance:FlxText = new FlxText(Main.SCREEN_X2 - 200, 107, 400, "Distance: ");
+		private var _finaltotal:FlxText = new FlxText(Main.SCREEN_X2 - 200, 120, 400, "Total: ");
 
 		// The physics world
 		public var _world:b2World;
@@ -54,6 +60,7 @@ package
 		public var _player:Player;
 		// The platforms in the game
 		public var _platforms:Vector.<Platform>;
+		public var _platform_group:FlxGroup;
 
 		public var _toRemove:Vector.<b2Body>;
 
@@ -92,6 +99,8 @@ package
 			// UI:
 			_score.setFormat(null, 16, 0xff7777, "center", 0);
 			add(_score);
+			_offscreen.setFormat(null, 8, 0x663333, "center", 0);
+			add(_offscreen);
 
 			scenery = new Vector.<B2FlxSprite>();
 
@@ -114,11 +123,10 @@ package
 			// Backgrounds
 			_bga = new ParallaxLayer(this, 0.25, ParallaxLayer.BG_A);
 			_distance.setFormat(null, 8, 0x663333, "center", 0);
-			add(DaMoon);
 			add(_distance);
+			add(DaMoon);
 			_bgb = new ParallaxLayer(this, 0.75, ParallaxLayer.BG_B);
 			add(_bga);
-			
 			add(_bgb);
 
 			// Player:
@@ -128,12 +136,18 @@ package
 
 			// Floor:
 			_platforms = new Vector.<Platform>();
+			_platform_group = new FlxGroup();
 			var floor:Platform = new Platform(0, 230, _world, _player, this);
-			this.add(floor);
+			_platform_group.add(floor);
 			_platforms.push(floor);
 			var floor2:Platform = new Platform(300, 230, _world, _player, this);
-			this.add(floor2);
+			_platform_group.add(floor2);
 			_platforms.push(floor2);
+			add(_platform_group);
+
+			// Front UI
+			_front_ui_group = new FlxGroup();
+			add(_front_ui_group);
 
 			// Reset game variables
 			_platform_time = 700;
@@ -169,7 +183,7 @@ package
 			}
 			var platform:Platform = new Platform(Main.SCREEN_X, _platform_spawn_height, _world, _player, this);
 			_platforms.push(platform);
-			this.add(platform);
+			_platform_group.add(platform);
 			var numScene:int = Math.floor(Math.random() * (maxScenery - minScenery) + minScenery);
 			for (var g:int; g < numScene; g++)
 			{
@@ -180,9 +194,8 @@ package
 				newScenery._fixDef.filter = Player.playerFilter;
 				newScenery.createBody();
 				scenery.push(newScenery);
-				add(newScenery);
+				_platform_group.add(newScenery);
 				newScenery._obj.SetLinearVelocity(new b2Vec2(-_player._obj.GetLinearVelocity().x, newScenery._obj.GetLinearVelocity().y));
-				trace(scenery.length);
 			}
 		}
 
@@ -192,6 +205,7 @@ package
 				_paused = false;
 				FlxG.mouse.show();
 				super.update();
+				_world.Step(FlxG.elapsed, 6, 3);
 				return;
 			}
 			// Handle pause
@@ -215,7 +229,14 @@ package
 				FlxG.mouse.hide();
 			}
 
-			_score.text = ""+FlxG.score;
+			// Update UI
+			_score.text = "" + FlxG.score;
+			if (_player.getScreenXY().y < 0 ) {
+				add(_offscreen);
+			} else {
+				remove(_offscreen);
+			}
+			_offscreen.text = "" + ((int)(-_player.getScreenXY().y));
 
 			// Handle end game
 			if (_player.getScreenXY().y > Main.SCREEN_Y) {
@@ -276,14 +297,26 @@ package
 				return;
 			}
 			remove(_distance);
+			remove(_score);
 			_endgame = true;
-			_finalscore.setFormat(null, 16, 0xffffff, "center", 0);
-			_finalscore.text = "" + FlxG.score;
 			_endtitle.setFormat(null, 16, 0xffffff, "center", 0);
-			add(_endtitle);
-			add(_finalscore);
-			add(_retry);
-			add(_quit);
+			_finalscore.setFormat(null, 8, 0xffffff, "center", 0);
+			_finalscore.text = "Points: " + FlxG.score;
+			_finaldistance.setFormat(null, 8, 0xffffff, "center", 0);
+			_finaldistance.text = "Distance: " + (int)(_distace_traveled) + " / 3000";
+			_finaltotal.setFormat(null, 16, 0xffffff, "center", 0);
+			_finaltotal.text = "Total: " + (FlxG.score+(int)(_distace_traveled/3000));
+			_front_ui_group.add(_endtitle);
+			_front_ui_group.add(_finalscore);
+			_front_ui_group.add(_finaldistance);
+			_front_ui_group.add(_finaltotal);
+			_front_ui_group.add(MenuState.setSounds(_retry));
+			_front_ui_group.add(MenuState.setSounds(_quitend));
+			
+			// Halt the scenery
+			for each (var sprite:B2FlxSprite in scenery) {
+				sprite._obj.SetLinearVelocity(new b2Vec2(0, sprite._obj.GetLinearVelocity().y));
+			}
 			FlxG.play(_gameover_sound);
 		}
 	}
