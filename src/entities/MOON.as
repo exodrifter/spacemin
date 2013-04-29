@@ -7,30 +7,42 @@ package entities
 	
 	public class MOON extends B2FlxSprite
 	{
-		[Embed(source = '../res/platform.png')] private var ImgCube:Class;
-		public static var platformFilter:b2FilterData = null;
-		private var _player:Player;
-		
-		public function Platform(X:Number, Y:Number, W:b2World, player:Player) 
+		[Embed(source = '../res/Moon.png')] private var moonImage:Class;
+		public var MOONFall:Boolean = false;
+		public var game:GameState;
+		public function MOON(X:Number, Y:Number, W:b2World, gamestate:GameState) 
 		{
 			super(X, Y, 250, 200, W);
-			this._player = player;
+			game = gamestate;
+			loadGraphic(moonImage);
+			_width = width;
+			_height = height;
 			this.createBody();
-			if (platformFilter == null)
-			{
-				platformFilter = new b2FilterData();
-				platformFilter.categoryBits = 0x0001;
-				platformFilter.maskBits = ~0x0001;
-			}
-			this._obj.GetFixtureList().SetFilterData(platformFilter.Copy());
-			loadGraphic(ImgCube);
-			this._obj.SetUserData("ground");
+			var moonFilter = new b2FilterData();
+			moonFilter.categoryBits = 0x0000;
+			moonFilter.maskBits = ~0x0000;
+			this._obj.GetFixtureList().SetFilterData(moonFilter.Copy());
+			this._obj.SetUserData("MOON");
 			this._obj.SetType(b2Body.b2_kinematicBody);
 		}
 		
 		override public function update():void {
 			super.update();
-			this._obj.SetLinearVelocity(new b2Vec2(-_player._obj.GetLinearVelocity().x, this._obj.GetLinearVelocity().y));
+			//this._obj.SetLinearVelocity(new b2Vec2(-_player._obj.GetLinearVelocity().x, this._obj.GetLinearVelocity().y));
+			if (MOONFall)
+			{
+				this._obj.SetType(b2Body.b2_dynamicBody);
+				_obj.ApplyForce(new b2Vec2(-.01, -.2), _obj.GetPosition());
+			//	if (_obj.GetLinearVelocity().y >= 6)
+			//		_obj.SetLinearVelocity(new b2Vec2(-.6, 6));
+			}
+			if (y > 180)
+			{
+				
+				game._toRemove.push(_obj);
+				visible = false;
+			}
+			
 		}
 	}
 }
