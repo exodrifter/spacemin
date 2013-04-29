@@ -32,7 +32,11 @@ package entities
 		
 		override public function update():void {
 			super.update();
-			this._obj.SetLinearVelocity(new b2Vec2( -_player._obj.GetLinearVelocity().x, this._obj.GetLinearVelocity().y));
+			if(_gamestate._endgame) {
+				this._obj.SetLinearVelocity(new b2Vec2(0, this._obj.GetLinearVelocity().y));
+			} else {
+				this._obj.SetLinearVelocity(new b2Vec2(-_player._obj.GetLinearVelocity().x, this._obj.GetLinearVelocity().y));
+			}
 			if (this.getScreenXY().x + 250 < 0) {
 				_gamestate.remove(this);
 				_gamestate._toRemove.push(this._obj);

@@ -192,6 +192,7 @@ package
 				_paused = false;
 				FlxG.mouse.show();
 				super.update();
+				_world.Step(FlxG.elapsed, 6, 3);
 				return;
 			}
 			// Handle pause
@@ -284,6 +285,11 @@ package
 			add(_finalscore);
 			add(_retry);
 			add(_quit);
+			
+			// Halt the scenery
+			for each (var sprite:B2FlxSprite in scenery) {
+				sprite._obj.SetLinearVelocity(new b2Vec2(0, sprite._obj.GetLinearVelocity().y));
+			}
 			FlxG.play(_gameover_sound);
 		}
 	}

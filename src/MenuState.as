@@ -1,6 +1,7 @@
 package
 {
 	import org.flixel.*;
+	import flash.media.Sound;
 	
 	/**
 	 * The main menu for SpaceMin
