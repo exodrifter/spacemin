@@ -52,7 +52,7 @@ package entities
 						FlxG.play(_land_sound);
 						_landing = true;
 						_pressed = true;
-						this._obj.SetLinearVelocity(new b2Vec2(this._obj.GetLinearVelocity().x, +10 - 0.1 * (_weight+1)));
+						this._obj.SetLinearVelocity(new b2Vec2(this._obj.GetLinearVelocity().x, 20 - 0.1 * (_weight+1)));
 					}
 				}
 			} else {
