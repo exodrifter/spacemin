@@ -79,6 +79,7 @@ package
 
 		public var scenery:Vector.<B2FlxSprite>;
 		public var sceneryImages:Vector.<Class>;
+		private var beams:FlxGroup;
 
 		private var _bga:ParallaxLayer;
 		private var _bgb:ParallaxLayer;
@@ -129,6 +130,10 @@ package
 			add(_bga);
 			add(_bgb);
 
+			// Beams of light:
+			beams = new FlxGroup();
+			add(beams);
+			
 			// Player:
 			_player = new Player(50, 200, 20, 20, _world, this);
 			this.add(_player);
@@ -165,6 +170,11 @@ package
 			{
 				bloodEmiter.emitParticle();
 			}
+		}
+
+		public function spawnBeam(X:Number, Y:Number):void
+		{
+			beams.add(new Beam(X, Y, this));
 		}
 
 		// Should be between 0 and 1
@@ -253,6 +263,12 @@ package
 
 			if (_player._obj.GetPosition().x > 2 || _player._obj.GetPosition().x < 2) {
 				_player._obj.SetPosition(new b2Vec2(2,_player._obj.GetPosition().y));
+			}
+			
+			// Update beams
+			for each(var beam:Beam in beams) {
+				if(beam.x+30 < 0)
+					beams.remove(beam);
 			}
 
 			_distace_delta = _player._obj.GetLinearVelocity().x;
