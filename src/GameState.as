@@ -19,10 +19,10 @@ package
 		[Embed(source = 'res/table.png')] private var table:Class;
 		[Embed(source = 'res/plane.png')] private var plane:Class;
 		[Embed(source = 'res/Moon.png')] private var Moon:Class;
-	//	[Embed(source = 'res/TestTrash.png')] private var TrashImage:Class;
-	//	[Embed(source = 'res/TestTrash.png')] private var TrashImage:Class;
-	//	[Embed(source = 'res/TestTrash.png')] private var TrashImage:Class;
-	//	[Embed(source = 'res/TestTrash.png')] private var TrashImage:Class;
+		[Embed(source = 'res/house.png')] private var house:Class;
+		[Embed(source = 'res/egg.png')] private var egg:Class;
+		[Embed(source = 'res/chair.png')] private var chair:Class;
+		[Embed(source = 'res/car.png')] private var car:Class;
 		
 		[Embed(source="res/gameover.mp3")] private static var _gameover_sound:Class;
 		[Embed(source="res/pickup.mp3")] private static var _pickup_sound:Class;
@@ -70,6 +70,7 @@ package
 		public static var maxParticleSize:Number = 7;
 		
 		public var scenery:Vector.<B2FlxSprite>;
+		public var sceneryImages:Vector.<Class>;
 
 		
 		override public function create():void
@@ -87,6 +88,9 @@ package
 			add(_score);
 			
 			scenery = new Vector.<B2FlxSprite>();
+			sceneryImages = new Vector.<Class>();
+			sceneryImages.push( table,house,egg,chair,car);
+			
 			
 			bloodEmiter = new FlxEmitter(0, 0, 50);
 			bloodEmiter.setXSpeed( -190, -30);
@@ -123,7 +127,7 @@ package
 			_distace_traveled = 0;
 			_distace_delta = 0;
 		}
-		public function spawnBlood()
+		public function spawnBlood():void
 		{
 			var numOfParticles:int = Math.random() * (10 - 4) + 4;
 			bloodEmiter.at(_player);
@@ -134,8 +138,8 @@ package
 		}
 
 		// Should be between 0 and 1
-		public static var minTrash:int = 3;
-		public static var maxTrash:int = 7; 
+		public static var minScenery:int = 0;
+		public static var maxScenery:int = 4; 
 		
 		private static var _platform_spawn_height:int = 230;
 		
@@ -150,8 +154,21 @@ package
 			var platform:Platform = new Platform(Main.SCREEN_X, _platform_spawn_height, _world, _player);
 			_platforms.push(platform);
 			this.add(platform);
+			var numScene:int = Math.floor(Math.random() * (maxScenery - minScenery) + minScenery);
+			for (var g:int; g < numScene; g++)
+			{
+				var newScenery:B2FlxSprite = new B2FlxSprite(Math.random() * (250) + Main.SCREEN_X, _platform_spawn_height - 30, 40, 40, _world);
+				newScenery.loadGraphic(sceneryImages[Math.floor(Math.random() * sceneryImages.length)]);
+				newScenery._width = newScenery.width;
+				newScenery._height = newScenery.height;
+				newScenery._fixDef.filter = Player.playerFilter;
+				newScenery.createBody();
+				scenery.push(newScenery);
+				add(newScenery);
+				newScenery._obj.SetLinearVelocity(new b2Vec2(-_player._obj.GetLinearVelocity().x, newScenery._obj.GetLinearVelocity().y));
+				trace(scenery.length);
+			}
 		}
-		
 		override public function update():void
 		{
 			if (_endgame) {
