@@ -57,6 +57,8 @@ package
 		public var _platform_timer:Number;
 		
 		public var bloodEmiter:FlxEmitter;
+		public static var minParticleSize:Number = 3;
+		public static var maxParticleSize:Number = 7;
 
 		
 		override public function create():void
@@ -71,19 +73,25 @@ package
 			_score.setFormat(null, 16, 0xffffff, "center", 0);
 			add(_score);
 			
-			bloodEmiter = new FlxEmitter(0, 0, 10);
-			bloodEmiter.setXSpeed( -100, 100);
-			bloodEmiter.setYSpeed(100, 300);
-			for ( var u:int = 0; u < 10; u++)
+			bloodEmiter = new FlxEmitter(0, 0, 50);
+			bloodEmiter.setXSpeed( -130, 90);
+			bloodEmiter.setYSpeed(-175, -250);
+			bloodEmiter.lifespan = .25;
+			for ( var u:int = 0; u < 50; u++)
 			{
 				var particle:FlxParticle = new FlxParticle();
+				var size:Number = Math.random() * (maxParticleSize - minParticleSize) + minParticleSize;
+				particle.scale = new FlxPoint(size, size);
 				particle.loadGraphic(TrashImage);
+				particle.kill();
 				bloodEmiter.add(particle);
+				trace(size);
 			}
 
 			// Player:
 			_player = new Player(50, 200, 20, 20, _world, this);
 			this.add(_player);
+			add(bloodEmiter);
 
 			// Floor:
 			_platforms = new Vector.<Platform>();
@@ -102,7 +110,12 @@ package
 			var numOfParticles:int = Math.random() * (10 - 4) + 4;
 			trace(numOfParticles);
 			bloodEmiter.at(_player);
-			bloodEmiter.start(true, .1, .1, numOfParticles);
+		//	bloodEmiter.
+			for ( var i:int = 0; i < numOfParticles; i++)
+			{
+				bloodEmiter.emitParticle();
+			}
+			trace(bloodEmiter.visible);
 		}
 
 		// Should be between 0 and 1
