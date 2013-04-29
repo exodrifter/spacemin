@@ -1,6 +1,7 @@
 package
 {
 	import adobe.utils.CustomActions;
+	import bg.ParallaxLayer;
 	import Box2D.Dynamics.Joints.b2JointEdge;
 	import org.flixel.*;
 	import org.flixel.plugin.TimerManager;
@@ -9,7 +10,7 @@ package
 	import Box2D.Collision.*;
 	import Box2D.Collision.Shapes.*;
 	import Box2D.Common.Math.*;
-	
+
 	import entities.*;
 
 	public class GameState extends FlxState
@@ -18,7 +19,7 @@ package
 		[Embed(source = 'res/ball.png')] private var ImgBall:Class;
 		[Embed(source = 'res/rect.png')] private var ImgRect:Class;
 		[Embed(source = 'res/TestTrash.png')] private var TrashImage:Class;
-		
+
 		[Embed(source="res/gameover.mp3")] private static var _gameover_sound:Class;
 		[Embed(source="res/pickup.mp3")] private static var _pickup_sound:Class;
 
@@ -32,25 +33,25 @@ package
 		private var _resume:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 100, "Resume", unpause);
 		private var _quit:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 120, "Quit", MenuState.toMenu);
 		private var _settings:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 140, "Settings", MenuState.toSettings);
-		
+
 		// Has the game ended?
 		public var _endgame:Boolean = false;
 		private var _retry:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 100, "Retry", MenuState.toGame);
 		private var _endtitle:FlxText = new FlxText(Main.SCREEN_X2-50, 20, 100, "GAME OVER");
-		
+
 		// The physics world
 		public var _world:b2World;
 
 		// Ratio of pixels to meters
 		public static const RATIO:Number = 30;
-		
+
 		// The player object
 		public var _player:Player;
 		// The platforms in the game
 		public var _platforms:Vector.<Platform>;
-		
+
 		public var _toRemove:Vector.<b2Body>;
-		
+
 		public static var debug:Boolean;
 
 		// The total distance traveled
@@ -59,24 +60,26 @@ package
 		public var _distace_delta:Number;
 		public var _platform_time:Number;
 		public var _platform_timer:Number;
-		
+
 		public var bloodEmiter:FlxEmitter;
 		public static var minParticleSize:Number = 3;
 		public static var maxParticleSize:Number = 7;
-
 		
+		private var _bga:ParallaxLayer;
+		private var _bgb:ParallaxLayer;
+
 		override public function create():void
 		{
 			// Set up the world
 			setupWorld();
 			_endgame = false;
-			
+
 			_toRemove = new Vector.<b2Body>();
 
 			// UI:
 			_score.setFormat(null, 16, 0xffffff, "center", 0);
 			add(_score);
-			
+
 			bloodEmiter = new FlxEmitter(0, 0, 50);
 			bloodEmiter.setXSpeed( -130, 90);
 			bloodEmiter.setYSpeed(-175, -250);
@@ -92,6 +95,12 @@ package
 				trace(size);
 			}
 
+			// Backgrounds
+			_bga = new ParallaxLayer(this, 10, ParallaxLayer.BG_A);
+			_bgb = new ParallaxLayer(this, 20, ParallaxLayer.BG_B);
+			add(_bga);
+			add(_bgb);
+
 			// Player:
 			_player = new Player(50, 200, 20, 20, _world, this);
 			this.add(_player);
@@ -105,7 +114,7 @@ package
 			var floor2:Platform = new Platform(300, 230, _world, _player);
 			this.add(floor2);
 			_platforms.push(floor2);
-			
+
 			// Reset game variables
 			_platform_time = 9;
 			_platform_timer = 2;
@@ -113,7 +122,7 @@ package
 			_distace_traveled = 0;
 			_distace_delta = 0;
 		}
-		public function spawnBlood()
+		public function spawnBlood():void
 		{
 			var numOfParticles:int = Math.random() * (10 - 4) + 4;
 			trace(numOfParticles);
@@ -127,10 +136,10 @@ package
 
 		// Should be between 0 and 1
 		public static var minTrash:int = 3;
-		public static var maxTrash:int = 7; 
-		
+		public static var maxTrash:int = 7;
+
 		private static var _platform_spawn_height:int = 230;
-		
+
 		public function spawnPlatform():void
 		{
 			_platform_spawn_height = 230 + (int)(Math.random() * 50) - 25
@@ -143,7 +152,7 @@ package
 			_platforms.push(platform);
 			this.add(platform);
 		}
-		
+
 		override public function update():void
 		{
 			if (_endgame) {
@@ -172,14 +181,14 @@ package
 			} else {
 				FlxG.mouse.hide();
 			}
-			
+
 			_score.text = ""+FlxG.score;
-			
+
 			// Handle end game
 			if (_player.getScreenXY().y > Main.SCREEN_Y) {
 				endgame();
 			}
-			
+
 			// Spawn Platforms
 			if(_platform_timer > _platform_time) {
 				spawnPlatform();
@@ -187,13 +196,12 @@ package
 				_platform_time = _platform_time * 1.1;
 			}
 			_platform_timer += _distace_delta;
-		
+
 			if (_player._obj.GetPosition().x > 2 || _player._obj.GetPosition().x < 2) {
 				_player._obj.SetPosition(new b2Vec2(2,_player._obj.GetPosition().y));
 			}
 
 			_player._obj.SetLinearVelocity(new b2Vec2(3 +0.75*Math.sqrt(_distace_traveled), _player._obj.GetLinearVelocity().y));
-			trace(_player._obj.GetLinearVelocity().x);
 			var ox:Number = _player._obj.GetWorldCenter().x;
 			_world.Step(FlxG.elapsed, 6, 3);
 			var nx:Number = _player._obj.GetWorldCenter().x;
@@ -220,7 +228,7 @@ package
 			var contactListener:ContactListener = new ContactListener(this);
             _world.SetContactListener(contactListener);
 		}
-		
+
 		private function unpause():void {
 			_paused = false;
 			remove(_title);
@@ -228,7 +236,7 @@ package
 			remove(_quit);
 			remove(_settings);
 		}
-		
+
 		public function endgame():void {
 			if (_endgame) {
 				return;
