@@ -25,7 +25,6 @@ package entities
 			this._obj.GetFixtureList().SetFilterData(platformFilter.Copy());
 			loadGraphic(ImgCube);
 			this._obj.SetUserData("ground");
-			this._obj.SetFixedRotation(true);
 			this._obj.SetType(b2Body.b2_kinematicBody);
 		}
 		

@@ -180,14 +180,7 @@ package
 				_player._obj.SetPosition(new b2Vec2(2,_player._obj.GetPosition().y));
 			}
 			
-			/*
-			if (_player._obj.GetAngularVelocity() <= .06 && _player.isGrounded())
-			{
-				_player._obj.ApplyTorque(.06 * count);
-			}else
-				_player._obj.SetAngularVelocity(3);
-			*/
-			_player._obj.SetLinearVelocity(new b2Vec2(3 + 0.2 * _player._weight, _player._obj.GetLinearVelocity().y));
+			_player._obj.SetLinearVelocity(new b2Vec2(3 + 0.75 * _player._weight, _player._obj.GetLinearVelocity().y));
 			_world.Step(FlxG.elapsed, 6, 3);
 			super.update();
 			spawnTrash(_trash, _world);
@@ -204,7 +197,6 @@ package
 				var j:b2FixtureDef = _toAddToPlayer.pop();
 				huh._fixture = _player._obj.CreateFixture(j);
 				_player._weight += 1;
-				//trace(huh._fixture.GetAABB().GetCenter().x + " " + huh._fixture.GetAABB().GetCenter().x);
 				add(huh);
 			}
 		}
@@ -212,7 +204,7 @@ package
 		private function setupWorld():void
 		{
 			//gravity
-			var gravity:b2Vec2 = new b2Vec2(0, 9.8);
+			var gravity:b2Vec2 = new b2Vec2(0, 15);
 
 			//Ignore sleeping objects
 			var ignoreSleeping:Boolean = true;

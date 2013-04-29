@@ -15,6 +15,7 @@ package
 	import entities.Player;
 	import entities.Trash;
 	import org.flixel.FlxG;
+	import org.flixel.FlxCamera;
 	
 	/**
 	 * Contains a few callbacks that are used to check for certain collisions
@@ -45,6 +46,10 @@ package
 			
 			if (_player && _ground) {
 				FlxG.play(_ground_sound);
+				if (_gamestate._player.isLanding()) {
+					FlxG.shake(0.025, 0.2, null, true, FlxCamera.SHAKE_BOTH_AXES)
+					_platformBody.SetType(b2Body.b2_dynamicBody);
+				}
 				if (_gamestate._player.getScreenXY().y > (_platformBody.GetWorldCenter().y*ratio-110))
 				{
 					_gamestate.endgame();
