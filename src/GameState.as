@@ -76,8 +76,7 @@ package
 		private var _bga:ParallaxLayer;
 		private var _bgb:ParallaxLayer;
 		
-		public var MOON:B2FlxSprite;
-		public var moonFall:Boolean = false;
+		public var DaMoon:MOON;
 
 		override public function create():void
 		{
@@ -86,6 +85,9 @@ package
 			_endgame = false;
 
 			_toRemove = new Vector.<b2Body>();
+			
+			DaMoon = new MOON(360, 20, _world, this);
+			
 
 			// UI:
 			_score.setFormat(null, 16, 0xff7777, "center", 0);
@@ -112,9 +114,11 @@ package
 			// Backgrounds
 			_bga = new ParallaxLayer(this, 0.25, ParallaxLayer.BG_A);
 			_distance.setFormat(null, 8, 0x663333, "center", 0);
+			add(DaMoon);
 			add(_distance);
 			_bgb = new ParallaxLayer(this, 0.75, ParallaxLayer.BG_B);
 			add(_bga);
+			
 			add(_bgb);
 
 			// Player:

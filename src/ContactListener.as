@@ -48,6 +48,7 @@ package
 			
 			if (_player && _ground) {
 				if (_gamestate._player.isLanding()) {
+					_gamestate.DaMoon.MOONFall = true;
 					var xp:Number = _gamestate._player.getScreenXY().x
 					var xg:Number = _platformBody.GetWorldCenter().x * 30
 					if (xp < xg && xg - xp > 95) {
