@@ -18,6 +18,7 @@ package
 		override public function create():void
 		{
 			FlxG.mouse.show();
+			FlxG.bgColor = 0xFFFFBEBA;
 			
 			_title.setFormat(null, 16, 0xffffff, "center", 0);
 			add(_title);
