@@ -65,7 +65,7 @@ package
 					_platformBody.SetType(b2Body.b2_dynamicBody);
 					
 				}
-				if (_gamestate._player.getScreenXY().y > (_platformBody.GetWorldCenter().y*ratio-110))
+				else if (_gamestate._player.getScreenXY().y > (_platformBody.GetWorldCenter().y*ratio-110))
 				{
 					_gamestate.endgame();
 				}
