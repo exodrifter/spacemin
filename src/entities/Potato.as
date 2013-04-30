@@ -5,17 +5,14 @@ package entities
 	import Box2D.Dynamics.b2World;
 	import entities.B2FlxSprite;
 	import Box2D.Dynamics.b2FilterData;
-	import org.flixel.FlxG;
 	
-	public class Airplane extends B2FlxSprite
+	public class Potato extends B2FlxSprite
 	{
-		[Embed(source = '../res/plane.png')] private var AirplaneImage:Class;
+		[Embed(source = '../res/potato.png')] private var PotatoImage:Class;
 		
 		private var _gamestate:GameState;
-		private var _timer:Number;
-		private var _time:Number;
 		
-		public function Airplane(X:Number, Y:Number, G:GameState, W:b2World) 
+		public function Potato(X:Number, Y:Number, G:GameState, W:b2World) 
 		{
 			super(X, Y, 20, 10, W);
 			this.createBody();
@@ -23,30 +20,19 @@ package entities
 			filter.categoryBits = 0x0000;
 			filter.maskBits = ~0x0000;
 			this._obj.GetFixtureList().SetFilterData(filter.Copy());
-			loadGraphic(AirplaneImage);
+			loadGraphic(PotatoImage);
 			_gamestate = G;
 			this.x = X;
 			this.y = Y;
 			this._obj.SetType(b2Body.b2_kinematicBody);
-			this._obj.SetLinearVelocity( new b2Vec2( -1, 0));
-			_timer = 2;
-			_time = 0;
+			this._obj.SetLinearVelocity(new b2Vec2(0, 3));
 		}
 		
 		override public function update():void {
 			super.update();
-			if (_time > _timer) {
-				_time = 0;
-				_gamestate.spawnPotato(x,y);
+			if (y > Main.SCREEN_Y + 5) {
+				_gamestate.potatoes.remove(this);
 			}
-			_time += FlxG.elapsed;
-			
-			if(x+20 < 0)
-				_gamestate.airplanes.remove(this);
-		}
-		
-		public function fall():void {
-			this._obj.SetType(b2Body.b2_dynamicBody);
 		}
 	}
 }

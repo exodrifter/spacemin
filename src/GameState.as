@@ -83,8 +83,9 @@ package
 		public var scenery:Vector.<B2FlxSprite>;
 		public var sceneryGroup:FlxGroup;
 		public var sceneryImages:Vector.<Class>;
-		private var beams:FlxGroup;
+		public var beams:FlxGroup;
 		public var airplanes:FlxGroup;
+		public var potatoes:FlxGroup;
 
 		private var _bga:ParallaxLayer;
 		private var _bgb:ParallaxLayer;
@@ -149,6 +150,8 @@ package
 			}
 			add(DaMoon);
 			add(moonEmitter);
+			potatoes = new FlxGroup();
+			add(potatoes);
 			_bgb = new ParallaxLayer(this, 0.75, ParallaxLayer.BG_B);
 			add(_bga);
 			add(_bgb);
@@ -209,6 +212,11 @@ package
 		{
 			airplanes.add(new Airplane(X, Y, this, _world));
 		}
+		
+		public function spawnPotato(X:Number, Y:Number):void
+		{
+			potatoes.add(new Potato(X, Y, this, _world));
+		}
 
 		// Should be between 0 and 1
 		public static var minScenery:int = 1;
@@ -243,7 +251,7 @@ package
 				newScenery._obj.SetLinearVelocity(new b2Vec2(-_player._obj.GetLinearVelocity().x, newScenery._obj.GetLinearVelocity().y));
 			}
 			
-			if (Math.random() > 0.9) {
+			if (Math.random() > 0.1) {
 				spawnAirplane(Main.SCREEN_X, 20 + 50 * Math.random());
 			}
 		}
@@ -302,18 +310,6 @@ package
 
 			if (_player._obj.GetPosition().x > 2 || _player._obj.GetPosition().x < 2) {
 				_player._obj.SetPosition(new b2Vec2(2,_player._obj.GetPosition().y));
-			}
-
-			// Update beams
-			for each(var beam:Beam in beams) {
-				if(beam.x+30 < 0)
-					beams.remove(beam);
-			}
-
-			// Update airplanes
-			for each(var plane:Airplane in airplanes) {
-				if(plane.x+20 < 0)
-					airplanes.remove(plane);
 			}
 
 			_distace_delta = _player._obj.GetLinearVelocity().x;
