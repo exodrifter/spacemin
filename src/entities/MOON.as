@@ -58,7 +58,6 @@ package entities
 				for (var i:int = 0; i < moonParticles; i++)
 				{
 					moonEmitter.emitParticle();
-					trace("hah");
 				}
 				emitted = true;
 				game._toRemove.push(_obj);

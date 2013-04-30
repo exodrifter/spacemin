@@ -19,6 +19,7 @@ package
 	import org.flixel.FlxPoint;
 	import org.flixel.FlxG;
 	import org.flixel.FlxCamera;
+	import entities.Airplane;
 	
 	/**
 	 * Contains a few callbacks that are used to check for certain collisions
@@ -69,6 +70,11 @@ package
 					for each (var sprite:B2FlxSprite in _gamestate.scenery) {
 						sprite._obj.SetAngularVelocity(Math.random() - 0.5);
 						sprite._obj.SetLinearVelocity(new b2Vec2(sprite._obj.GetLinearVelocity().x, -3));
+					}
+					trace("HIT!");
+					for each(var plane:Airplane in _gamestate.airplanes) {
+						trace("FALL!");
+						plane.fall();
 					}
 					_platformBody.SetType(b2Body.b2_dynamicBody);
 					_gamestate.spawnBlood();

@@ -20,6 +20,7 @@ package
 		[Embed(source = 'res/plane.png')] private var plane:Class;
 		[Embed(source = 'res/Moon.png')] private var Moon:Class;
 		[Embed(source = 'res/house.png')] private var house:Class;
+		[Embed(source = 'res/house2.png')] private var house2:Class;
 		[Embed(source = 'res/car.png')] private var car:Class;
 		[Embed(source = 'res/tree.png')] private var tree:Class;
 		[Embed(source = 'res/garbagecan.png')] private var garbagecan:Class;
@@ -82,6 +83,7 @@ package
 		public var scenery:Vector.<B2FlxSprite>;
 		public var sceneryImages:Vector.<Class>;
 		private var beams:FlxGroup;
+		public var airplanes:FlxGroup;
 
 		private var _bga:ParallaxLayer;
 		private var _bgb:ParallaxLayer;
@@ -95,9 +97,6 @@ package
 			_endgame = false;
 
 			_toRemove = new Vector.<b2Body>();
-			
-			
-			
 
 			// UI:
 			_score.setFormat(null, 16, 0xff7777, "center", 0);
@@ -108,7 +107,7 @@ package
 			scenery = new Vector.<B2FlxSprite>();
 
 			sceneryImages = new Vector.<Class>();
-			sceneryImages.push(house,car,tree,streetlight,garbagecan);
+			sceneryImages.push(house,car,tree,streetlight,garbagecan,house2);
 			bloodEmiter = new FlxEmitter(0, 0, 50);
 			bloodEmiter.setXSpeed( -40, 80);
 			bloodEmiter.setYSpeed(-80, -140);
@@ -155,6 +154,10 @@ package
 			beams = new FlxGroup();
 			add(beams);
 			
+			// Airplanes
+			airplanes = new FlxGroup();
+			add(airplanes);
+			
 			// Player:
 			_player = new Player(50, 200, 20, 20, _world, this);
 			this.add(_player);
@@ -197,6 +200,11 @@ package
 		{
 			beams.add(new Beam(X, Y, this));
 		}
+		
+		public function spawnAirplane(X:Number, Y:Number):void
+		{
+			airplanes.add(new Airplane(X, Y, this, _world));
+		}
 
 		// Should be between 0 and 1
 		public static var minScenery:int = 1;
@@ -229,6 +237,10 @@ package
 				scenery.push(newScenery);
 				_platform_group.add(newScenery);
 				newScenery._obj.SetLinearVelocity(new b2Vec2(-_player._obj.GetLinearVelocity().x, newScenery._obj.GetLinearVelocity().y));
+			}
+			
+			if (Math.random() > 0.9) {
+				spawnAirplane(Main.SCREEN_X, 20 + 50 * Math.random());
 			}
 		}
 
@@ -287,11 +299,17 @@ package
 			if (_player._obj.GetPosition().x > 2 || _player._obj.GetPosition().x < 2) {
 				_player._obj.SetPosition(new b2Vec2(2,_player._obj.GetPosition().y));
 			}
-			
+
 			// Update beams
 			for each(var beam:Beam in beams) {
 				if(beam.x+30 < 0)
 					beams.remove(beam);
+			}
+
+			// Update airplanes
+			for each(var plane:Airplane in airplanes) {
+				if(plane.x+20 < 0)
+					airplanes.remove(plane);
 			}
 
 			_distace_delta = _player._obj.GetLinearVelocity().x;
