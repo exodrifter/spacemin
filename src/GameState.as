@@ -251,7 +251,7 @@ package
 				newScenery._obj.SetLinearVelocity(new b2Vec2(-_player._obj.GetLinearVelocity().x, newScenery._obj.GetLinearVelocity().y));
 			}
 			
-			if (Math.random() > 0.9) {
+			if (Math.random() > 0.0) {
 				spawnAirplane(Main.SCREEN_X, 20 + 50 * Math.random());
 			}
 		}
