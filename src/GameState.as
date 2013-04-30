@@ -100,9 +100,14 @@ package
 
 			// UI:
 			_score.setFormat(null, 16, 0xff7777, "center", 0);
-			add(_score);
+			_distance.setFormat(null, 8, 0x663333, "center", 0);
 			_offscreen.setFormat(null, 8, 0x663333, "center", 0);
-			add(_offscreen);
+			_title.setFormat(null, 16, 0xffffff, "center", 0);
+			_endtitle.setFormat(null, 16, 0xffffff, "center", 0);
+			_finalscore.setFormat(null, 8, 0xffffff, "center", 0);
+			_finaldistance.setFormat(null, 8, 0xffffff, "center", 0);
+			_finaltotal.setFormat(null, 16, 0xffffff, "center", 0);
+			add(_score);
 
 			scenery = new Vector.<B2FlxSprite>();
 			
@@ -127,7 +132,6 @@ package
 			// Backgrounds
 			_bga = new ParallaxLayer(this, 0.25, ParallaxLayer.BG_A);
 			add(_bga);
-			_distance.setFormat(null, 8, 0x663333, "center", 0);
 			add(_distance);
 			var moonEmitter:FlxEmitter = new FlxEmitter(0, 0, 40);
 			DaMoon = new MOON(360, 20, _world, this, moonEmitter);
@@ -287,7 +291,6 @@ package
 			if (FlxG.keys.justPressed("ESCAPE")) {
 				_paused = !_paused;
 				if (_paused) {
-					_title.setFormat(null, 16, 0xffffff, "center", 0);
 					add(_title);
 					add(MenuState.setSounds(_resume));
 					add(MenuState.setSounds(_quit));
@@ -374,12 +377,8 @@ package
 			remove(_distance);
 			remove(_score);
 			_gameover = true;
-			_endtitle.setFormat(null, 16, 0xffffff, "center", 0);
-			_finalscore.setFormat(null, 8, 0xffffff, "center", 0);
 			_finalscore.text = "Points: " + FlxG.score;
-			_finaldistance.setFormat(null, 8, 0xffffff, "center", 0);
 			_finaldistance.text = "Distance: " + ((int)(_distance_traveled/3000)) + "." + ((int)(_distance_traveled/3%1000/100)) + " km";
-			_finaltotal.setFormat(null, 16, 0xffffff, "center", 0);
 			_finaltotal.text = "Total: " + (FlxG.score+(int)(_distance_traveled/3000));
 			_front_ui_group.add(_endtitle);
 			_front_ui_group.add(_finalscore);
