@@ -52,7 +52,7 @@ package entities
 			{
 				_obj.SetLinearVelocity(new b2Vec2( -0.07, 0 ));
 			}
-			if (game._endgame == true)
+			if (game.gameover == true)
 				_obj.SetLinearVelocity(new b2Vec2());
 			if (!emitted && y > 170)
 			{

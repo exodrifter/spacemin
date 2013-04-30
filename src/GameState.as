@@ -15,19 +15,18 @@ package
 
 	public class GameState extends FlxState
 	{
-		[Embed(source = 'res/box.png')] private var ImgCube:Class;
+		[Embed(source = 'res/box.png')] private var CubeImage:Class;
 		[Embed(source = 'res/TestTrash.png')] private var TrashImage:Class;
-		[Embed(source = 'res/plane.png')] private var plane:Class;
-		[Embed(source = 'res/Moon.png')] private var Moon:Class;
-		[Embed(source = 'res/house.png')] private var house:Class;
-		[Embed(source = 'res/house2.png')] private var house2:Class;
-		[Embed(source = 'res/car.png')] private var car:Class;
-		[Embed(source = 'res/tree.png')] private var tree:Class;
-		[Embed(source = 'res/garbagecan.png')] private var garbagecan:Class;
-		[Embed(source = 'res/streetlight.png')] private var streetlight:Class;
+		[Embed(source = 'res/plane.png')] private var PlaneImage:Class;
+		[Embed(source = 'res/Moon.png')] private var MoonImage:Class;
+		[Embed(source = 'res/house.png')] private var HouseImage:Class;
+		[Embed(source = 'res/house2.png')] private var HouseImage2:Class;
+		[Embed(source = 'res/car.png')] private var CarImage:Class;
+		[Embed(source = 'res/tree.png')] private var TreeImage:Class;
+		[Embed(source = 'res/garbagecan.png')] private var GarbageCanImage:Class;
+		[Embed(source = 'res/streetlight.png')] private var StreetLightImage:Class;
 
-		[Embed(source="res/gameover.mp3")] private static var _gameover_sound:Class;
-		[Embed(source="res/pickup.mp3")] private static var _pickup_sound:Class;
+		[Embed(source="res/gameover.mp3")] private static var GameOverSound:Class;
 
 		// Game UI
 		private var _score:FlxText = new FlxText(Main.SCREEN_X2 - 50, 60, 100, "0");
@@ -36,16 +35,15 @@ package
 		private var _offscreen_disp:Boolean = false;
 		private var _front_ui_group:FlxGroup;
 
-		// Is the game paused?
-		public var _paused:Boolean = false;
-		// Pause Menu
+		// Pause UI
+		private var _paused:Boolean = false;
 		private var _title:FlxText = new FlxText(Main.SCREEN_X2-50, 20, 100, "PAUSED");
 		private var _resume:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 100, "Resume", unpause);
 		private var _quit:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 120, "Quit", MenuState.toMenu);
 		private var _settings:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 140, "Settings", MenuState.toSettings);
 
-		// Has the game ended?
-		public var _endgame:Boolean = false;
+		// Game Over UI
+		private var _gameover:Boolean = false;
 		private var _retry:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 200, "Retry", MenuState.toGame);
 		private var _quitend:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 220, "Quit", MenuState.toMenu);
 		private var _endtitle:FlxText = new FlxText(Main.SCREEN_X2 - 50, 20, 100, "GAME OVER");
@@ -55,26 +53,25 @@ package
 
 		// The physics world
 		public var _world:b2World;
-
 		// Ratio of pixels to meters
 		public static const RATIO:Number = 30;
 
 		// The player object
 		public var _player:Player;
+		
 		// The platforms in the game
 		public var _platforms:Vector.<Platform>;
 		public var _platform_group:FlxGroup;
 
+		// A list of b2Body physics objects to remove
 		public var _toRemove:Vector.<b2Body>;
 
-		public static var debug:Boolean;
-
 		// The total distance traveled
-		public var _distace_traveled:Number;
-		// The change is distance traveled
-		public var _distace_delta:Number;
-		public var _platform_time:Number;
-		public var _platform_timer:Number;
+		private var _distance_traveled:Number;
+		// The change in distance traveled
+		private var _distace_delta:Number;
+		private var _platform_time:Number;
+		private var _platform_timer:Number;
 
 		public var bloodEmiter:FlxEmitter;
 		public static var minParticleSize:Number = 3;
@@ -97,7 +94,7 @@ package
 		{
 			// Set up the world
 			setupWorld();
-			_endgame = false;
+			_gameover = false;
 
 			_toRemove = new Vector.<b2Body>();
 
@@ -112,7 +109,7 @@ package
 			sceneryGroup = new FlxGroup();
 
 			sceneryImages = new Vector.<Class>();
-			sceneryImages.push(house,car,tree,streetlight,garbagecan,house2);
+			sceneryImages.push(HouseImage,CarImage,TreeImage,StreetLightImage,GarbageCanImage,HouseImage2);
 			bloodEmiter = new FlxEmitter(0, 0, 50);
 			bloodEmiter.setXSpeed( -40, 80);
 			bloodEmiter.setYSpeed(-80, -140);
@@ -129,6 +126,7 @@ package
 
 			// Backgrounds
 			_bga = new ParallaxLayer(this, 0.25, ParallaxLayer.BG_A);
+			add(_bga);
 			_distance.setFormat(null, 8, 0x663333, "center", 0);
 			add(_distance);
 			var moonEmitter:FlxEmitter = new FlxEmitter(0, 0, 40);
@@ -175,7 +173,6 @@ package
 			add(potatoes);
 
 			_bgb = new ParallaxLayer(this, 0.75, ParallaxLayer.BG_B);
-			add(_bga);
 			add(_bgb);
 
 			// Beams of light:
@@ -210,7 +207,7 @@ package
 			_platform_time = 700;
 			_platform_timer = 300;
 			FlxG.score = 0;
-			_distace_traveled = 0;
+			_distance_traveled = 0;
 			_distace_delta = 0;
 		}
 
@@ -279,7 +276,7 @@ package
 
 		override public function update():void
 		{
-			if (_endgame) {
+			if (_gameover) {
 				_paused = false;
 				FlxG.mouse.show();
 				super.update();
@@ -334,12 +331,12 @@ package
 			}
 
 			_distace_delta = _player._obj.GetLinearVelocity().x;
-			_player._obj.SetLinearVelocity(new b2Vec2(3 +.80 * Math.sqrt(Math.sqrt(_distace_traveled)), _player._obj.GetLinearVelocity().y));
+			_player._obj.SetLinearVelocity(new b2Vec2(3 +.80 * Math.sqrt(Math.sqrt(_distance_traveled)), _player._obj.GetLinearVelocity().y));
 			var ox:Number = _player._obj.GetWorldCenter().x;
 			_world.Step(FlxG.elapsed, 6, 3);
 			var nx:Number = _player._obj.GetWorldCenter().x;
-			_distace_traveled += _distace_delta;
-			_distance.text = ((int)(_distace_traveled/3000))+"."+((int)(_distace_traveled/3%1000/100))+" km";
+			_distance_traveled += _distace_delta;
+			_distance.text = ((int)(_distance_traveled/3000))+"."+((int)(_distance_traveled/3%1000/100))+" km";
 			super.update();
 			while (_toRemove.length != 0)
 			{
@@ -371,19 +368,19 @@ package
 		}
 
 		public function endgame():void {
-			if (_endgame) {
+			if (_gameover) {
 				return;
 			}
 			remove(_distance);
 			remove(_score);
-			_endgame = true;
+			_gameover = true;
 			_endtitle.setFormat(null, 16, 0xffffff, "center", 0);
 			_finalscore.setFormat(null, 8, 0xffffff, "center", 0);
 			_finalscore.text = "Points: " + FlxG.score;
 			_finaldistance.setFormat(null, 8, 0xffffff, "center", 0);
-			_finaldistance.text = "Distance: " + ((int)(_distace_traveled/3000)) + "." + ((int)(_distace_traveled/3%1000/100)) + " km";
+			_finaldistance.text = "Distance: " + ((int)(_distance_traveled/3000)) + "." + ((int)(_distance_traveled/3%1000/100)) + " km";
 			_finaltotal.setFormat(null, 16, 0xffffff, "center", 0);
-			_finaltotal.text = "Total: " + (FlxG.score+(int)(_distace_traveled/3000));
+			_finaltotal.text = "Total: " + (FlxG.score+(int)(_distance_traveled/3000));
 			_front_ui_group.add(_endtitle);
 			_front_ui_group.add(_finalscore);
 			_front_ui_group.add(_finaldistance);
@@ -395,7 +392,19 @@ package
 			for each (var sprite:B2FlxSprite in scenery) {
 				sprite._obj.SetLinearVelocity(new b2Vec2(0, sprite._obj.GetLinearVelocity().y));
 			}
-			FlxG.play(_gameover_sound);
+			FlxG.play(GameOverSound);
+		}
+		
+		public function get paused():Boolean {
+			return _paused;
+		}
+		
+		public function get gameover():Boolean {
+			return _gameover;
+		}
+		
+		public function get distanceDelta():Number {
+			return _distace_delta;
 		}
 	}
 }

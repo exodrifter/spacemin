@@ -47,7 +47,7 @@ package entities
 		{
 			super.update();
 			if ((FlxG.keys.any() || FlxG.mouse.pressed()) && !FlxG.keys.ESCAPE) {
-				if (!_pressed && !_gamestate._endgame && !_gamestate._paused) {
+				if (!_pressed && !_gamestate.gameover && !_gamestate.paused) {
 					if (_canJump) {
 						FlxG.play(_jump_sound);
 						this._obj.SetLinearVelocity(new b2Vec2(this._obj.GetLinearVelocity().x, -10 - 0.1 * (_weight+1)));

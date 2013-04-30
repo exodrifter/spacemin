@@ -32,7 +32,7 @@ package entities
 		
 		override public function update():void {
 			super.update();
-			if(_gamestate._endgame) {
+			if(_gamestate.gameover) {
 				this._obj.SetLinearVelocity(new b2Vec2(0, this._obj.GetLinearVelocity().y));
 			} else {
 				this._obj.SetLinearVelocity(new b2Vec2(-_player._obj.GetLinearVelocity().x, this._obj.GetLinearVelocity().y));

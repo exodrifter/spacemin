@@ -4,7 +4,7 @@ package bg
 	import org.flixel.FlxObject;
 	import org.flixel.FlxSprite;
 	
-	public class ParallaxLayer extends FlxObject
+	public class ParallaxLayer extends FlxGroup
 	{
 		[Embed(source = '../res/bg-a.png')] private var _bg_a:Class;
 		[Embed(source = '../res/bg-a1.png')] private var _bg_a1:Class;
@@ -23,48 +23,48 @@ package bg
 		public static const BG_A:String = "A";
 		public static const BG_B:String = "B";
 
-		private var _ratio:Number;
 		private var _gamestate:GameState;
 		private var _bg:String;
+		private var _ratio:Number;
 
+		//private var _group:FlxGroup;
 		private var _parts:Vector.<FlxSprite>;
-		private var _group:FlxGroup;
 
 		public function ParallaxLayer(gamestate:GameState, ratio:Number, bg:String)
 		{
-			_ratio = ratio;
 			_gamestate = gamestate;
+			_ratio = ratio;
 			_bg = bg;
-			_group = new FlxGroup();
+			//_group = new FlxGroup();
 			_parts = new Vector.<FlxSprite>;
 			for (var x:int = 0; x < Main.SCREEN_X + 200; x += 200) {
 				var sprite:FlxSprite = getNextPart(x);
 				_parts.push(sprite);
-				_group.add(sprite);
-				_gamestate.add(_group);
+				this.add(sprite);
 			}
 		}
 
 		override public function update():void {
-			var offset:Number = _gamestate._distace_delta * _ratio;
-			if (_gamestate._paused || _gamestate._endgame) {
+			// If the game is paused or ended, don't move the parallax layer
+			if (_gamestate.paused || _gamestate.gameover) {
 				return;
 			}
+			var offset:Number = _gamestate.distanceDelta * _ratio;
 			for each (var sprite:FlxSprite in _parts) {
 				sprite.x -= offset;
 			}
 			if (_parts[0].x + 200 < 0) {
-				_group.remove(_parts[0]);
+				this.remove(_parts[0]);
 				_parts.splice(0, 1);
 			}
 			if (_parts[_parts.length-1].x + 200 < Main.SCREEN_X + 100) {
 				var spr:FlxSprite = getNextPart(_parts[_parts.length-1].x+200);
 				_parts.push(spr);
-				_group.add(spr);
+				this.add(spr);
 			}
 		}
 
-		public function getNextPart(offset:Number):FlxSprite {
+		private function getNextPart(offset:Number):FlxSprite {
 			var n:int = 0;
 			if (_bg == BG_A) {
 				n = (int)(Math.random() * 5);

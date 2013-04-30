@@ -24,7 +24,7 @@ package entities
 			} else {
 				alpha = 0;
 			}
-			x -= _gamestate._distace_delta/5;
+			x -= _gamestate.distanceDelta/5;
 			if(x+30 < 0)
 				_gamestate.beams.remove(this);
 		}

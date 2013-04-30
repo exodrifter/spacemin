@@ -81,7 +81,7 @@ package
 					}
 					
 					_platformBody.SetType(b2Body.b2_dynamicBody);
-					_gamestate._player._obj.ApplyImpulse(new b2Vec2(_gamestate._player._obj.GetLinearVelocity().x, Math.sqrt(_gamestate._distace_traveled) * .1 + 7), _gamestate._player._obj.GetPosition());
+					_gamestate._player._obj.ApplyImpulse(new b2Vec2(_gamestate._player._obj.GetLinearVelocity().x, Math.sqrt(_gamestate.distanceDelta) * .1 + 7), _gamestate._player._obj.GetPosition());
 					_gamestate.spawnBlood();
 				}
 				else if (_gamestate._player.getScreenXY().y > (_platformBody.GetWorldCenter().y*ratio-110))

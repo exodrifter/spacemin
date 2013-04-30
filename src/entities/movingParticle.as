@@ -18,7 +18,7 @@ package entities
 			super.update();
 			if (alive)
 			{
-				x -= game._distace_delta;
+				x -= game.distanceDelta;
 			}
 		}
 	}
