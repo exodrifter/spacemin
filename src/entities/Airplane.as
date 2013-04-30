@@ -5,12 +5,15 @@ package entities
 	import Box2D.Dynamics.b2World;
 	import entities.B2FlxSprite;
 	import Box2D.Dynamics.b2FilterData;
+	import org.flixel.FlxG;
 	
 	public class Airplane extends B2FlxSprite
 	{
 		[Embed(source = '../res/plane.png')] private var AirplaneImage:Class;
 		
 		private var _gamestate:GameState;
+		private var _timer:Number;
+		private var _time:Number;
 		
 		public function Airplane(X:Number, Y:Number, G:GameState, W:b2World) 
 		{
@@ -25,9 +28,10 @@ package entities
 			this.x = X;
 			this.y = Y;
 			this._obj.SetType(b2Body.b2_kinematicBody);
-			this._obj.SetLinearVelocity( new b2Vec2(-1, 0));
+			this._obj.SetLinearVelocity( new b2Vec2( -1, 0));
+			_timer = 2;
+			_time = 0;
 		}
-		
 		public var max:int = 18;
 		public var min:int = 13;
 		public function fall():void {
@@ -39,6 +43,14 @@ package entities
 		public var emitted:Boolean = false;
 		override public function update():void {
 			super.update();
+			if (_time > _timer) {
+				_time = 0;
+				_gamestate.spawnPotato(x,y);
+			}
+			_time += FlxG.elapsed;
+			
+			if(x+20 < 0)
+				_gamestate.airplanes.remove(this);
 			if (!emitted && y > 180)
 			{
 				emitted = true;

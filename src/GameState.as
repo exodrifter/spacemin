@@ -83,9 +83,10 @@ package
 		public var scenery:Vector.<B2FlxSprite>;
 		public var sceneryGroup:FlxGroup;
 		public var sceneryImages:Vector.<Class>;
-		private var beams:FlxGroup;
+		public var beams:FlxGroup;
 		public var airplanes:FlxGroup;
 		public var planeEmitter:FlxEmitter;
+		public var potatoes:FlxGroup;
 
 		private var _bga:ParallaxLayer;
 		private var _bgb:ParallaxLayer;
@@ -170,6 +171,9 @@ package
 				planeEmitter.add(particle3);
 			}
 			add(planeEmitter);
+			potatoes = new FlxGroup();
+			add(potatoes);
+
 			_bgb = new ParallaxLayer(this, 0.75, ParallaxLayer.BG_B);
 			add(_bga);
 			add(_bgb);
@@ -228,6 +232,11 @@ package
 		public function spawnAirplane(X:Number, Y:Number):void
 		{
 			airplanes.add(new Airplane(X, Y, this, _world));
+		}
+		
+		public function spawnPotato(X:Number, Y:Number):void
+		{
+			potatoes.add(new Potato(X, Y, this, _world));
 		}
 
 		// Should be between 0 and 1
@@ -308,7 +317,7 @@ package
 			_offscreen.text = "" + ((int)(-_player.getScreenXY().y));
 
 			// Handle end game
-			if (_player.getScreenXY().y > Main.SCREEN_Y) {
+			if (_player.getScreenXY().y > Main.SCREEN_Y+20) {
 				endgame();
 			}
 
@@ -324,20 +333,8 @@ package
 				_player._obj.SetPosition(new b2Vec2(2,_player._obj.GetPosition().y));
 			}
 
-			// Update beams
-			for each(var beam:Beam in beams) {
-				if(beam.x+30 < 0)
-					beams.remove(beam);
-			}
-
-			// Update airplanes
-			for each(var plane:Airplane in airplanes) {
-				if(plane.x+20 < 0)
-					airplanes.remove(plane);
-			}
-
 			_distace_delta = _player._obj.GetLinearVelocity().x;
-			_player._obj.SetLinearVelocity(new b2Vec2(3 +.5 * Math.sqrt(Math.sqrt(_distace_traveled)), _player._obj.GetLinearVelocity().y));
+			_player._obj.SetLinearVelocity(new b2Vec2(3 +.80 * Math.sqrt(Math.sqrt(_distace_traveled)), _player._obj.GetLinearVelocity().y));
 			var ox:Number = _player._obj.GetWorldCenter().x;
 			_world.Step(FlxG.elapsed, 6, 3);
 			var nx:Number = _player._obj.GetWorldCenter().x;
