@@ -71,9 +71,7 @@ package
 						sprite._obj.SetAngularVelocity(Math.random() - 0.5);
 						sprite._obj.SetLinearVelocity(new b2Vec2(sprite._obj.GetLinearVelocity().x, -3));
 					}
-					trace("HIT!");
 					for each(var plane:Airplane in _gamestate.airplanes) {
-						trace("FALL!");
 						plane.fall();
 					}
 					_platformBody.SetType(b2Body.b2_dynamicBody);
