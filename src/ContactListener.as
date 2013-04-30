@@ -51,6 +51,9 @@ package
 			
 			if (_player && _ground) {
 				if (_gamestate._player.isLanding()) {
+					for each(var plane:Airplane in _gamestate.airplanes.members) {
+						plane.fall()
+					}
 					_gamestate.DaMoon.MOONFall = true;
 					var xp:Number = _gamestate._player.getScreenXY().x
 					var xg:Number = _platformBody.GetWorldCenter().x * 30
@@ -75,9 +78,7 @@ package
 						sprite._obj.SetAngularVelocity(Math.random() * SLAM - 0.5);
 						sprite._obj.SetLinearVelocity(new b2Vec2(sprite._obj.GetLinearVelocity().x, -3 - SLAM));
 					}
-					for each(var plane:Airplane in _gamestate.airplanes) {
-						plane.fall();
-					}
+					
 					_platformBody.SetType(b2Body.b2_dynamicBody);
 					_gamestate._player._obj.ApplyImpulse(new b2Vec2(_gamestate._player._obj.GetLinearVelocity().x, Math.sqrt(_gamestate._distace_traveled) * .1 + 7), _gamestate._player._obj.GetPosition());
 					_gamestate.spawnBlood();

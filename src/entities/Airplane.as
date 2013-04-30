@@ -32,7 +32,15 @@ package entities
 			_timer = 2;
 			_time = Math.random()*2;
 		}
-		
+		public var max:int = 18;
+		public var min:int = 13;
+		public function fall():void {
+			this._obj.SetType(b2Body.b2_dynamicBody);
+			this._obj.SetAngularVelocity(Math.random() - 1.25);
+			
+
+		}
+		public var emitted:Boolean = false;
 		override public function update():void {
 			super.update();
 			if (_time > _timer) {
@@ -43,10 +51,18 @@ package entities
 			
 			if(x+20 < 0)
 				_gamestate.airplanes.remove(this);
-		}
-		
-		public function fall():void {
-			this._obj.SetType(b2Body.b2_dynamicBody);
+			if (!emitted && y > 180)
+			{
+				emitted = true;
+				var count:int = Math.floor(Math.random() * (max - min) + min);
+				_gamestate.planeEmitter.at(this);
+				for ( var other:int = 0; other < count; other++)
+				{
+					trace(_gamestate);
+					trace(_gamestate.planeEmitter);
+					_gamestate.planeEmitter.emitParticle();
+				}
+			}
 		}
 	}
 }

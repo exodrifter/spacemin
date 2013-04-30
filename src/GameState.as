@@ -85,6 +85,7 @@ package
 		public var sceneryImages:Vector.<Class>;
 		public var beams:FlxGroup;
 		public var airplanes:FlxGroup;
+		public var planeEmitter:FlxEmitter;
 		public var potatoes:FlxGroup;
 
 		private var _bga:ParallaxLayer;
@@ -134,8 +135,8 @@ package
 			DaMoon = new MOON(360, 20, _world, this, moonEmitter);
 			moonEmitter.setYSpeed( -90, -200);
 			moonEmitter.setXSpeed( -100, 60);
-			moonEmitter.lifespan = 10;
-			moonEmitter.gravity = 8 * 30 ;
+			moonEmitter.lifespan = 6;
+			moonEmitter.gravity = 9.8 * 30 ;
 			var maxPWidth:int = 15;
 			var minPWidth:int = 4;
 			for (var i:int = 0; i < 40; i++)
@@ -150,8 +151,29 @@ package
 			}
 			add(DaMoon);
 			add(moonEmitter);
+			airplanes = new FlxGroup();
+			add(airplanes);
+			planeEmitter = new FlxEmitter(0, 0, 40);
+			planeEmitter.setYSpeed( -100, -150);
+			planeEmitter.setXSpeed( -100, 60);
+			planeEmitter.lifespan = 6;
+			planeEmitter.gravity = 9.8 * 30 ;
+			var maxWidth:int = 8;
+			var minWidth:int = 3;
+			for ( i = 0; i < 80; i++)
+			{
+				var particle3:FlxParticle = new FlxParticle();
+				
+				particle3.scale = new FlxPoint(Math.random() * (maxWidth - minWidth) + minWidth, Math.random() * (maxWidth - minWidth) + minWidth);
+				particle3.loadGraphic(TrashImage);
+
+				particle3.kill();
+				planeEmitter.add(particle3);
+			}
+			add(planeEmitter);
 			potatoes = new FlxGroup();
 			add(potatoes);
+
 			_bgb = new ParallaxLayer(this, 0.75, ParallaxLayer.BG_B);
 			add(_bga);
 			add(_bgb);
@@ -160,9 +182,8 @@ package
 			beams = new FlxGroup();
 			add(beams);
 			
-			// Airplanes
-			airplanes = new FlxGroup();
-			add(airplanes);
+			// 
+			
 			add(sceneryGroup);
 			
 			// Player:
@@ -251,7 +272,7 @@ package
 				newScenery._obj.SetLinearVelocity(new b2Vec2(-_player._obj.GetLinearVelocity().x, newScenery._obj.GetLinearVelocity().y));
 			}
 			
-			if (Math.random() > 0.0) {
+			if (Math.random() > 0.85) {
 				spawnAirplane(Main.SCREEN_X, 20 + 50 * Math.random());
 			}
 		}
