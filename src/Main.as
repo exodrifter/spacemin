@@ -20,7 +20,7 @@ package
 		{
 			super(SCREEN_X, SCREEN_Y, MenuState, ZOOM, LOGIC_FRAMERATE,
 					RENDER_FRAMERATE, USE_SYSTEM_CURSOR);
-			forceDebugger = true;
+			forceDebugger = false;
 		}
 	}
 }

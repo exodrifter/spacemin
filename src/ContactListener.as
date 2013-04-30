@@ -57,13 +57,13 @@ package
 					var SLAM:Number = 0;
 					if (xp < xg && xg - xp > 95) {
 						FlxG.score += 1;
-						SLAM = 4;
+						SLAM = 2;
 						FlxG.shake(0.025, 0.2, null, true, FlxCamera.SHAKE_BOTH_AXES);
 						FlxG.play(_score_sound);
 						_gamestate.spawnBeam(xp,Main.SCREEN_Y-200);
 					} else if (xp > xg && xp - xg > 95) {
 						FlxG.score += 2;
-						SLAM = 4;
+						SLAM = 2;
 						FlxG.shake(0.025, 0.2, null, true, FlxCamera.SHAKE_BOTH_AXES);
 						FlxG.play(_score_sound);
 						_gamestate.spawnBeam(xp,Main.SCREEN_Y-200);
