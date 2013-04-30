@@ -1,6 +1,7 @@
 package
 {
 	import org.flixel.*;
+	import com.flashdynamix.utils.SWFProfiler;
 
 	[SWF(width = "800", height = "500", backgroundColor = "#FFBEBA")]
 
@@ -22,6 +23,7 @@ package
 		{
 			super(SCREEN_X, SCREEN_Y, MenuState, ZOOM, LOGIC_FRAMERATE,
 					RENDER_FRAMERATE, USE_SYSTEM_CURSOR);
+			SWFProfiler.init(stage, this);
 			forceDebugger = false;
 		}
 		

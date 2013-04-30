@@ -9,18 +9,18 @@ package entities
 	{
 		[Embed(source = '../res/platform.png')] private var ImgCube:Class;
 		public static var platformFilter:b2FilterData = null;
-		
+
+		{
+			platformFilter = new b2FilterData();
+			platformFilter.categoryBits = 0x0001;
+			platformFilter.maskBits = ~0x0001;
+		}
+
 		public function Platform(X:Number, Y:Number) 
 		{
 			super(X, Y, 250, 200, Main.gamestate._world);
 			this.createBody();
-			if (platformFilter == null)
-			{
-				platformFilter = new b2FilterData();
-				platformFilter.categoryBits = 0x0001;
-				platformFilter.maskBits = ~0x0001;
-			}
-			this._obj.GetFixtureList().SetFilterData(platformFilter.Copy());
+			this._obj.GetFixtureList().SetFilterData(platformFilter);
 			loadGraphic(ImgCube);
 			this._obj.SetUserData("ground");
 			this._obj.SetType(b2Body.b2_kinematicBody);
