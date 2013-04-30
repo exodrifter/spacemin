@@ -9,15 +9,11 @@ package entities
 	{
 		[Embed(source = '../res/platform.png')] private var ImgCube:Class;
 		public static var platformFilter:b2FilterData = null;
-		private var _player:Player;
-		private var _gamestate:GameState;
 		
-		public function Platform(X:Number, Y:Number, W:b2World, player:Player, gamestate:GameState) 
+		public function Platform(X:Number, Y:Number) 
 		{
-			super(X, Y, 250, 200, W);
-			this._player = player;
+			super(X, Y, 250, 200, Main.gamestate._world);
 			this.createBody();
-			_gamestate = gamestate;
 			if (platformFilter == null)
 			{
 				platformFilter = new b2FilterData();
@@ -32,14 +28,14 @@ package entities
 		
 		override public function update():void {
 			super.update();
-			if(_gamestate.gameover) {
+			if(Main.gamestate.gameover) {
 				this._obj.SetLinearVelocity(new b2Vec2(0, this._obj.GetLinearVelocity().y));
 			} else {
-				this._obj.SetLinearVelocity(new b2Vec2(-_player._obj.GetLinearVelocity().x, this._obj.GetLinearVelocity().y));
+				this._obj.SetLinearVelocity(new b2Vec2(-Main.gamestate._player._obj.GetLinearVelocity().x, this._obj.GetLinearVelocity().y));
 			}
 			if (this.getScreenXY().x + 250 < 0) {
-				_gamestate._platform_group.remove(this);
-				_gamestate._toRemove.push(this._obj);
+				Main.gamestate._platform_group.remove(this);
+				Main.gamestate._toRemove.push(this._obj);
 			}
 		}
 	}

@@ -12,21 +12,18 @@ package entities
 		[Embed(source = '../res/plane.png')] private var AirplaneImage:Class;
 		[Embed(source = '../res/planeCrash.mp3')] private var AirplaneCrash:Class;
 		
-		
-		private var _gamestate:GameState;
 		private var _timer:Number;
 		private var _time:Number;
 		
-		public function Airplane(X:Number, Y:Number, G:GameState, W:b2World) 
+		public function Airplane(X:Number, Y:Number) 
 		{
-			super(X, Y, 20, 10, W);
+			super(X, Y, 20, 10, Main.gamestate._world);
 			this.createBody();
 			var filter:b2FilterData = new b2FilterData();
 			filter.categoryBits = 0x0000;
 			filter.maskBits = ~0x0000;
 			this._obj.GetFixtureList().SetFilterData(filter.Copy());
 			loadGraphic(AirplaneImage);
-			_gamestate = G;
 			this.x = X;
 			this.y = Y;
 			this._obj.SetType(b2Body.b2_kinematicBody);
@@ -47,21 +44,21 @@ package entities
 			super.update();
 			if (_time > _timer) {
 				_time = 0;
-				_gamestate.spawnPotato(x,y);
+				Main.gamestate.spawnPotato(x,y);
 			}
 			_time += FlxG.elapsed;
 			
 			if(x+20 < 0)
-				_gamestate.airplanes.remove(this);
+				Main.gamestate.airplanes.remove(this);
 			if (!emitted && y > 180)
 			{
 				FlxG.play(AirplaneCrash, 1);
 				emitted = true;
 				var count:int = Math.floor(Math.random() * (max - min) + min);
-				_gamestate.planeEmitter.at(this);
+				Main.gamestate.planeEmitter.at(this);
 				for ( var other:int = 0; other < count; other++)
 				{
-					_gamestate.planeEmitter.emitParticle();
+					Main.gamestate.planeEmitter.emitParticle();
 				}
 			}
 		}

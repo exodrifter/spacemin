@@ -14,17 +14,15 @@ package entities
 		[Embed(source = '../res/Moon.png')] private var moonImage:Class;
 		[Embed(source="../res/moonCrash.mp3")] private static var _mooncrash:Class;
 		public var MOONFall:Boolean = false;
-		public var game:GameState;
 		public var moonEmitter:FlxEmitter;
 		public var moonParticles:int = 40;
 		public var emitted:Boolean = false;
 		
 		
-		public function MOON(X:Number, Y:Number, W:b2World, gamestate:GameState, emitter:FlxEmitter) 
+		public function MOON(X:Number, Y:Number, emitter:FlxEmitter) 
 		{
-			super(X, Y, 250, 200, W);
+			super(X, Y, 250, 200, Main.gamestate._world);
 			
-			game = gamestate;
 			loadGraphic(moonImage);
 			_width = width;
 			_height = height;
@@ -52,7 +50,7 @@ package entities
 			{
 				_obj.SetLinearVelocity(new b2Vec2( -0.07, 0 ));
 			}
-			if (game.gameover == true)
+			if (Main.gamestate.gameover == true)
 				_obj.SetLinearVelocity(new b2Vec2());
 			if (!emitted && y > 170)
 			{
@@ -63,7 +61,7 @@ package entities
 					moonEmitter.emitParticle();
 				}
 				emitted = true;
-				game._toRemove.push(_obj);
+				Main.gamestate._toRemove.push(_obj);
 				visible = false;
 			}
 			

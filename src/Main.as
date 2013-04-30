@@ -15,12 +15,22 @@ package
 		public static const ZOOM:int = 2;
 		public static const LOGIC_FRAMERATE:int = 60, RENDER_FRAMERATE:int = 60;
 		public static const USE_SYSTEM_CURSOR:Boolean = false;
+		
+		private static var _gamestate:GameState;
 
 		public function Main():void
 		{
 			super(SCREEN_X, SCREEN_Y, MenuState, ZOOM, LOGIC_FRAMERATE,
 					RENDER_FRAMERATE, USE_SYSTEM_CURSOR);
 			forceDebugger = false;
+		}
+		
+		public static function get gamestate():GameState {
+			return _gamestate;
+		}
+		
+		public static function set gamestate(value:GameState):void {
+			_gamestate = value;
 		}
 	}
 }

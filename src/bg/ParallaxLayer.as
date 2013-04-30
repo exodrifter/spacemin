@@ -23,16 +23,14 @@ package bg
 		public static const BG_A:String = "A";
 		public static const BG_B:String = "B";
 
-		private var _gamestate:GameState;
 		private var _bg:String;
 		private var _ratio:Number;
 
 		//private var _group:FlxGroup;
 		private var _parts:Vector.<FlxSprite>;
 
-		public function ParallaxLayer(gamestate:GameState, ratio:Number, bg:String)
+		public function ParallaxLayer(ratio:Number, bg:String)
 		{
-			_gamestate = gamestate;
 			_ratio = ratio;
 			_bg = bg;
 			//_group = new FlxGroup();
@@ -46,10 +44,10 @@ package bg
 
 		override public function update():void {
 			// If the game is paused or ended, don't move the parallax layer
-			if (_gamestate.paused || _gamestate.gameover) {
+			if (Main.gamestate.paused || Main.gamestate.gameover) {
 				return;
 			}
-			var offset:Number = _gamestate.distanceDelta * _ratio;
+			var offset:Number = Main.gamestate.distanceDelta * _ratio;
 			for each (var sprite:FlxSprite in _parts) {
 				sprite.x -= offset;
 			}

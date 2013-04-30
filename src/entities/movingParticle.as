@@ -1,16 +1,12 @@
 package entities 
 {
 	import org.flixel.FlxParticle;
-	/**
-	 * ...
-	 * @author ...
-	 */
+	
 	public class movingParticle extends FlxParticle
 	{
-		public var game:GameState;
-		public function movingParticle(gamestate:GameState) 
+		public function movingParticle() 
 		{
-			game = gamestate;
+			
 		}
 		
 		override public function update():void
@@ -18,7 +14,7 @@ package entities
 			super.update();
 			if (alive)
 			{
-				x -= game.distanceDelta;
+				x -= Main.gamestate.distanceDelta;
 			}
 		}
 	}

@@ -20,17 +20,14 @@ package entities
 		/** The total weight of the trah connected to this player */
 		public var _weight:Number = 0;
 		
-		private var _gamestate:GameState;
 		
-		
-		public function Player(X:Number, Y:Number, Width:Number, Height:Number, W:b2World, G:GameState):void
+		public function Player(X:Number, Y:Number, Width:Number, Height:Number):void
 		{
-			super(X, Y, Width, Height, W);
+			super(X, Y, Width, Height, Main.gamestate._world);
 			this._restitution = 0.5;
 			this._friction = 10;
 			this._density = 5;
 			this.createBody();
-			this._gamestate = G;
 			if (playerFilter == null)
 			{
 				playerFilter = new b2FilterData();
@@ -47,7 +44,7 @@ package entities
 		{
 			super.update();
 			if ((FlxG.keys.any() || FlxG.mouse.pressed()) && !FlxG.keys.ESCAPE) {
-				if (!_pressed && !_gamestate.gameover && !_gamestate.paused) {
+				if (!_pressed && !Main.gamestate.gameover && !Main.gamestate.paused) {
 					if (_canJump) {
 						FlxG.play(_jump_sound);
 						this._obj.SetLinearVelocity(new b2Vec2(this._obj.GetLinearVelocity().x, -10 - 0.1 * (_weight+1)));
