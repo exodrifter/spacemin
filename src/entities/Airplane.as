@@ -10,6 +10,8 @@ package entities
 	public class Airplane extends B2FlxSprite
 	{
 		[Embed(source = '../res/plane.png')] private var AirplaneImage:Class;
+		[Embed(source = '../res/planeCrash.mp3')] private var AirplaneCrash:Class;
+		
 		
 		private var _gamestate:GameState;
 		private var _timer:Number;
@@ -53,6 +55,7 @@ package entities
 				_gamestate.airplanes.remove(this);
 			if (!emitted && y > 180)
 			{
+				FlxG.play(AirplaneCrash, 1);
 				emitted = true;
 				var count:int = Math.floor(Math.random() * (max - min) + min);
 				_gamestate.planeEmitter.at(this);

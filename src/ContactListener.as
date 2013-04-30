@@ -52,7 +52,8 @@ package
 			if (_player && _ground) {
 				if (_gamestate._player.isLanding()) {
 					for each(var plane:Airplane in _gamestate.airplanes.members) {
-						plane.fall()
+						if(plane!=null)
+							plane.fall();
 					}
 					_gamestate.DaMoon.MOONFall = true;
 					var xp:Number = _gamestate._player.getScreenXY().x
