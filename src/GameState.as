@@ -80,6 +80,7 @@ package
 		public static var maxParticleSize:Number = 7;
 
 		public var scenery:Vector.<B2FlxSprite>;
+		public var sceneryGroup:FlxGroup;
 		public var sceneryImages:Vector.<Class>;
 		private var beams:FlxGroup;
 
@@ -106,6 +107,8 @@ package
 			add(_offscreen);
 
 			scenery = new Vector.<B2FlxSprite>();
+			
+			sceneryGroup = new FlxGroup();
 
 			sceneryImages = new Vector.<Class>();
 			sceneryImages.push(house,car,tree,streetlight,garbagecan);
@@ -154,6 +157,8 @@ package
 			// Beams of light:
 			beams = new FlxGroup();
 			add(beams);
+			
+			add(sceneryGroup);
 			
 			// Player:
 			_player = new Player(50, 200, 20, 20, _world, this);
@@ -227,7 +232,7 @@ package
 				newScenery._fixDef.filter.categoryBits = 0x0010;
 				newScenery.createBody();
 				scenery.push(newScenery);
-				_platform_group.add(newScenery);
+				sceneryGroup.add(newScenery);
 				newScenery._obj.SetLinearVelocity(new b2Vec2(-_player._obj.GetLinearVelocity().x, newScenery._obj.GetLinearVelocity().y));
 			}
 		}
