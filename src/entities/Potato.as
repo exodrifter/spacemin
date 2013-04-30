@@ -26,6 +26,7 @@ package entities
 			this.y = Y;
 			this._obj.SetType(b2Body.b2_kinematicBody);
 			this._obj.SetLinearVelocity(new b2Vec2(0, 3));
+			this._obj.SetAngularVelocity((Math.random() - 0.5));
 		}
 		
 		override public function update():void {

@@ -54,22 +54,26 @@ package
 					_gamestate.DaMoon.MOONFall = true;
 					var xp:Number = _gamestate._player.getScreenXY().x
 					var xg:Number = _platformBody.GetWorldCenter().x * 30
+					var SLAM:Number = 0;
 					if (xp < xg && xg - xp > 95) {
 						FlxG.score += 1;
+						SLAM = 4;
 						FlxG.shake(0.025, 0.2, null, true, FlxCamera.SHAKE_BOTH_AXES);
 						FlxG.play(_score_sound);
 						_gamestate.spawnBeam(xp,Main.SCREEN_Y-200);
 					} else if (xp > xg && xp - xg > 95) {
 						FlxG.score += 2;
+						SLAM = 4;
 						FlxG.shake(0.025, 0.2, null, true, FlxCamera.SHAKE_BOTH_AXES);
 						FlxG.play(_score_sound);
 						_gamestate.spawnBeam(xp,Main.SCREEN_Y-200);
 					} else {
+						SLAM = 1;
 						FlxG.shake(0.01, 0.2, null, true, FlxCamera.SHAKE_VERTICAL_ONLY);
 					}
 					for each (var sprite:B2FlxSprite in _gamestate.scenery) {
-						sprite._obj.SetAngularVelocity(Math.random() - 0.5);
-						sprite._obj.SetLinearVelocity(new b2Vec2(sprite._obj.GetLinearVelocity().x, -3));
+						sprite._obj.SetAngularVelocity(Math.random() * SLAM - 0.5);
+						sprite._obj.SetLinearVelocity(new b2Vec2(sprite._obj.GetLinearVelocity().x, -3 - SLAM));
 					}
 					for each(var plane:Airplane in _gamestate.airplanes) {
 						plane.fall();
