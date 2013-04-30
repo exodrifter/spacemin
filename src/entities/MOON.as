@@ -7,10 +7,12 @@ package entities
 	import flash.accessibility.Accessibility;
 	import flash.text.engine.ElementFormat;
 	import org.flixel.FlxEmitter;
+	import org.flixel.FlxG;
 	
 	public class MOON extends B2FlxSprite
 	{
 		[Embed(source = '../res/Moon.png')] private var moonImage:Class;
+		[Embed(source="../res/moonCrash.mp3")] private static var _mooncrash:Class;
 		public var MOONFall:Boolean = false;
 		public var game:GameState;
 		public var moonEmitter:FlxEmitter;
@@ -54,6 +56,7 @@ package entities
 				_obj.SetLinearVelocity(new b2Vec2());
 			if (!emitted && y > 170)
 			{
+				FlxG.play(_mooncrash, 1);
 				moonEmitter.at(this);
 				for (var i:int = 0; i < moonParticles; i++)
 				{

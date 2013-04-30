@@ -317,7 +317,7 @@ package
 			}
 
 			_distace_delta = _player._obj.GetLinearVelocity().x;
-			_player._obj.SetLinearVelocity(new b2Vec2(3 +.75 *Math.sqrt(Math.sqrt(_distace_traveled)), _player._obj.GetLinearVelocity().y));
+			_player._obj.SetLinearVelocity(new b2Vec2(3 +.5 * Math.sqrt(Math.sqrt(_distace_traveled)), _player._obj.GetLinearVelocity().y));
 			var ox:Number = _player._obj.GetWorldCenter().x;
 			_world.Step(FlxG.elapsed, 6, 3);
 			var nx:Number = _player._obj.GetWorldCenter().x;
