@@ -61,8 +61,6 @@ package entities
 				_gamestate.planeEmitter.at(this);
 				for ( var other:int = 0; other < count; other++)
 				{
-					trace(_gamestate);
-					trace(_gamestate.planeEmitter);
 					_gamestate.planeEmitter.emitParticle();
 				}
 			}
