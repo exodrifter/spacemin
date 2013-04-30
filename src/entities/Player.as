@@ -66,7 +66,7 @@ package entities
 			}
 			// Adjust angular velocity
 			if (_obj.GetAngularVelocity() > targetAngularVelocity) {
-				_obj.SetAngularVelocity(_obj.GetAngularVelocity() - 40 * FlxG.elapsed);
+				_obj.SetAngularVelocity(_obj.GetAngularVelocity() - 100 * FlxG.elapsed);
 				if (_obj.GetAngularVelocity() < targetAngularVelocity) {
 					_obj.SetAngularVelocity(targetAngularVelocity);
 				}
