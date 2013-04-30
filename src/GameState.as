@@ -288,7 +288,7 @@ package
 			_offscreen.text = "" + ((int)(-_player.getScreenXY().y));
 
 			// Handle end game
-			if (_player.getScreenXY().y > Main.SCREEN_Y) {
+			if (_player.getScreenXY().y > Main.SCREEN_Y+20) {
 				endgame();
 			}
 
