@@ -1,6 +1,8 @@
 package
 {
 	import adobe.utils.CustomActions;
+	import bg.CityLayer;
+	import bg.MountainLayer;
 	import bg.ParallaxLayer;
 	import Box2D.Dynamics.Joints.b2JointEdge;
 	import org.flixel.*;
@@ -72,8 +74,8 @@ package
 		public var planeEmitter:FlxEmitter;
 		public var potatoes:FlxGroup;
 
-		private var _bga:ParallaxLayer;
-		private var _bgb:ParallaxLayer;
+		private var _bga:MountainLayer;
+		private var _bgb:CityLayer;
 		
 		public var DaMoon:Moon;
 
@@ -116,8 +118,8 @@ package
 			}
 
 			// Backgrounds
-			_bga = new ParallaxLayer(this, 0.25, ParallaxLayer.BG_A);
-			_bgb = new ParallaxLayer(this, 0.75, ParallaxLayer.BG_B);
+			_bga = new MountainLayer(this, 0.25);
+			_bgb = new CityLayer(this, 0.75);
 			
 			// Objects
 			var moonEmitter:FlxEmitter = new FlxEmitter(0, 0, 40);
@@ -137,7 +139,7 @@ package
 				particle2.kill();
 				moonEmitter.add(particle2);
 			}
-			DaMoon = new Moon(_world, this, 360, 20, moonEmitter);
+			DaMoon = new Moon(_world, this, 250, -60, moonEmitter);
 			
 			airplanes = new FlxGroup();
 			
