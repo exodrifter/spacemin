@@ -12,17 +12,21 @@ package entities
 		[Embed(source = '../res/plane.png')] private var AirplaneImage:Class;
 		[Embed(source = '../res/planeCrash.mp3')] private var AirplaneCrash:Class;
 		
+		private static var _filter:b2FilterData = new b2FilterData();
+		
 		private var _timer:Number;
 		private var _time:Number;
+		
+		{
+			_filter.categoryBits = 0x0000;
+			_filter.maskBits = ~0x0000;
+		}
 		
 		public function Airplane(X:Number, Y:Number) 
 		{
 			super(X, Y, 20, 10, Main.gamestate._world);
 			this.createBody();
-			var filter:b2FilterData = new b2FilterData();
-			filter.categoryBits = 0x0000;
-			filter.maskBits = ~0x0000;
-			this._obj.GetFixtureList().SetFilterData(filter.Copy());
+			this._obj.GetFixtureList().SetFilterData(_filter);
 			loadGraphic(AirplaneImage);
 			this.x = X;
 			this.y = Y;

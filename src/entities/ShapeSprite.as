@@ -9,7 +9,7 @@ package entities
 
 	public class ShapeSprite extends FlxSprite
 	{
-		[Embed(source = '../res/TestTrash.png')] private var TrashImage:Class;
+		[Embed(source = '../res/TestTrash.png')] private static const TrashImage:Class;
 		private var ratio:Number = 30;
 
 		public var _fixDef:b2FixtureDef;

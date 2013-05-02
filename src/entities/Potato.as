@@ -8,17 +8,23 @@ package entities
 	
 	public class Potato extends B2FlxSprite
 	{
-		[Embed(source = '../res/potato.png')] private var PotatoImage:Class;
+		[Embed(source = '../res/potato.png')] private var PotatoImg:Class;
+
+		public static var _filter:b2FilterData = new b2FilterData();
+
+		{
+			_filter.categoryBits = 0x0000;
+			_filter.maskBits = ~0x0000;
+		}
 		
 		public function Potato(X:Number, Y:Number) 
 		{
 			super(X, Y, 20, 10, Main.gamestate._world);
-			loadGraphic(PotatoImage);
+			loadGraphic(PotatoImg);
+			
+			// Physics initialization
 			this.createBody();
-			var filter:b2FilterData = new b2FilterData();
-			filter.categoryBits = 0x0000;
-			filter.maskBits = ~0x0000;
-			this._obj.GetFixtureList().SetFilterData(filter.Copy());
+			this._obj.GetFixtureList().SetFilterData(_filter);
 			this._obj.SetType(b2Body.b2_kinematicBody);
 			this._obj.SetLinearVelocity(new b2Vec2(0, 3));
 			this._obj.SetAngularVelocity((Math.random() - 0.5));

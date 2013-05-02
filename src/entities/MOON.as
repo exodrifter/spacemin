@@ -11,28 +11,32 @@ package entities
 	
 	public class MOON extends B2FlxSprite
 	{
-		[Embed(source = '../res/Moon.png')] private var moonImage:Class;
-		[Embed(source="../res/moonCrash.mp3")] private static var _mooncrash:Class;
+		[Embed(source = '../res/Moon.png')] private static const MoonImg:Class;
+		[Embed(source = "../res/moonCrash.mp3")] private static const CrashSnd:Class;
+		
+		private static const _filter:b2FilterData = new b2FilterData();
+		
+		{
+			_filter.categoryBits = 0x0000;
+			_filter.maskBits = ~0x0000;
+		}
+		
 		public var MOONFall:Boolean = false;
 		public var moonEmitter:FlxEmitter;
 		public var moonParticles:int = 40;
 		public var emitted:Boolean = false;
 		
-		
 		public function MOON(X:Number, Y:Number, emitter:FlxEmitter) 
 		{
 			super(X, Y, 250, 200, Main.gamestate._world);
 			
-			loadGraphic(moonImage);
+			loadGraphic(MoonImg);
 			_width = width;
 			_height = height;
 			moonEmitter = emitter;
 			
 			this.createBody();
-			var moonFilter:b2FilterData = new b2FilterData();
-			moonFilter.categoryBits = 0x0000;
-			moonFilter.maskBits = ~0x0000;
-			this._obj.GetFixtureList().SetFilterData(moonFilter.Copy());
+			this._obj.GetFixtureList().SetFilterData(_filter);
 			this._obj.SetUserData("MOON");
 			this._obj.SetType(b2Body.b2_kinematicBody);
 		}
@@ -54,7 +58,7 @@ package entities
 				_obj.SetLinearVelocity(new b2Vec2());
 			if (!emitted && y > 170)
 			{
-				FlxG.play(_mooncrash, 1);
+				FlxG.play(CrashSnd, 1);
 				moonEmitter.at(this);
 				for (var i:int = 0; i < moonParticles; i++)
 				{

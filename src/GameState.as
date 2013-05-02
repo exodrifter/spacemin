@@ -15,16 +15,13 @@ package
 
 	public class GameState extends FlxState
 	{
-		[Embed(source = 'res/box.png')] private var CubeImage:Class;
-		[Embed(source = 'res/TestTrash.png')] private var TrashImage:Class;
-		[Embed(source = 'res/plane.png')] private var PlaneImage:Class;
-		[Embed(source = 'res/Moon.png')] private var MoonImage:Class;
-		[Embed(source = 'res/house.png')] private var HouseImage:Class;
-		[Embed(source = 'res/house2.png')] private var HouseImage2:Class;
-		[Embed(source = 'res/car.png')] private var CarImage:Class;
-		[Embed(source = 'res/tree.png')] private var TreeImage:Class;
-		[Embed(source = 'res/garbagecan.png')] private var GarbageCanImage:Class;
-		[Embed(source = 'res/streetlight.png')] private var StreetLightImage:Class;
+		[Embed(source = 'res/TestTrash.png')] private static const TrashImg:Class;
+		[Embed(source = 'res/house.png')] private static const HouseImg:Class;
+		[Embed(source = 'res/house2.png')] private static const House2Img:Class;
+		[Embed(source = 'res/car.png')] private static const CarImg:Class;
+		[Embed(source = 'res/tree.png')] private static const TreeImg:Class;
+		[Embed(source = 'res/garbagecan.png')] private static const GarbageCanImg:Class;
+		[Embed(source = 'res/streetlight.png')] private static const StreetLightImg:Class;
 
 		[Embed(source="res/gameover.mp3")] private static var GameOverSound:Class;
 
@@ -117,7 +114,7 @@ package
 			sceneryGroup = new FlxGroup();
 
 			sceneryImages = new Vector.<Class>();
-			sceneryImages.push(HouseImage,CarImage,TreeImage,StreetLightImage,GarbageCanImage,HouseImage2);
+			sceneryImages.push(HouseImg,CarImg,TreeImg,StreetLightImg,GarbageCanImg,House2Img);
 			bloodEmiter = new FlxEmitter(0, 0, 50);
 			bloodEmiter.setXSpeed( -40, 80);
 			bloodEmiter.setYSpeed(-80, -140);
@@ -127,7 +124,7 @@ package
 				var particle:movingParticle = new movingParticle();
 				var size:Number = Math.random() * (maxParticleSize - minParticleSize) + minParticleSize;
 				particle.scale = new FlxPoint(size, size);
-				particle.loadGraphic(TrashImage);
+				particle.loadGraphic(TrashImg);
 				particle.kill();
 				bloodEmiter.add(particle);
 			}
@@ -149,7 +146,7 @@ package
 				var particle2:FlxParticle = new FlxParticle();
 				
 				particle2.scale = new FlxPoint(Math.random() * (maxPWidth - minPWidth) + minPWidth, Math.random() * (maxPWidth - minPWidth) + minPWidth);
-				particle2.loadGraphic(TrashImage);
+				particle2.loadGraphic(TrashImg);
 
 				particle2.kill();
 				moonEmitter.add(particle2);
@@ -170,7 +167,7 @@ package
 				var particle3:FlxParticle = new FlxParticle();
 				
 				particle3.scale = new FlxPoint(Math.random() * (maxWidth - minWidth) + minWidth, Math.random() * (maxWidth - minWidth) + minWidth);
-				particle3.loadGraphic(TrashImage);
+				particle3.loadGraphic(TrashImg);
 
 				particle3.kill();
 				planeEmitter.add(particle3);
@@ -267,7 +264,7 @@ package
 				newScenery.loadGraphic(sceneryImages[Math.floor(Math.random() * sceneryImages.length)]);
 				newScenery._width = newScenery.width * .75;
 				newScenery._height = newScenery.height;
-				newScenery._fixDef.filter = Player.playerFilter.Copy();
+				newScenery._fixDef.filter = Player._filter.Copy();
 				newScenery._fixDef.filter.maskBits = 0x0011;
 				newScenery._fixDef.filter.categoryBits = 0x0010;
 				newScenery.createBody();

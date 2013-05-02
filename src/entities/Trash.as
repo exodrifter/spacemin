@@ -11,10 +11,18 @@ package entities
 	{
 		[Embed(source = '../res/TestTrash.png')] private var TrashImage:Class;
 
-		public static var trashFilter:b2FilterData = null;
-		public static var _trashFixDef:b2FixtureDef = null;
+		private static var _filter:b2FilterData = new b2FilterData();
+		private static var _trashFixDef:b2FixtureDef = new b2FixtureDef();
 		public static var _minSize:Number = 5;
 		public var _player:Player;
+		
+		{
+			_filter.categoryBits = 0x0004;
+			_filter.maskBits = ~0x0004;
+			_trashFixDef.density = super._density;
+			_trashFixDef.friction = super._friction;
+			_trashFixDef.restitution = super._restitution;
+		}
 		
 		public function Trash(X:Number, Y:Number):void
 		{
@@ -24,21 +32,8 @@ package entities
 			super._friction = 0;
 			super._restitution = 0.0;
 			super._density = 0.3;
-			if (_trashFixDef == null)
-			{
-				_trashFixDef = new b2FixtureDef();
-				_trashFixDef.density = super._density;
-				_trashFixDef.friction = super._friction;
-				_trashFixDef.restitution = super._restitution;
-			}
 			
 			createBody();
-			if (trashFilter == null)
-			{
-				trashFilter = new b2FilterData();
-				trashFilter.categoryBits = 0x0004;
-				trashFilter.maskBits = ~0x0004;
-			}
 			this._obj.GetFixtureList().SetFilterData(trashFilter.Copy());
 			loadGraphic(TrashImage);
 			this._obj.SetUserData("trash");
