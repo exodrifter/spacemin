@@ -47,7 +47,7 @@ package bg
 
 		override public function update():void {
 			// If the game is paused or ended, don't move the parallax layer
-			if (_gamestate || _gamestate) {
+			if (_gamestate.paused || _gamestate.gameover) {
 				return;
 			}
 			var offset:Number = _gamestate.distanceDelta * _ratio;

@@ -16,13 +16,6 @@ package
 	public class GameState extends FlxState
 	{
 		[Embed(source = 'res/TestTrash.png')] private static const TrashImg:Class;
-		[Embed(source = 'res/house.png')] private static const HouseImg:Class;
-		[Embed(source = 'res/house2.png')] private static const House2Img:Class;
-		[Embed(source = 'res/car.png')] private static const CarImg:Class;
-		[Embed(source = 'res/tree.png')] private static const TreeImg:Class;
-		[Embed(source = 'res/garbagecan.png')] private static const GarbageCanImg:Class;
-		[Embed(source = 'res/streetlight.png')] private static const StreetLightImg:Class;
-
 		[Embed(source="res/gameover.mp3")] private static var GameOverSound:Class;
 
 		// Game UI
@@ -30,7 +23,6 @@ package
 		private var _distance:FlxText = new FlxText(Main.SCREEN_X2 - 50, 155, 100, "0");
 		private var _offscreen:FlxText = new FlxText(11, 5, 100, "0");
 		private var _offscreen_disp:Boolean = false;
-		private var _front_ui_group:FlxGroup;
 
 		// Pause UI
 		private var _paused:Boolean = false;
@@ -40,6 +32,7 @@ package
 		private var _settings:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 140, "Settings", MenuState.toSettings);
 
 		// Game Over UI
+		private var _front_ui_group:FlxGroup;
 		private var _gameover:Boolean = false;
 		private var _retry:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 200, "Retry", MenuState.toGame);
 		private var _quitend:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 220, "Quit", MenuState.toMenu);
@@ -50,8 +43,6 @@ package
 
 		// The physics world
 		public var _world:b2World;
-		// Ratio of pixels to meters
-		public static const RATIO:Number = 30;
 
 		// The player object
 		public var _player:Player;
@@ -74,9 +65,8 @@ package
 		public static var minParticleSize:Number = 3;
 		public static var maxParticleSize:Number = 7;
 
-		public var scenery:Vector.<B2FlxSprite>;
+		public var scenery:Vector.<Scenery>;
 		public var sceneryGroup:FlxGroup;
-		public var sceneryImages:Vector.<Class>;
 		public var beams:FlxGroup;
 		public var airplanes:FlxGroup;
 		public var planeEmitter:FlxEmitter;
@@ -92,26 +82,25 @@ package
 			// Set up the world
 			setupWorld();
 			_gameover = false;
-
+			
 			_toRemove = new Vector.<b2Body>();
-
-			// UI:
+			
+			// UI initialization
 			_score.setFormat(null, 16, 0xff7777, "center", 0);
 			_distance.setFormat(null, 8, 0x663333, "center", 0);
 			_offscreen.setFormat(null, 8, 0x663333, "center", 0);
+			
 			_title.setFormat(null, 16, 0xffffff, "center", 0);
+			
 			_endtitle.setFormat(null, 16, 0xffffff, "center", 0);
 			_finalscore.setFormat(null, 8, 0xffffff, "center", 0);
 			_finaldistance.setFormat(null, 8, 0xffffff, "center", 0);
 			_finaltotal.setFormat(null, 16, 0xffffff, "center", 0);
-			add(_score);
-
-			scenery = new Vector.<B2FlxSprite>();
+			_front_ui_group = new FlxGroup();
 			
+			scenery = new Vector.<Scenery>();
 			sceneryGroup = new FlxGroup();
-
-			sceneryImages = new Vector.<Class>();
-			sceneryImages.push(HouseImg,CarImg,TreeImg,StreetLightImg,GarbageCanImg,House2Img);
+			
 			bloodEmiter = new FlxEmitter(0, 0, 50);
 			bloodEmiter.setXSpeed( -40, 80);
 			bloodEmiter.setYSpeed(-80, -140);
@@ -128,10 +117,10 @@ package
 
 			// Backgrounds
 			_bga = new ParallaxLayer(this, 0.25, ParallaxLayer.BG_A);
-			add(_bga);
-			add(_distance);
+			_bgb = new ParallaxLayer(this, 0.75, ParallaxLayer.BG_B);
+			
+			// Objects
 			var moonEmitter:FlxEmitter = new FlxEmitter(0, 0, 40);
-			DaMoon = new Moon(_world, this, 360, 20, moonEmitter);
 			moonEmitter.setYSpeed( -90, -200);
 			moonEmitter.setXSpeed( -100, 60);
 			moonEmitter.lifespan = 6;
@@ -148,10 +137,10 @@ package
 				particle2.kill();
 				moonEmitter.add(particle2);
 			}
-			add(DaMoon);
-			add(moonEmitter);
+			DaMoon = new Moon(_world, this, 360, 20, moonEmitter);
+			
 			airplanes = new FlxGroup();
-			add(airplanes);
+			
 			planeEmitter = new FlxEmitter(0, 0, 40);
 			planeEmitter.setYSpeed( -100, -150);
 			planeEmitter.setXSpeed( -100, 60);
@@ -169,26 +158,11 @@ package
 				particle3.kill();
 				planeEmitter.add(particle3);
 			}
-			add(planeEmitter);
-			potatoes = new FlxGroup();
-			add(potatoes);
-
-			_bgb = new ParallaxLayer(this, 0.75, ParallaxLayer.BG_B);
-			add(_bgb);
-
-			// Beams of light:
+			
 			beams = new FlxGroup();
-			add(beams);
 			
-			// 
-			
-			add(sceneryGroup);
-			
-			// Player:
 			_player = new Player(_world, this, 50, 200, 20, 20);
-			this.add(_player);
-			add(bloodEmiter);
-
+			
 			// Floor:
 			_platforms = new Vector.<Platform>();
 			_platform_group = new FlxGroup();
@@ -198,18 +172,38 @@ package
 			var floor2:Platform = new Platform(_world, this, 300, 230);
 			_platform_group.add(floor2);
 			_platforms.push(floor2);
+			
+			// Back Layer
+			add(_score);
+			add(_bga);
+			add(DaMoon);
+			add(moonEmitter);
+			
+			// Middle layer
+			add(airplanes);
+			add(planeEmitter);
+			potatoes = new FlxGroup();
+			add(potatoes);
+			add(_distance);
+			add(_bgb);
+			
+			// Front layer
+			add(beams);
+			add(sceneryGroup);
+			
+			add(_player);
+			add(bloodEmiter);
+			
 			add(_platform_group);
-
-			// Front UI
-			_front_ui_group = new FlxGroup();
+			
 			add(_front_ui_group);
 
 			// Reset game variables
 			_platform_time = 700;
 			_platform_timer = 300;
-			FlxG.score = 0;
 			_distance_traveled = 0;
 			_distace_delta = 0;
+			FlxG.score = 0;
 		}
 
 		public function spawnBlood():void
@@ -245,6 +239,7 @@ package
 
 		public function spawnPlatform():void
 		{
+			// Spawn the platform
 			_platform_spawn_height = 230 + (int)(Math.random() * 50) - 25
 			if (_platform_spawn_height > Main.SCREEN_Y-10) {
 				_platform_spawn_height = Main.SCREEN_Y-10;
@@ -254,22 +249,17 @@ package
 			var platform:Platform = new Platform(_world, this, Main.SCREEN_X, _platform_spawn_height);
 			_platforms.push(platform);
 			_platform_group.add(platform);
+			
+			// Spawn the scenery
 			var numScene:int = Math.floor(Math.random() * (maxScenery - minScenery) + minScenery);
-			for (var g:int; g < numScene; g++)
+			for (var g:int = 0; g < numScene; g++)
 			{
-				var newScenery:B2FlxSprite = new B2FlxSprite(_world, this, Math.random() * (250) + Main.SCREEN_X, _platform_spawn_height - 30, 40, 40);
-				newScenery.loadGraphic(sceneryImages[Math.floor(Math.random() * sceneryImages.length)]);
-				newScenery._width = newScenery.width * .75;
-				newScenery._height = newScenery.height;
-				newScenery._fixDef.filter = _player._filter.Copy();
-				newScenery._fixDef.filter.maskBits = 0x0011;
-				newScenery._fixDef.filter.categoryBits = 0x0010;
-				newScenery.createBody();
+				var newScenery:Scenery = new Scenery(_world, this, Math.random() * (250) + Main.SCREEN_X, _platform_spawn_height - 30);
 				scenery.push(newScenery);
 				sceneryGroup.add(newScenery);
-				newScenery._obj.SetLinearVelocity(new b2Vec2(-_player._obj.GetLinearVelocity().x, newScenery._obj.GetLinearVelocity().y));
 			}
 			
+			// Spawn an airplane
 			if (Math.random() > 0.85) {
 				spawnAirplane(Main.SCREEN_X, 20 + 50 * Math.random());
 			}
