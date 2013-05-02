@@ -12,9 +12,9 @@ package entities
 
 		public var _filter:b2FilterData;
 
-		public function Potato(X:Number, Y:Number) 
+		public function Potato(W:b2World, G:GameState, X:Number, Y:Number) 
 		{
-			super(X, Y, 20, 10, Main.gamestate._world);
+			super(W, G, X, Y, 20, 10);
 			loadGraphic(Img);
 			
 			// Physics properties
@@ -33,7 +33,7 @@ package entities
 		override public function update():void {
 			super.update();
 			if (y > Main.SCREEN_Y + 5) {
-				Main.gamestate.potatoes.remove(this);
+				_gamestate.potatoes.remove(this);
 			}
 		}
 	}

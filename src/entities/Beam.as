@@ -7,12 +7,13 @@ package entities
 	{
 		[Embed(source = '../res/beam.png')] public const Img:Class;
 		
-		public function Beam(X:Number, Y:Number) 
+		public var _gamestate:GameState;
+		
+		public function Beam(G:GameState, X:Number, Y:Number) 
 		{
-			loadGraphic(Img);
+			super(X, Y, Img);
+			_gamestate = G;
 			_alpha = 0.8;
-			this.x = X;
-			this.y = Y;
 		}
 		
 		override public function update():void {
@@ -21,9 +22,9 @@ package entities
 			} else {
 				alpha = 0;
 			}
-			x -= Main.gamestate.distanceDelta/5;
+			x -= _gamestate.distanceDelta/5;
 			if(x+30 < 0)
-				Main.gamestate.beams.remove(this);
+				_gamestate.beams.remove(this);
 		}
 	}
 }

@@ -22,9 +22,9 @@ package entities
 		
 		public var emitted:Boolean = false;
 		
-		public function Airplane(X:Number, Y:Number) 
+		public function Airplane(W:b2World, G:GameState, X:Number, Y:Number) 
 		{
-			super(X, Y, 20, 10, Main.gamestate._world);
+			super(W, G, X, Y, 20, 10);
 			loadGraphic(Img);
 			_timer = 2;
 			_time = Math.random()*2;
@@ -50,21 +50,21 @@ package entities
 			super.update();
 			if (_time > _timer) {
 				_time = 0;
-				Main.gamestate.spawnPotato(x,y);
+				_gamestate.spawnPotato(x,y);
 			}
 			_time += FlxG.elapsed;
 			
 			if(x+20 < 0)
-				Main.gamestate.airplanes.remove(this);
+				_gamestate.airplanes.remove(this);
 			if (!emitted && y > 180)
 			{
 				FlxG.play(CrashSnd, 1);
 				emitted = true;
 				var count:int = Math.floor(Math.random() * (max - min) + min);
-				Main.gamestate.planeEmitter.at(this);
+				_gamestate.planeEmitter.at(this);
 				for ( var other:int = 0; other < count; other++)
 				{
-					Main.gamestate.planeEmitter.emitParticle();
+					_gamestate.planeEmitter.emitParticle();
 				}
 			}
 		}

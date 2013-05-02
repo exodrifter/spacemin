@@ -4,9 +4,11 @@ package entities
 	
 	public class MovingParticle extends FlxParticle
 	{
-		public function MovingParticle() 
+		public var _gamestate:GameState;
+		
+		public function MovingParticle(G:GameState) 
 		{
-			
+			_gamestate = G;
 		}
 		
 		override public function update():void
@@ -14,7 +16,7 @@ package entities
 			super.update();
 			if (alive)
 			{
-				x -= Main.gamestate.distanceDelta;
+				x -= _gamestate.distanceDelta;
 			}
 		}
 	}

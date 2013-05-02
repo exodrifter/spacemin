@@ -20,13 +20,10 @@ package entities
 		public var moonParticles:int = 40;
 		public var emitted:Boolean = false;
 		
-		public function Moon(X:Number, Y:Number, emitter:FlxEmitter) 
+		public function Moon(W:b2World, G:GameState, X:Number, Y:Number, emitter:FlxEmitter) 
 		{
-			super(X, Y, 250, 200, Main.gamestate._world);
-			
+			super(W, G, X, Y, 250, 200);
 			loadGraphic(Img);
-			_width = width;
-			_height = height;
 			moonEmitter = emitter;
 			
 			// Physics properties
@@ -52,7 +49,7 @@ package entities
 			{
 				_obj.SetLinearVelocity(new b2Vec2( -0.07, 0 ));
 			}
-			if (Main.gamestate.gameover == true)
+			if (_gamestate.gameover == true)
 			{
 				_obj.SetLinearVelocity(new b2Vec2());
 			}
@@ -65,7 +62,7 @@ package entities
 					moonEmitter.emitParticle();
 				}
 				emitted = true;
-				Main.gamestate._toRemove.push(_obj);
+				_gamestate._toRemove.push(_obj);
 				visible = false;
 			}
 		}

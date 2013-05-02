@@ -89,9 +89,6 @@ package
 
 		override public function create():void
 		{
-			// Make this the main gamestate for the game
-			Main.gamestate = this;
-			
 			// Set up the world
 			setupWorld();
 			_gameover = false;
@@ -121,7 +118,7 @@ package
 			bloodEmiter.lifespan = .25;
 			for ( var u:int = 0; u < 50; u++)
 			{
-				var particle:MovingParticle = new MovingParticle();
+				var particle:MovingParticle = new MovingParticle(this);
 				var size:Number = Math.random() * (maxParticleSize - minParticleSize) + minParticleSize;
 				particle.scale = new FlxPoint(size, size);
 				particle.loadGraphic(TrashImg);
@@ -130,11 +127,11 @@ package
 			}
 
 			// Backgrounds
-			_bga = new ParallaxLayer(0.25, ParallaxLayer.BG_A);
+			_bga = new ParallaxLayer(this, 0.25, ParallaxLayer.BG_A);
 			add(_bga);
 			add(_distance);
 			var moonEmitter:FlxEmitter = new FlxEmitter(0, 0, 40);
-			DaMoon = new Moon(360, 20, moonEmitter);
+			DaMoon = new Moon(_world, this, 360, 20, moonEmitter);
 			moonEmitter.setYSpeed( -90, -200);
 			moonEmitter.setXSpeed( -100, 60);
 			moonEmitter.lifespan = 6;
@@ -176,7 +173,7 @@ package
 			potatoes = new FlxGroup();
 			add(potatoes);
 
-			_bgb = new ParallaxLayer(0.75, ParallaxLayer.BG_B);
+			_bgb = new ParallaxLayer(this, 0.75, ParallaxLayer.BG_B);
 			add(_bgb);
 
 			// Beams of light:
@@ -188,17 +185,17 @@ package
 			add(sceneryGroup);
 			
 			// Player:
-			_player = new Player(50, 200, 20, 20);
+			_player = new Player(_world, this, 50, 200, 20, 20);
 			this.add(_player);
 			add(bloodEmiter);
 
 			// Floor:
 			_platforms = new Vector.<Platform>();
 			_platform_group = new FlxGroup();
-			var floor:Platform = new Platform(0, 230);
+			var floor:Platform = new Platform(_world, this, 0, 230);
 			_platform_group.add(floor);
 			_platforms.push(floor);
-			var floor2:Platform = new Platform(300, 230);
+			var floor2:Platform = new Platform(_world, this, 300, 230);
 			_platform_group.add(floor2);
 			_platforms.push(floor2);
 			add(_platform_group);
@@ -227,17 +224,17 @@ package
 
 		public function spawnBeam(X:Number, Y:Number):void
 		{
-			beams.add(new Beam(X, Y));
+			beams.add(new Beam(this, X, Y));
 		}
 		
 		public function spawnAirplane(X:Number, Y:Number):void
 		{
-			airplanes.add(new Airplane(X, Y));
+			airplanes.add(new Airplane(_world, this, X, Y));
 		}
 		
 		public function spawnPotato(X:Number, Y:Number):void
 		{
-			potatoes.add(new Potato(X, Y));
+			potatoes.add(new Potato(_world, this, X, Y));
 		}
 
 		// Should be between 0 and 1
@@ -254,13 +251,13 @@ package
 			} else if (_platform_spawn_height < Main.SCREEN_Y-100) {
 				_platform_spawn_height = Main.SCREEN_Y-100;
 			}
-			var platform:Platform = new Platform(Main.SCREEN_X, _platform_spawn_height);
+			var platform:Platform = new Platform(_world, this, Main.SCREEN_X, _platform_spawn_height);
 			_platforms.push(platform);
 			_platform_group.add(platform);
 			var numScene:int = Math.floor(Math.random() * (maxScenery - minScenery) + minScenery);
 			for (var g:int; g < numScene; g++)
 			{
-				var newScenery:B2FlxSprite = new B2FlxSprite(Math.random() * (250) + Main.SCREEN_X, _platform_spawn_height - 30, 40, 40, _world);
+				var newScenery:B2FlxSprite = new B2FlxSprite(_world, this, Math.random() * (250) + Main.SCREEN_X, _platform_spawn_height - 30, 40, 40);
 				newScenery.loadGraphic(sceneryImages[Math.floor(Math.random() * sceneryImages.length)]);
 				newScenery._width = newScenery.width * .75;
 				newScenery._height = newScenery.height;

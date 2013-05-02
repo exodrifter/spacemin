@@ -18,9 +18,9 @@ package entities
 		
 		private var _pressed:Boolean = false, _grounded:Boolean = false, _canJump:Boolean = false, _landing:Boolean = false;
 		
-		public function Player(X:Number, Y:Number, Width:Number, Height:Number):void
+		public function Player(W:b2World, G:GameState, X:Number, Y:Number, Width:Number, Height:Number):void
 		{
-			super(X, Y, Width, Height, Main.gamestate._world);
+			super(W, G, X, Y, Width, Height);
 			this.loadGraphic(JumpImg);
 			
 			// Physics properties
@@ -41,7 +41,7 @@ package entities
 		{
 			super.update();
 			if ((FlxG.keys.any() || FlxG.mouse.pressed()) && !FlxG.keys.ESCAPE) {
-				if (!_pressed && !Main.gamestate.gameover && !Main.gamestate.paused) {
+				if (!_pressed && !_gamestate.gameover && !_gamestate.paused) {
 					if (_canJump) {
 						FlxG.play(JumpSnd);
 						this._obj.SetLinearVelocity(new b2Vec2(this._obj.GetLinearVelocity().x, -10));
@@ -76,8 +76,12 @@ package entities
 		{
 			_grounded = grounded;
 			_canJump = _canJump || _grounded;
-			loadGraphic(CubeImg);
 			_landing = false;
+			if (_canJump) {
+				loadGraphic(JumpImg);
+			} else {
+				loadGraphic(CubeImg);
+			}
 		}
 		
 		public function isGrounded():Boolean

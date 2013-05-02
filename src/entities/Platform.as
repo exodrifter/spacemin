@@ -10,10 +10,10 @@ package entities
 		[Embed(source = '../res/platform.png')] public const Img:Class;
 		
 		public var _filter:b2FilterData;
-
-		public function Platform(X:Number, Y:Number) 
+		
+		public function Platform(W:b2World, G:GameState, X:Number, Y:Number) 
 		{
-			super(X, Y, 250, 200, Main.gamestate._world);
+			super(W, G, X, Y, 250, 200);
 			loadGraphic(Img);
 			
 			// Physics Properties
@@ -30,14 +30,14 @@ package entities
 		
 		override public function update():void {
 			super.update();
-			if(Main.gamestate.gameover) {
+			if(_gamestate.gameover) {
 				this._obj.SetLinearVelocity(new b2Vec2(0, this._obj.GetLinearVelocity().y));
 			} else {
-				this._obj.SetLinearVelocity(new b2Vec2(-Main.gamestate._player._obj.GetLinearVelocity().x, this._obj.GetLinearVelocity().y));
+				this._obj.SetLinearVelocity(new b2Vec2(-_gamestate._player._obj.GetLinearVelocity().x, this._obj.GetLinearVelocity().y));
 			}
 			if (this.getScreenXY().x + 250 < 0) {
-				Main.gamestate._platform_group.remove(this);
-				Main.gamestate._toRemove.push(this._obj);
+				_gamestate._platform_group.remove(this);
+				_gamestate._toRemove.push(this._obj);
 			}
 		}
 	}
