@@ -5,11 +5,11 @@ package entities
 	
 	public class Beam extends FlxSprite
 	{
-		[Embed(source = '../res/beam.png')] private const BeamImage:Class;
+		[Embed(source = '../res/beam.png')] public const Img:Class;
 		
 		public function Beam(X:Number, Y:Number) 
 		{
-			loadGraphic(BeamImage);
+			loadGraphic(Img);
 			_alpha = 0.8;
 			this.x = X;
 			this.y = Y;

@@ -7,20 +7,23 @@ package entities
 	
 	public class Platform extends B2FlxSprite
 	{
-		[Embed(source = '../res/platform.png')] private var ImgCube:Class;
-		private static var _filter:b2FilterData = new b2FilterData();
-
-		{
-			_filter.categoryBits = 0x0001;
-			_filter.maskBits = ~0x0001;
-		}
+		[Embed(source = '../res/platform.png')] public const Img:Class;
+		
+		public var _filter:b2FilterData;
 
 		public function Platform(X:Number, Y:Number) 
 		{
 			super(X, Y, 250, 200, Main.gamestate._world);
+			loadGraphic(Img);
+			
+			// Physics Properties
+			_filter = new b2FilterData();
+			_filter.categoryBits = 0x0001;
+			_filter.maskBits = ~0x0001;
+			
+			// Physics initialization
 			this.createBody();
 			this._obj.GetFixtureList().SetFilterData(_filter);
-			loadGraphic(ImgCube);
 			this._obj.SetUserData("ground");
 			this._obj.SetType(b2Body.b2_kinematicBody);
 		}

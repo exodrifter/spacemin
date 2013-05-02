@@ -9,32 +9,32 @@ package entities
 	import org.flixel.FlxEmitter;
 	import org.flixel.FlxG;
 	
-	public class MOON extends B2FlxSprite
+	public class Moon extends B2FlxSprite
 	{
-		[Embed(source = '../res/Moon.png')] private static const MoonImg:Class;
-		[Embed(source = "../res/moonCrash.mp3")] private static const CrashSnd:Class;
+		[Embed(source = '../res/Moon.png')] public const Img:Class;
+		[Embed(source = "../res/moonCrash.mp3")] public const CrashSnd:Class;
 		
-		private static const _filter:b2FilterData = new b2FilterData();
-		
-		{
-			_filter.categoryBits = 0x0000;
-			_filter.maskBits = ~0x0000;
-		}
-		
+		public var _filter:b2FilterData;
 		public var MOONFall:Boolean = false;
 		public var moonEmitter:FlxEmitter;
 		public var moonParticles:int = 40;
 		public var emitted:Boolean = false;
 		
-		public function MOON(X:Number, Y:Number, emitter:FlxEmitter) 
+		public function Moon(X:Number, Y:Number, emitter:FlxEmitter) 
 		{
 			super(X, Y, 250, 200, Main.gamestate._world);
 			
-			loadGraphic(MoonImg);
+			loadGraphic(Img);
 			_width = width;
 			_height = height;
 			moonEmitter = emitter;
 			
+			// Physics properties
+			_filter = new b2FilterData()
+			_filter.categoryBits = 0x0000;
+			_filter.maskBits = ~0x0000;
+			
+			// Physics initialization
 			this.createBody();
 			this._obj.GetFixtureList().SetFilterData(_filter);
 			this._obj.SetUserData("MOON");
@@ -43,19 +43,19 @@ package entities
 		
 		override public function update():void {
 			super.update();
-			//this._obj.SetLinearVelocity(new b2Vec2(-_player._obj.GetLinearVelocity().x, this._obj.GetLinearVelocity().y));
 			if (MOONFall)
 			{
 				this._obj.SetType(b2Body.b2_dynamicBody);
 				_obj.ApplyForce(new b2Vec2(-.05, -.08), _obj.GetPosition());
-			//	if (_obj.GetLinearVelocity().y >= 6)
-			//		_obj.SetLinearVelocity(new b2Vec2(-.6, 6));
-			} else
+			}
+			else
 			{
 				_obj.SetLinearVelocity(new b2Vec2( -0.07, 0 ));
 			}
 			if (Main.gamestate.gameover == true)
+			{
 				_obj.SetLinearVelocity(new b2Vec2());
+			}
 			if (!emitted && y > 170)
 			{
 				FlxG.play(CrashSnd, 1);
@@ -68,7 +68,6 @@ package entities
 				Main.gamestate._toRemove.push(_obj);
 				visible = false;
 			}
-			
 		}
 	}
 }

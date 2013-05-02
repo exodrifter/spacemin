@@ -2,9 +2,9 @@ package entities
 {
 	import org.flixel.FlxParticle;
 	
-	public class movingParticle extends FlxParticle
+	public class MovingParticle extends FlxParticle
 	{
-		public function movingParticle() 
+		public function MovingParticle() 
 		{
 			
 		}
@@ -18,5 +18,4 @@ package entities
 			}
 		}
 	}
-
 }

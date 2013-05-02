@@ -7,18 +7,14 @@ package entities
 	
 	public class Player extends B2FlxSprite
 	{
-		[Embed(source = "../res/box.png")] private static const JumpImg:Class;
-		[Embed(source = "../res/boxb.png")] private static const CubeImg:Class;
-		[Embed(source = "../res/jump.mp3")] private static const JumpSnd:Class;
-		[Embed(source = "../res/land.mp3")] private static const LandSnd:Class;
+		[Embed(source = "../res/box.png")] public const JumpImg:Class;
+		[Embed(source = "../res/boxb.png")] public const CubeImg:Class;
+		[Embed(source = "../res/jump.mp3")] public const JumpSnd:Class;
+		[Embed(source = "../res/land.mp3")] public const LandSnd:Class;
 		
-		public static const TARGET_ANGULAR_VELOCITY:Number = 7;
-		public static var _filter:b2FilterData = new b2FilterData();
+		public const TARGET_ANGULAR_VELOCITY:Number = 7;
 		
-		{
-			_filter.categoryBits = 0x0002;
-			_filter.maskBits = ~0x0002;
-		}
+		public var _filter:b2FilterData;
 		
 		private var _pressed:Boolean = false, _grounded:Boolean = false, _canJump:Boolean = false, _landing:Boolean = false;
 		
@@ -28,6 +24,9 @@ package entities
 			this.loadGraphic(JumpImg);
 			
 			// Physics properties
+			_filter = new b2FilterData();
+			_filter.categoryBits = 0x0002;
+			_filter.maskBits = ~0x0002;
 			this._restitution = 0.5;
 			this._friction = 10;
 			this._density = 5;

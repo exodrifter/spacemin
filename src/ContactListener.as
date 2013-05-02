@@ -15,7 +15,6 @@ package
 	import entities.Beam;
 	import entities.Platform;
 	import entities.Player;
-	import entities.Trash;
 	import org.flixel.FlxPoint;
 	import org.flixel.FlxG;
 	import org.flixel.FlxCamera;

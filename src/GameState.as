@@ -85,7 +85,7 @@ package
 		private var _bga:ParallaxLayer;
 		private var _bgb:ParallaxLayer;
 		
-		public var DaMoon:MOON;
+		public var DaMoon:Moon;
 
 		override public function create():void
 		{
@@ -121,7 +121,7 @@ package
 			bloodEmiter.lifespan = .25;
 			for ( var u:int = 0; u < 50; u++)
 			{
-				var particle:movingParticle = new movingParticle();
+				var particle:MovingParticle = new MovingParticle();
 				var size:Number = Math.random() * (maxParticleSize - minParticleSize) + minParticleSize;
 				particle.scale = new FlxPoint(size, size);
 				particle.loadGraphic(TrashImg);
@@ -134,7 +134,7 @@ package
 			add(_bga);
 			add(_distance);
 			var moonEmitter:FlxEmitter = new FlxEmitter(0, 0, 40);
-			DaMoon = new MOON(360, 20, moonEmitter);
+			DaMoon = new Moon(360, 20, moonEmitter);
 			moonEmitter.setYSpeed( -90, -200);
 			moonEmitter.setXSpeed( -100, 60);
 			moonEmitter.lifespan = 6;
@@ -264,7 +264,7 @@ package
 				newScenery.loadGraphic(sceneryImages[Math.floor(Math.random() * sceneryImages.length)]);
 				newScenery._width = newScenery.width * .75;
 				newScenery._height = newScenery.height;
-				newScenery._fixDef.filter = Player._filter.Copy();
+				newScenery._fixDef.filter = _player._filter.Copy();
 				newScenery._fixDef.filter.maskBits = 0x0011;
 				newScenery._fixDef.filter.categoryBits = 0x0010;
 				newScenery.createBody();
