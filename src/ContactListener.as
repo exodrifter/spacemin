@@ -1,24 +1,13 @@
 package  
 {
-	import Box2D.Collision.Shapes.b2MassData;
-	import Box2D.Collision.Shapes.b2PolygonShape;
-	import Box2D.Collision.Shapes.b2Shape;
 	import Box2D.Common.Math.b2Vec2;
-	import Box2D.Common.Math.b2Vec3;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2ContactListener;
-	import Box2D.Dynamics.b2Fixture;
-	import Box2D.Dynamics.b2FixtureDef;
-	import Box2D.Dynamics.Contacts.*;
-	import Box2D.Dynamics.Joints.b2WeldJointDef;
-	import entities.B2FlxSprite;
-	import entities.Beam;
-	import entities.Platform;
-	import entities.Player;
-	import org.flixel.FlxPoint;
-	import org.flixel.FlxG;
-	import org.flixel.FlxCamera;
+	import Box2D.Dynamics.Contacts.b2Contact;
 	import entities.Airplane;
+	import entities.B2FlxSprite;
+	import org.flixel.FlxCamera;
+	import org.flixel.FlxG;
 	
 	/**
 	 * Contains a few callbacks that are used to check for certain collisions
@@ -91,7 +80,7 @@ package
 				FlxG.play(_ground_sound);
 			}
 		}
-
+		
 		/**
 		 * Called when two fixtures cease to touch.
 		 */

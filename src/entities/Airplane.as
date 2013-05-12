@@ -2,9 +2,9 @@ package entities
 {
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
+	import Box2D.Dynamics.b2FilterData;
 	import Box2D.Dynamics.b2World;
 	import entities.B2FlxSprite;
-	import Box2D.Dynamics.b2FilterData;
 	import org.flixel.FlxG;
 	
 	public class Airplane extends B2FlxSprite

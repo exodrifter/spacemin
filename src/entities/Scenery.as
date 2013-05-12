@@ -1,8 +1,8 @@
 package entities 
 {
+	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2FilterData;
 	import Box2D.Dynamics.b2World;
-	import Box2D.Common.Math.b2Vec2;
 	
 	public class Scenery extends B2FlxSprite
 	{
