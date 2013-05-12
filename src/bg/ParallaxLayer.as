@@ -21,9 +21,9 @@ package bg
 		 * Creates a new ParallaxLayer. This constructor should only be called
 		 * by classes that extend it.
 		 * 
-		 * @param	G		The gamestate that this ParallaxLayer belongs to
-		 * @param	Ratio	The ratio that the ParallaxLayer will move in
-		 * 					comparison to the movement in the game
+		 * @param G      The gamestate that this ParallaxLayer belongs to
+		 * @param Ratio  The ratio that the ParallaxLayer will move in
+		 *               comparison to the movement in the game
 		 */
 		public function ParallaxLayer(G:GameState, Ratio:Number)
 		{
