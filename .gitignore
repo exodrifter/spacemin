@@ -3,3 +3,4 @@ obj/
 
 *.sublime-project
 *.sublime-workspace
+*.as3proj
