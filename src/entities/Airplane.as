@@ -14,9 +14,6 @@ package entities
 		
 		private var _filter:b2FilterData;
 		
-		private var _timer:Number;
-		private var _time:Number;
-		
 		public var max:int = 18;
 		public var min:int = 13;
 		
@@ -26,8 +23,6 @@ package entities
 		{
 			super(W, G, X, Y, 20, 10);
 			loadGraphic(Img);
-			_timer = 2;
-			_time = Math.random()*2;
 			
 			// Physics Properties
 			_filter = new b2FilterData();
@@ -48,11 +43,6 @@ package entities
 		
 		override public function update():void {
 			super.update();
-			if (_time > _timer) {
-				_time = 0;
-				_gamestate.spawnPotato(x,y);
-			}
-			_time += FlxG.elapsed;
 			
 			if(x+20 < 0)
 				_gamestate.airplanes.remove(this);

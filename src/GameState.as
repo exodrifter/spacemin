@@ -227,11 +227,6 @@ package
 		{
 			airplanes.add(new Airplane(_world, this, X, Y));
 		}
-		
-		public function spawnPotato(X:Number, Y:Number):void
-		{
-			potatoes.add(new Potato(_world, this, X, Y));
-		}
 
 		// Should be between 0 and 1
 		public static var minScenery:int = 1;
