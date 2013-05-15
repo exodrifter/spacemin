@@ -36,8 +36,17 @@ package entities
 			_obj.SetLinearVelocity(new b2Vec2(-_gamestate._player._obj.GetLinearVelocity().x, _obj.GetLinearVelocity().y));
 		}
 		
+		override public function update():void 
+		{
+			super.update();
+			if (this.getScreenXY().x + 250 < 0) {
+				_gamestate._platform_group.remove(this);
+				_gamestate._toRemove.push(this._obj);
+			}
+		}
+		
 		private function getNextImg():Class {
-			var n:int = (int)(Math.random() * 8);
+			var n:int = (int)(Math.random() * 7);
 			switch(n) {
 			case 0:
 				return HouseImg;
