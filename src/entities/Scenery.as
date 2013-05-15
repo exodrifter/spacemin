@@ -13,6 +13,7 @@ package entities
 		[Embed(source = '../res/garbagecan.png')] private static const GarbageCanImg:Class;
 		[Embed(source = '../res/streetlight.png')] private static const StreetLightImg:Class;
 		[Embed(source = '../res/bike.png')] private static const BikeImg:Class;
+		[Embed(source = '../res/truck.png')] private static const TruckImg:Class;
 		
 		public var _filter:b2FilterData;
 		
@@ -35,7 +36,7 @@ package entities
 		}
 		
 		private function getNextImg():Class {
-			var n:int = (int)(Math.random() * 7);
+			var n:int = (int)(Math.random() * 8);
 			switch(n) {
 			case 0:
 				return HouseImg;
@@ -51,6 +52,8 @@ package entities
 				return StreetLightImg;
 			case 6:
 				return BikeImg;
+			case 7:
+				return TruckImg;
 			}
 			return null; // Should be unreachable
 		}
