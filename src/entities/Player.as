@@ -72,8 +72,17 @@ package entities
 			}
 		}
 		
+		private var _minGroundPoundVel:Number = 9, _maxGroundPoundVel:Number = 15;
+		private var _minBounceVel:Number = 5, _maxBounceVel:Number =8;
+		
 		public function ground(grounded:Boolean):void
 		{
+			if (grounded && _landing)
+			{
+				_obj.SetLinearVelocity(new b2Vec2(_obj.GetLinearVelocity().x, -(Math.random() * (_maxGroundPoundVel - _minGroundPoundVel) + _minGroundPoundVel)));
+			} else if (grounded) {
+				_obj.SetLinearVelocity(new b2Vec2(_obj.GetLinearVelocity().x, -(Math.random() * (_maxBounceVel - _minBounceVel) + _minBounceVel)));
+			}
 			_grounded = grounded;
 			_canJump = _canJump || _grounded;
 			_landing = false;
