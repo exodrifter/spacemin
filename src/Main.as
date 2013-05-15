@@ -1,7 +1,7 @@
 package
 {
-	import org.flixel.*;
 	import com.flashdynamix.utils.SWFProfiler;
+	import org.flixel.*;
 	
 	[SWF(width = "800", height = "500", backgroundColor = "#FFBEBA")]
 	
@@ -16,7 +16,7 @@ package
 		public static const ZOOM:int = 2;
 		public static const LOGIC_FRAMERATE:int = 60, RENDER_FRAMERATE:int = 60;
 		public static const USE_SYSTEM_CURSOR:Boolean = false;
-
+		
 		public function Main():void
 		{
 			super(SCREEN_X, SCREEN_Y, MenuState, ZOOM, LOGIC_FRAMERATE,

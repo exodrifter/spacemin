@@ -4,8 +4,6 @@ package entities
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2FilterData;
 	import Box2D.Dynamics.b2World;
-	import flash.accessibility.Accessibility;
-	import flash.text.engine.ElementFormat;
 	import org.flixel.FlxEmitter;
 	import org.flixel.FlxG;
 	

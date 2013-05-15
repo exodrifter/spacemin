@@ -1,9 +1,8 @@
 package entities
 {
-	import org.flixel.*;
-	
-	import Box2D.Dynamics.*;
 	import Box2D.Common.Math.*;
+	import Box2D.Dynamics.*;
+	import org.flixel.*;
 	
 	public class Player extends B2FlxSprite
 	{
