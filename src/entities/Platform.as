@@ -4,17 +4,21 @@ package entities
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2FilterData;
 	import Box2D.Dynamics.b2World;
+	import flash.geom.Rectangle;
+	import org.flixel.FlxRect;
 	
 	public class Platform extends B2FlxSprite
 	{
-		[Embed(source = '../res/platform.png')] public const Img:Class;
+		/** The shape of the platform */
+		public var shape:FlxRect;
 		
 		public var _filter:b2FilterData;
 		
 		public function Platform(W:b2World, G:GameState, X:Number, Y:Number) 
 		{
 			super(W, G, X, Y, 250, 200);
-			loadGraphic(Img);
+			this.makeGraphic(250, 200, 0xffff6060);
+			this._pixels.fillRect(new Rectangle(30, 0, 190, 200), 0xffc60d00);
 			
 			// Physics Properties
 			_filter = new b2FilterData();
