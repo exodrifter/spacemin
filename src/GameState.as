@@ -50,8 +50,17 @@ package
 		private var _finaldistance:FlxText = new FlxText(Main.SCREEN_X2 - 200, 107, 400, "Distance: ");
 		private var _finaltotal:FlxText = new FlxText(Main.SCREEN_X2 - 200, 120, 400, "Total: ");
 		
+		// The total distance traveled
+		private var _distance_traveled:Number;
+		// The change in distance traveled
+		private var _distace_delta:Number;
+		private var _platform_time:Number;
+		private var _platform_timer:Number;
+		
 		// The physics world
 		public var _world:b2World;
+		// A list of b2Body physics objects to remove
+		public var _toRemove:Vector.<b2Body>;
 		
 		// The player object
 		public var _player:Player;
@@ -59,16 +68,6 @@ package
 		// The platforms in the game
 		public var _platforms:Vector.<Platform>;
 		public var _platform_group:FlxGroup;
-		
-		// A list of b2Body physics objects to remove
-		public var _toRemove:Vector.<b2Body>;
-		
-		// The total distance traveled
-		private var _distance_traveled:Number;
-		// The change in distance traveled
-		private var _distace_delta:Number;
-		private var _platform_time:Number;
-		private var _platform_timer:Number;
 		
 		public var bloodEmiter:FlxEmitter;
 		public static var minParticleSize:Number = 3;
@@ -79,7 +78,6 @@ package
 		public var beams:FlxGroup;
 		public var airplanes:FlxGroup;
 		public var planeEmitter:FlxEmitter;
-		public var potatoes:FlxGroup;
 		
 		private var _bga:MountainLayer;
 		private var _bgb:CityLayer;
@@ -191,8 +189,6 @@ package
 			// Middle layer
 			add(airplanes);
 			add(planeEmitter);
-			potatoes = new FlxGroup();
-			add(potatoes);
 			add(_distance);
 			add(_bgb);
 			
