@@ -19,6 +19,7 @@ package entities
 			super(W, G, X, Y, 250, 200);
 			this.makeGraphic(250, 200, 0xffff6060);
 			this._pixels.fillRect(new Rectangle(30, 0, 190, 200), 0xffc60d00);
+			this.resetHelpers();
 			
 			// Physics Properties
 			_filter = new b2FilterData();
