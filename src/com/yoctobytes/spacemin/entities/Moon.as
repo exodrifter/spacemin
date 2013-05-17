@@ -1,15 +1,16 @@
-package entities 
+package com.yoctobytes.spacemin.entities 
 {
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2FilterData;
 	import Box2D.Dynamics.b2World;
+	import com.yoctobytes.spacemin.GameState;
 	import org.flixel.FlxEmitter;
 	import org.flixel.FlxG;
 	
 	public class Moon extends B2FlxSprite
 	{
-		[Embed(source = '../res/Moon.png')] public const Img:Class;
+		[Embed(source = "../res/Moon.png")] public const Img:Class;
 		[Embed(source = "../res/moonCrash.mp3")] public const CrashSnd:Class;
 		
 		public var _filter:b2FilterData;

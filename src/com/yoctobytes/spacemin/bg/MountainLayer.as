@@ -1,5 +1,6 @@
-package bg 
+package com.yoctobytes.spacemin.bg 
 {
+	import com.yoctobytes.spacemin.GameState;
 	import org.flixel.FlxSprite;
 	
 	/**
@@ -7,15 +8,15 @@ package bg
 	 */
 	public class MountainLayer extends ParallaxLayer
 	{
-		// [Embed(source = '../res/bg-a.png')] private var _bg_a:Class;
-		[Embed(source = '../res/bg-a1.png')] private var _bg_a1:Class;
-		[Embed(source = '../res/bg-a2.png')] private var _bg_a2:Class;
-		[Embed(source = '../res/bg-a3.png')] private var _bg_a3:Class;
-		[Embed(source = '../res/bg-a4.png')] private var _bg_a4:Class;
-		[Embed(source = '../res/bg-a5.png')] private var _bg_a5:Class;
+		// [Embed(source = "../res/bg-a.png")] private var _bg_a:Class;
+		[Embed(source = "../res/bg-a1.png")] private var _bg_a1:Class;
+		[Embed(source = "../res/bg-a2.png")] private var _bg_a2:Class;
+		[Embed(source = "../res/bg-a3.png")] private var _bg_a3:Class;
+		[Embed(source = "../res/bg-a4.png")] private var _bg_a4:Class;
+		[Embed(source = "../res/bg-a5.png")] private var _bg_a5:Class;
 		
-		private const SCREEN_X:int = Main.SCREEN_X;
-		private const SCREEN_Y:int = Main.SCREEN_Y;
+		private const SCREEN_X:int = com.yoctobytes.spacemin.Main.SCREEN_X;
+		private const SCREEN_Y:int = com.yoctobytes.spacemin.Main.SCREEN_Y;
 		
 		public function MountainLayer(G:GameState, Ratio:Number) 
 		{

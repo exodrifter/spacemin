@@ -1,18 +1,18 @@
-package
+package com.yoctobytes.spacemin 
 {
-	import bg.CityLayer;
-	import bg.MountainLayer;
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2World;
-	import entities.Airplane;
-	import entities.B2FlxSprite;
-	import entities.Beam;
-	import entities.Moon;
-	import entities.MovingParticle;
-	import entities.Platform;
-	import entities.Player;
-	import entities.Scenery;
+	import com.yoctobytes.spacemin.bg.CityLayer;
+	import com.yoctobytes.spacemin.bg.MountainLayer;
+	import com.yoctobytes.spacemin.entities.Airplane;
+	import com.yoctobytes.spacemin.entities.B2FlxSprite;
+	import com.yoctobytes.spacemin.entities.Beam;
+	import com.yoctobytes.spacemin.entities.Moon;
+	import com.yoctobytes.spacemin.entities.MovingParticle;
+	import com.yoctobytes.spacemin.entities.Platform;
+	import com.yoctobytes.spacemin.entities.Player;
+	import com.yoctobytes.spacemin.entities.Scenery;
 	import org.flixel.FlxButton;
 	import org.flixel.FlxEmitter;
 	import org.flixel.FlxG;
@@ -24,8 +24,8 @@ package
 	
 	public class GameState extends FlxState
 	{
-		[Embed(source = 'res/TestTrash.png')] private static const TrashImg:Class;
-		[Embed(source="res/gameover.mp3")] private static var GameOverSound:Class;
+		[Embed(source = "res/TestTrash.png")] private static const TrashImg:Class;
+		[Embed(source = "res/gameover.mp3")] private static var GameOverSound:Class;
 		
 		// Game UI
 		private var _score:FlxText = new FlxText(Main.SCREEN_X2 - 50, 60, 100, "0");

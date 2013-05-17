@@ -1,4 +1,4 @@
-package
+package com.yoctobytes.spacemin 
 {
 	import org.flixel.system.FlxPreloader;
 	

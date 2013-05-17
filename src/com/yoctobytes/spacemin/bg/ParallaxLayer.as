@@ -1,5 +1,6 @@
-package bg
+package com.yoctobytes.spacemin.bg
 {
+	import com.yoctobytes.spacemin.GameState;
 	import org.flixel.FlxGroup;
 	import org.flixel.FlxObject;
 	import org.flixel.FlxSprite;

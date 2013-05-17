@@ -1,20 +1,21 @@
-package entities 
+package com.yoctobytes.spacemin.entities 
 {
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2FilterData;
 	import Box2D.Dynamics.b2World;
+	import com.yoctobytes.spacemin.GameState;
 	
 	public class Scenery extends B2FlxSprite
 	{
-		[Embed(source = '../res/house.png')] private static const HouseImg:Class;
-		[Embed(source = '../res/house2.png')] private static const House2Img:Class;
-		[Embed(source = '../res/car.png')] private static const CarImg:Class;
-		[Embed(source = '../res/tree.png')] private static const TreeImg:Class;
-		[Embed(source = '../res/garbagecan.png')] private static const GarbageCanImg:Class;
-		[Embed(source = '../res/streetlight.png')] private static const StreetLightImg:Class;
-		[Embed(source = '../res/bike.png')] private static const BikeImg:Class;
-		[Embed(source = '../res/truck.png')] private static const TruckImg:Class;
-		[Embed(source = '../res/genie.png')] private static const GenieImg:Class;
+		[Embed(source = "../res/house.png")] private static const HouseImg:Class;
+		[Embed(source = "../res/house2.png")] private static const House2Img:Class;
+		[Embed(source = "../res/car.png")] private static const CarImg:Class;
+		[Embed(source = "../res/tree.png")] private static const TreeImg:Class;
+		[Embed(source = "../res/garbagecan.png")] private static const GarbageCanImg:Class;
+		[Embed(source = "../res/streetlight.png")] private static const StreetLightImg:Class;
+		[Embed(source = "../res/bike.png")] private static const BikeImg:Class;
+		[Embed(source = "../res/truck.png")] private static const TruckImg:Class;
+		[Embed(source = "../res/genie.png")] private static const GenieImg:Class;
 		
 		public var _filter:b2FilterData;
 		

@@ -1,10 +1,12 @@
-package entities
+package com.yoctobytes.spacemin.entities
 {
-	import Box2D.Collision.*;
-	import Box2D.Collision.Shapes.*;
-	import Box2D.Common.Math.*;
-	import Box2D.Dynamics.*;
-	import org.flixel.*;
+	import Box2D.Collision.Shapes.b2PolygonShape;
+	import Box2D.Dynamics.b2Body;
+	import Box2D.Dynamics.b2BodyDef;
+	import Box2D.Dynamics.b2FixtureDef;
+	import Box2D.Dynamics.b2World;
+	import com.yoctobytes.spacemin.GameState;
+	import org.flixel.FlxSprite;
 	
 	public class B2FlxSprite extends FlxSprite
 	{

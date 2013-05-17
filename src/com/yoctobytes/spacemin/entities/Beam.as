@@ -1,11 +1,12 @@
-package entities 
+package com.yoctobytes.spacemin.entities 
 {
+	import com.yoctobytes.spacemin.GameState;
 	import org.flixel.FlxG;
 	import org.flixel.FlxSprite;
 	
 	public class Beam extends FlxSprite
 	{
-		[Embed(source = '../res/beam.png')] public const Img:Class;
+		[Embed(source = "../res/beam.png")] public const Img:Class;
 		
 		public var _gamestate:GameState;
 		

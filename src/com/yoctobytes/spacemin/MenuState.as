@@ -1,6 +1,9 @@
-package
+package com.yoctobytes.spacemin 
 {
-	import org.flixel.*;
+	import org.flixel.FlxButton;
+	import org.flixel.FlxG;
+	import org.flixel.FlxState;
+	import org.flixel.FlxText;
 	
 	/**
 	 * The main menu for SpaceMin

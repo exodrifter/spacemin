@@ -1,5 +1,6 @@
-package bg 
+package com.yoctobytes.spacemin.bg 
 {
+	import com.yoctobytes.spacemin.GameState;
 	import org.flixel.FlxSprite;
 	
 	/**
@@ -7,15 +8,15 @@ package bg
 	 */
 	public class CityLayer extends ParallaxLayer
 	{
-		// [Embed(source = '../res/bg-b.png')] private var _bg_b:Class;
-		[Embed(source = '../res/bg-b1.png')] private var _bg_b1:Class;
-		[Embed(source = '../res/bg-b2.png')] private var _bg_b2:Class;
-		[Embed(source = '../res/bg-b3.png')] private var _bg_b3:Class;
-		[Embed(source = '../res/bg-b4.png')] private var _bg_b4:Class;
-		[Embed(source = '../res/bg-b5.png')] private var _bg_b5:Class;
+		// [Embed(source = "/res/bg-b.png")] private var _bg_b:Class;
+		[Embed(source = "../res/bg-b1.png")] private var _bg_b1:Class;
+		[Embed(source = "../res/bg-b2.png")] private var _bg_b2:Class;
+		[Embed(source = "../res/bg-b3.png")] private var _bg_b3:Class;
+		[Embed(source = "../res/bg-b4.png")] private var _bg_b4:Class;
+		[Embed(source = "../res/bg-b5.png")] private var _bg_b5:Class;
 		
-		private const SCREEN_X:int = Main.SCREEN_X;
-		private const SCREEN_Y:int = Main.SCREEN_Y;
+		private const SCREEN_X:int = com.yoctobytes.spacemin.Main.SCREEN_X;
+		private const SCREEN_Y:int = com.yoctobytes.spacemin.Main.SCREEN_Y;
 		
 		public function CityLayer(G:GameState, Ratio:Number) 
 		{

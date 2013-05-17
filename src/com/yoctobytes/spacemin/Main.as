@@ -1,4 +1,4 @@
-package
+package com.yoctobytes.spacemin 
 {
 	import com.flashdynamix.utils.SWFProfiler;
 	import org.flixel.*;

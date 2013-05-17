@@ -1,16 +1,17 @@
-package entities 
+package com.yoctobytes.spacemin.entities 
 {
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2FilterData;
 	import Box2D.Dynamics.b2World;
-	import entities.B2FlxSprite;
+	import com.yoctobytes.spacemin.entities.B2FlxSprite;
+	import com.yoctobytes.spacemin.GameState;
 	import org.flixel.FlxG;
 	
 	public class Airplane extends B2FlxSprite
 	{
-		[Embed(source = '../res/plane.png')] public const Img:Class;
-		[Embed(source = '../res/planeCrash.mp3')] public const CrashSnd:Class;
+		[Embed(source = "../res/plane.png")] public const Img:Class;
+		[Embed(source = "../res/planeCrash.mp3")] public const CrashSnd:Class;
 		
 		private var _filter:b2FilterData;
 		
