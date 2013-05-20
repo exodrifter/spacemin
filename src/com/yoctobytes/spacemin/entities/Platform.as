@@ -42,7 +42,7 @@ package com.yoctobytes.spacemin.entities
 				this._obj.SetLinearVelocity(new b2Vec2(-_gamestate._player._obj.GetLinearVelocity().x, this._obj.GetLinearVelocity().y));
 			}
 			if (this.getScreenXY().x + 250 < 0) {
-				_gamestate._platform_group.remove(this);
+				_gamestate._platforms.remove(this);
 				_gamestate._toRemove.push(this._obj);
 			}
 		}

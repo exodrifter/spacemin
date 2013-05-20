@@ -10,9 +10,9 @@ package com.yoctobytes.spacemin
 	import com.yoctobytes.spacemin.entities.Beam;
 	import com.yoctobytes.spacemin.entities.Moon;
 	import com.yoctobytes.spacemin.entities.MovingParticle;
-	import com.yoctobytes.spacemin.entities.Platform;
 	import com.yoctobytes.spacemin.entities.Player;
 	import com.yoctobytes.spacemin.entities.Scenery;
+	import com.yoctobytes.spacemin.util.Platforms;
 	import org.flixel.FlxButton;
 	import org.flixel.FlxEmitter;
 	import org.flixel.FlxG;
@@ -66,8 +66,7 @@ package com.yoctobytes.spacemin
 		public var _player:Player;
 		
 		// The platforms in the game
-		public var _platforms:Vector.<Platform>;
-		public var _platform_group:FlxGroup;
+		public var _platforms:Platforms;
 		
 		public var bloodEmiter:FlxEmitter;
 		public static var minParticleSize:Number = 3;
@@ -170,15 +169,10 @@ package com.yoctobytes.spacemin
 			
 			_player = new Player(_world, this, 50, 200, 20, 20);
 			
-			// Floor:
-			_platforms = new Vector.<Platform>();
-			_platform_group = new FlxGroup();
-			var floor:Platform = new Platform(_world, this, 0, 230);
-			_platform_group.add(floor);
-			_platforms.push(floor);
-			var floor2:Platform = new Platform(_world, this, 300, 230);
-			_platform_group.add(floor2);
-			_platforms.push(floor2);
+			// Platform initialization
+			_platforms = new Platforms(_world, this);
+			
+			// Add the layers in correct rendering order
 			
 			// Back Layer
 			add(_score);
@@ -199,7 +193,7 @@ package com.yoctobytes.spacemin
 			add(_player);
 			add(bloodEmiter);
 			
-			add(_platform_group);
+			add(_platforms);
 			
 			add(_front_ui_group);
 			
@@ -229,40 +223,6 @@ package com.yoctobytes.spacemin
 		public function spawnAirplane(X:Number, Y:Number):void
 		{
 			airplanes.add(new Airplane(_world, this, X, Y));
-		}
-		
-		// Should be between 0 and 1
-		public static var minScenery:int = 1;
-		public static var maxScenery:int = 6; 
-		
-		private static var _platform_spawn_height:int = 230;
-		
-		public function spawnPlatform():void
-		{
-			// Spawn the platform
-			_platform_spawn_height = 230 + (int)(Math.random() * 50) - 25
-			if (_platform_spawn_height > Main.SCREEN_Y-10) {
-				_platform_spawn_height = Main.SCREEN_Y-10;
-			} else if (_platform_spawn_height < Main.SCREEN_Y-100) {
-				_platform_spawn_height = Main.SCREEN_Y-100;
-			}
-			var platform:Platform = new Platform(_world, this, Main.SCREEN_X, _platform_spawn_height);
-			_platforms.push(platform);
-			_platform_group.add(platform);
-			
-			// Spawn the scenery
-			var numScene:int = Math.floor(Math.random() * (maxScenery - minScenery) + minScenery);
-			for (var g:int = 0; g < numScene; g++)
-			{
-				var newScenery:Scenery = new Scenery(_world, this, Math.random() * (250) + Main.SCREEN_X, _platform_spawn_height - 30);
-				scenery.push(newScenery);
-				sceneryGroup.add(newScenery);
-			}
-			
-			// Spawn an airplane
-			if (Math.random() > 0.85) {
-				spawnAirplane(Main.SCREEN_X, 20 + 50 * Math.random());
-			}
 		}
 		
 		override public function update():void
@@ -310,7 +270,7 @@ package com.yoctobytes.spacemin
 			
 			// Spawn Platforms
 			if(_platform_timer > _platform_time) {
-				spawnPlatform();
+				_platforms.spawnPlatform();
 				_platform_timer = 0;
 				_platform_time = _platform_time * 1.05;
 			}
