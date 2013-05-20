@@ -78,20 +78,24 @@ package com.yoctobytes.spacemin.entities
 		
 		public function ground(grounded:Boolean):void
 		{
+			_grounded = grounded;
+			_canJump = _canJump || _grounded;
+			if (_gamestate.gameover) {
+				_landing = false;
+				return;
+			}
 			if (grounded && _landing)
 			{
 				_obj.SetLinearVelocity(new b2Vec2(_obj.GetLinearVelocity().x, -(Math.random() * (_maxGroundPoundVel - _minGroundPoundVel) + _minGroundPoundVel)));
 			} else if (grounded) {
 				_obj.SetLinearVelocity(new b2Vec2(_obj.GetLinearVelocity().x, -(Math.random() * (_maxBounceVel - _minBounceVel) + _minBounceVel)));
 			}
-			_grounded = grounded;
-			_canJump = _canJump || _grounded;
-			_landing = false;
 			if (_canJump) {
 				loadGraphic(JumpImg);
 			} else {
 				loadGraphic(CubeImg);
 			}
+			_landing = false;
 		}
 		
 		public function isGrounded():Boolean
