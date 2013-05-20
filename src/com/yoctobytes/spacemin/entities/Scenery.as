@@ -40,7 +40,7 @@ package com.yoctobytes.spacemin.entities
 		override public function update():void 
 		{
 			super.update();
-			if (this.getScreenXY().x + 250 < 0) {
+			if (this.getScreenXY().x + 100 < 0) {
 				_gamestate.sceneryGroup.remove(this);
 				_gamestate._toRemove.push(this._obj);
 			}

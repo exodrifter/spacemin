@@ -340,6 +340,10 @@ package com.yoctobytes.spacemin
 			return _gameover;
 		}
 		
+		public function get distanceTraveled():Number {
+			return _distance_traveled;
+		}
+		
 		public function get distanceDelta():Number {
 			return _distace_delta;
 		}

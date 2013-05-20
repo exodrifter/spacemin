@@ -22,6 +22,9 @@ package com.yoctobytes.spacemin.util
 		
 		private var _platform_timer:Timer;
 		
+		private var _screenX:Number = Main.SCREEN_X;
+		private var _screenY:Number = Main.SCREEN_Y;
+		
 		public function Platforms(W:b2World, G:GameState) 
 		{
 			_platforms = new Vector.<Platform>();
@@ -50,30 +53,38 @@ package com.yoctobytes.spacemin.util
 		
 		public function spawnPlatform():void
 		{
-			// Spawn the platform
-			_platform_spawn_height = 230 + (int)(Math.random() * 50) - 25
-			if (_platform_spawn_height > Main.SCREEN_Y-10) {
-				_platform_spawn_height = Main.SCREEN_Y-10;
-			} else if (_platform_spawn_height < Main.SCREEN_Y-100) {
-				_platform_spawn_height = Main.SCREEN_Y-100;
-			}
-			var platform:Platform = new Platform(_world, _gamestate, Main.SCREEN_X, _platform_spawn_height);
-			_platforms.push(platform);
-			this.add(platform);
+			// Spawn platforms
+			addPlatform(new Platform(_world, _gamestate, _screenX, randHeight()));
 			
 			// Spawn the scenery
 			var numScene:int = Math.floor(Math.random() * (_maxScenery - _minScenery) + _minScenery);
 			for (var g:int = 0; g < numScene; g++)
 			{
-				var newScenery:Scenery = new Scenery(_world, _gamestate, Math.random() * (250) + Main.SCREEN_X, _platform_spawn_height - 30);
+				var newScenery:Scenery = new Scenery(_world, _gamestate, Math.random() * (250) + _screenX, _platform_spawn_height - 30);
 				_gamestate.scenery.push(newScenery);
 				_gamestate.sceneryGroup.add(newScenery);
 			}
 			
 			// Spawn an airplane
-			if (Math.random() > 0.85) {
-				_gamestate.spawnAirplane(Main.SCREEN_X, 20 + 50 * Math.random());
+			if (Math.random() > 0.85)
+			{
+				_gamestate.spawnAirplane(_screenX, 20 + 50 * Math.random());
 			}
+		}
+		
+		private function addPlatform(platform:Platform):void {
+			_platforms.push(platform);
+			this.add(platform);
+		}
+		
+		private function randHeight():Number {
+			_platform_spawn_height = 230 + (int)(Math.random() * 50) - 25
+			if (_platform_spawn_height > _screenY-10) {
+				_platform_spawn_height = _screenY-10;
+			} else if (_platform_spawn_height < _screenY-100) {
+				_platform_spawn_height = _screenY-100;
+			}
+			return _platform_spawn_height;
 		}
 	}
 }
