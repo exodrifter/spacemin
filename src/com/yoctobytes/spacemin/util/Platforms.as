@@ -20,6 +20,8 @@ package com.yoctobytes.spacemin.util
 		public var _maxScenery:int = 6; 
 		public var _platform_spawn_height:int = 230;
 		
+		private var _platform_timer:Timer;
+		
 		public function Platforms(W:b2World, G:GameState) 
 		{
 			_platforms = new Vector.<Platform>();
@@ -33,6 +35,17 @@ package com.yoctobytes.spacemin.util
 			var floor2:Platform = new Platform(_world, _gamestate, 300, 230);
 			this.add(floor2);
 			_platforms.push(floor2);
+			
+			_platform_timer = new Timer(1200, 350);
+		}
+		
+		override public function update():void
+		{
+			super.update();
+			if(_platform_timer.update(_gamestate.distanceDelta)) {
+				spawnPlatform();
+				_platform_timer._time *= 1.05;
+			}
 		}
 		
 		public function spawnPlatform():void

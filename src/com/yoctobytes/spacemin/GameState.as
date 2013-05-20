@@ -54,8 +54,6 @@ package com.yoctobytes.spacemin
 		private var _distance_traveled:Number;
 		// The change in distance traveled
 		private var _distace_delta:Number;
-		private var _platform_time:Number;
-		private var _platform_timer:Number;
 		
 		// The physics world
 		public var _world:b2World;
@@ -198,8 +196,6 @@ package com.yoctobytes.spacemin
 			add(_front_ui_group);
 			
 			// Reset game variables
-			_platform_time = 700;
-			_platform_timer = 300;
 			_distance_traveled = 0;
 			_distace_delta = 0;
 			FlxG.score = 0;
@@ -269,12 +265,7 @@ package com.yoctobytes.spacemin
 			}
 			
 			// Spawn Platforms
-			if(_platform_timer > _platform_time) {
-				_platforms.spawnPlatform();
-				_platform_timer = 0;
-				_platform_time = _platform_time * 1.05;
-			}
-			_platform_timer += _distace_delta;
+			_platforms.update();
 			
 			if (_player._obj.GetPosition().x > 2 || _player._obj.GetPosition().x < 2) {
 				_player._obj.SetPosition(new b2Vec2(2,_player._obj.GetPosition().y));
