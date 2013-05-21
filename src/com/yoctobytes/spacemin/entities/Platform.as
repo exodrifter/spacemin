@@ -10,16 +10,22 @@ package com.yoctobytes.spacemin.entities
 	
 	public class Platform extends B2FlxSprite
 	{
-		/** The shape of the platform */
-		public var shape:FlxRect;
+		/** The width of the left edge of the platform */
+		private var _leftEdge:uint;
+		/** The width of the right edge of the platform */
+		private var _rightEdge:uint;
 		
 		public var _filter:b2FilterData;
 		
-		public function Platform(W:b2World, G:GameState, X:Number, Y:Number) 
+		public function Platform(W:b2World, G:GameState, X:Number, Y:Number, Width:uint, LeftEdge:uint, RightEdge:uint) 
 		{
-			super(W, G, X, Y, 250, 200);
-			this.makeGraphic(250, 200, 0xffff6060);
-			this._pixels.fillRect(new Rectangle(30, 0, 190, 200), 0xffc60d00);
+			super(W, G, X, Y, Width, 200);
+			_leftEdge = LeftEdge;
+			_rightEdge = RightEdge;
+			
+			// Make the graphic for the platform
+			this.makeGraphic(Width, 200, 0xffff6060);
+			this._pixels.fillRect(new Rectangle(LeftEdge, 0, Width - (LeftEdge + RightEdge), 200), 0xffc60d00);
 			this.resetHelpers();
 			
 			// Physics Properties
@@ -45,6 +51,14 @@ package com.yoctobytes.spacemin.entities
 				_gamestate._platforms.remove(this);
 				_gamestate._toRemove.push(this._obj);
 			}
+		}
+		
+		public function get leftEdge():uint {
+			return _leftEdge;
+		}
+		
+		public function get rightEdge():uint {
+			return _rightEdge;
 		}
 	}
 }

@@ -32,10 +32,10 @@ package com.yoctobytes.spacemin.util
 			_gamestate = G;
 			
 			// Initialize the first two platforms
-			var floor:Platform = new Platform(_world, _gamestate, 0, 230);
+			var floor:Platform = new Platform(_world, _gamestate, 0, 230, 250, 125, 125);
 			this.add(floor);
 			_platforms.push(floor);
-			var floor2:Platform = new Platform(_world, _gamestate, 300, 230);
+			var floor2:Platform = new Platform(_world, _gamestate, 300, 230, 250, 125, 125);
 			this.add(floor2);
 			_platforms.push(floor2);
 			
@@ -54,7 +54,12 @@ package com.yoctobytes.spacemin.util
 		public function spawnPlatform():void
 		{
 			// Spawn platforms
-			addPlatform(new Platform(_world, _gamestate, _screenX, randHeight()));
+			if (_gamestate.distanceTraveled < 30000) {
+				var amt:uint = 125 - (int)((_gamestate.distanceTraveled / 30000.0) * 95);
+				addPlatform(new Platform(_world, _gamestate, _screenX, randHeight(), 250, amt, amt));
+			} else {
+				addPlatform(new Platform(_world, _gamestate, _screenX, randHeight(), 250, 30, 30));
+			}
 			
 			// Spawn the scenery
 			var numScene:int = Math.floor(Math.random() * (_maxScenery - _minScenery) + _minScenery);
