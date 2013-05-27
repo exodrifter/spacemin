@@ -8,12 +8,11 @@ package com.yoctobytes.spacemin.bg
 	 */
 	public class CityLayer extends ParallaxLayer
 	{
-		// [Embed(source = "/res/bg-b.png")] private var _bg_b:Class;
-		[Embed(source = "../res/bg-b1.png")] private var _bg_b1:Class;
-		[Embed(source = "../res/bg-b2.png")] private var _bg_b2:Class;
-		[Embed(source = "../res/bg-b3.png")] private var _bg_b3:Class;
-		[Embed(source = "../res/bg-b4.png")] private var _bg_b4:Class;
-		[Embed(source = "../res/bg-b5.png")] private var _bg_b5:Class;
+		[Embed(source = "../res/bg2-a1.png")] private var _bg1:Class;
+		[Embed(source = "../res/bg2-a2.png")] private var _bg2:Class;
+		[Embed(source = "../res/bg2-a3.png")] private var _bg3:Class;
+		[Embed(source = "../res/bg2-a4.png")] private var _bg4:Class;
+		[Embed(source = "../res/bg2-a5.png")] private var _bg5:Class;
 		
 		private const SCREEN_X:int = com.yoctobytes.spacemin.Main.SCREEN_X;
 		private const SCREEN_Y:int = com.yoctobytes.spacemin.Main.SCREEN_Y;
@@ -47,15 +46,15 @@ package com.yoctobytes.spacemin.bg
 			var n:int = (int)(Math.random() * 5);
 			switch(n) {
 			case 0:
-				return new FlxSprite(offset, SCREEN_Y-100, _bg_b1);
+				return new FlxSprite(offset, SCREEN_Y-100, _bg1);
 			case 1:
-				return new FlxSprite(offset, SCREEN_Y-100, _bg_b2);
+				return new FlxSprite(offset, SCREEN_Y-100, _bg2);
 			case 2:
-				return new FlxSprite(offset, SCREEN_Y-100, _bg_b3);
+				return new FlxSprite(offset, SCREEN_Y-100, _bg3);
 			case 3:
-				return new FlxSprite(offset, SCREEN_Y-100, _bg_b4);
+				return new FlxSprite(offset, SCREEN_Y-100, _bg4);
 			case 4:
-				return new FlxSprite(offset, SCREEN_Y-100, _bg_b5);
+				return new FlxSprite(offset, SCREEN_Y-100, _bg5);
 			}
 			return null; // Should be unreachable
 		}
