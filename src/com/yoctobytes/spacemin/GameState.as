@@ -29,7 +29,6 @@ package com.yoctobytes.spacemin
 		
 		// Game UI
 		private var _score:FlxText = new FlxText(Main.SCREEN_X2 - 50, 60, 100, "0");
-		private var _distance:FlxText = new FlxText(Main.SCREEN_X2 - 50, 155, 100, "0");
 		private var _offscreen:FlxText = new FlxText(11, 5, 100, "0");
 		private var _offscreen_disp:Boolean = false;
 		
@@ -46,9 +45,8 @@ package com.yoctobytes.spacemin
 		private var _retry:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 200, "Retry", MenuState.toGame);
 		private var _quitend:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 220, "Quit", MenuState.toMenu);
 		private var _endtitle:FlxText = new FlxText(Main.SCREEN_X2 - 50, 20, 100, "GAME OVER");
-		private var _finalscore:FlxText = new FlxText(Main.SCREEN_X2 - 200, 94, 400, "Points: ");
-		private var _finaldistance:FlxText = new FlxText(Main.SCREEN_X2 - 200, 107, 400, "Distance: ");
-		private var _finaltotal:FlxText = new FlxText(Main.SCREEN_X2 - 200, 120, 400, "Total: ");
+		private var _randomquote:FlxText = new FlxText(Main.SCREEN_X2 - 200, 94, 400, "");
+		private var _finaltotal:FlxText = new FlxText(Main.SCREEN_X2 - 200, 120, 400, "FINAL SCORE: ");
 		
 		// The total distance traveled
 		private var _distance_traveled:Number;
@@ -91,14 +89,12 @@ package com.yoctobytes.spacemin
 			
 			// UI initialization
 			_score.setFormat(null, 16, 0xff7777, "center", 0);
-			_distance.setFormat(null, 8, 0x663333, "center", 0);
 			_offscreen.setFormat(null, 8, 0x663333, "center", 0);
 			
 			_title.setFormat(null, 16, 0xffffff, "center", 0);
 			
 			_endtitle.setFormat(null, 16, 0xffffff, "center", 0);
-			_finalscore.setFormat(null, 8, 0xffffff, "center", 0);
-			_finaldistance.setFormat(null, 8, 0xffffff, "center", 0);
+			_randomquote.setFormat(null, 8, 0xffffff, "center", 0);
 			_finaltotal.setFormat(null, 16, 0xffffff, "center", 0);
 			_front_ui_group = new FlxGroup();
 			
@@ -181,7 +177,6 @@ package com.yoctobytes.spacemin
 			// Middle layer
 			add(airplanes);
 			add(planeEmitter);
-			add(_distance);
 			add(_bgb);
 			
 			// Front layer
@@ -277,7 +272,6 @@ package com.yoctobytes.spacemin
 			_world.Step(FlxG.elapsed, 6, 3);
 			var nx:Number = _player._obj.GetWorldCenter().x;
 			_distance_traveled += _distace_delta;
-			_distance.text = ((int)(_distance_traveled/3000))+"."+((int)(_distance_traveled/3%1000/100))+" km";
 			super.update();
 			while (_toRemove.length != 0)
 			{
@@ -312,15 +306,11 @@ package com.yoctobytes.spacemin
 			if (_gameover) {
 				return;
 			}
-			remove(_distance);
 			remove(_score);
 			_gameover = true;
-			_finalscore.text = "Points: " + FlxG.score;
-			_finaldistance.text = "Distance: " + ((int)(_distance_traveled/3000)) + "." + ((int)(_distance_traveled/3%1000/100)) + " km";
-			_finaltotal.text = "Total: " + (FlxG.score+(int)(_distance_traveled/3000));
+			_finaltotal.text = "FINAL SCORE: " + (FlxG.score+(int)(_distance_traveled/3000));
 			_front_ui_group.add(_endtitle);
-			_front_ui_group.add(_finalscore);
-			_front_ui_group.add(_finaldistance);
+			_front_ui_group.add(_randomquote);
 			_front_ui_group.add(_finaltotal);
 			_front_ui_group.add(MenuState.setSounds(_retry));
 			_front_ui_group.add(MenuState.setSounds(_quitend));
