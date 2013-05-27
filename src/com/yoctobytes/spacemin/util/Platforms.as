@@ -54,8 +54,8 @@ package com.yoctobytes.spacemin.util
 		public function spawnPlatform():void
 		{
 			// Spawn platforms
-			if (_gamestate.distanceTraveled < 30000) {
-				var amt:uint = 125 - (int)((_gamestate.distanceTraveled / 30000.0) * 95);
+			if (_gamestate.distanceTraveled < 5000) {
+				var amt:uint = 125 - (int)((_gamestate.distanceTraveled / 5000.0) * 95);
 				addPlatform(new Platform(_world, _gamestate, _screenX, randHeight(), 250, amt, amt));
 			} else {
 				addPlatform(new Platform(_world, _gamestate, _screenX, randHeight(), 250, 30, 30));
