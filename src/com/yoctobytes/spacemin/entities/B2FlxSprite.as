@@ -19,6 +19,9 @@ package com.yoctobytes.spacemin.entities
 		public var _bodyDef:b2BodyDef
 		public var _obj:b2Body;
 		
+		// Identifies the B2FlxSprite as an entity
+		public var _enum:EntityEnum;
+		
 		public var _width:Number;
 		public var _height:Number;
 		
@@ -32,7 +35,7 @@ package com.yoctobytes.spacemin.entities
 		//Default body type
 		public var _type:uint = b2Body.b2_dynamicBody;
 		
-		public function B2FlxSprite(W:b2World, G:GameState, X:Number, Y:Number, Width:Number, Height:Number):void
+		public function B2FlxSprite(W:b2World, G:GameState, X:Number, Y:Number, Width:Number, Height:Number, Enum:EntityEnum = null):void
 		{
 			super(X,Y);
 			_fixDef = new b2FixtureDef();
@@ -40,6 +43,7 @@ package com.yoctobytes.spacemin.entities
 			_gamestate = G;
 			_width = Width;
 			_height = Height;
+			_enum = Enum == null ? EntityEnum.UNDEFINED : Enum;
 		}
 		
 		override public function update():void

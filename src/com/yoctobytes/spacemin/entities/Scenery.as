@@ -21,7 +21,7 @@ package com.yoctobytes.spacemin.entities
 		
 		public function Scenery(W:b2World, G:GameState, X:Number, Y:Number) 
 		{
-			super(W, G, X, Y, 40, 40);
+			super(W, G, X, Y, 40, 40, EntityEnum.SCENERY);
 			loadGraphic(getNextImg());
 			
 			// Physics properties

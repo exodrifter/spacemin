@@ -6,6 +6,8 @@ package com.yoctobytes.spacemin
 	import Box2D.Dynamics.Contacts.b2Contact;
 	import com.yoctobytes.spacemin.entities.Airplane;
 	import com.yoctobytes.spacemin.entities.B2FlxSprite;
+	import com.yoctobytes.spacemin.entities.EntityEnum;
+	import com.yoctobytes.spacemin.entities.Platform;
 	import org.flixel.FlxCamera;
 	import org.flixel.FlxG;
 	
@@ -22,6 +24,8 @@ package com.yoctobytes.spacemin
 		private var _ground:Boolean, _player:Boolean;
 		
 		private var _platformBody:b2Body;
+		
+		private var _platform:Platform;
 		
 		private var ratio:Number = 30;
 		
@@ -47,13 +51,13 @@ package com.yoctobytes.spacemin
 					var xp:Number = _gamestate._player.getScreenXY().x
 					var xg:Number = _platformBody.GetWorldCenter().x * 30
 					var SLAM:Number = 0;
-					if (xp < xg && xg - xp > 95) {
+					if (xp < xg && xg - xp > _platform.width/2 - _platform.leftEdge) {
 						FlxG.score += 1;
 						SLAM = 2;
 						FlxG.shake(0.025, 0.2, null, true, FlxCamera.SHAKE_BOTH_AXES);
 						FlxG.play(_score_sound);
 						_gamestate.spawnBeam(xp,Main.SCREEN_Y-200);
-					} else if (xp > xg && xp - xg > 95) {
+					} else if (xp > xg && xp - xg > _platform.width/2 - _platform.rightEdge) {
 						FlxG.score += 2;
 						SLAM = 2;
 						FlxG.shake(0.025, 0.2, null, true, FlxCamera.SHAKE_BOTH_AXES);
@@ -96,13 +100,24 @@ package com.yoctobytes.spacemin
 		{
 			_ground = false;
 			_player = false;
-			if (contact.GetFixtureA().GetBody().GetUserData() == "ground"
-					|| contact.GetFixtureB().GetBody().GetUserData() == "ground") {
+			
+			var a:B2FlxSprite = contact.GetFixtureA().GetBody().GetUserData() as B2FlxSprite;
+			var b:B2FlxSprite = contact.GetFixtureB().GetBody().GetUserData() as B2FlxSprite;
+			
+			if ( a != null && a._enum.id == EntityEnum.PLATFORM.id)
+			{
 				_ground = true;
-				_platformBody = contact.GetFixtureA().GetBody().GetUserData() == "ground" ? contact.GetFixtureA().GetBody() : contact.GetFixtureB().GetBody()
+				_platformBody = contact.GetFixtureA().GetBody();
+				_platform = contact.GetFixtureA().GetBody().GetUserData() as Platform;
 			}
-			if (contact.GetFixtureA().GetBody().GetUserData() == "player"
-					|| contact.GetFixtureB().GetBody().GetUserData() == "player") {
+			else if (b != null && b._enum.id == EntityEnum.PLATFORM.id)
+			{
+				_ground = true;
+				_platformBody = contact.GetFixtureB().GetBody()
+				_platform = contact.GetFixtureB().GetBody().GetUserData() as Platform;
+			}
+			if ((a != null && a._enum.id == EntityEnum.PLAYER.id )|| (b != null && b._enum.id == EntityEnum.PLAYER.id))
+			{
 				_player = true;
 			}
 		}

@@ -21,7 +21,7 @@ package com.yoctobytes.spacemin.entities
 		
 		public function Player(W:b2World, G:GameState, X:Number, Y:Number, Width:Number, Height:Number):void
 		{
-			super(W, G, X, Y, Width, Height);
+			super(W, G, X, Y, Width, Height, EntityEnum.PLAYER);
 			this.loadGraphic(JumpImg);
 			
 			// Physics properties
@@ -35,7 +35,7 @@ package com.yoctobytes.spacemin.entities
 			// Physics initialization
 			this.createBody();
 			this._obj.GetFixtureList().SetFilterData(_filter);
-			this._obj.SetUserData("player");
+			this._obj.SetUserData(this);
 		}
 		
 		override public function update():void

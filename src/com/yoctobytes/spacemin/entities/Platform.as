@@ -19,7 +19,7 @@ package com.yoctobytes.spacemin.entities
 		
 		public function Platform(W:b2World, G:GameState, X:Number, Y:Number, Width:uint, LeftEdge:uint, RightEdge:uint) 
 		{
-			super(W, G, X, Y, Width, 200);
+			super(W, G, X, Y, Width, 200, EntityEnum.PLATFORM);
 			_leftEdge = LeftEdge;
 			_rightEdge = RightEdge;
 			
@@ -36,7 +36,7 @@ package com.yoctobytes.spacemin.entities
 			// Physics initialization
 			this.createBody();
 			this._obj.GetFixtureList().SetFilterData(_filter);
-			this._obj.SetUserData("ground");
+			this._obj.SetUserData(this);
 			this._obj.SetType(b2Body.b2_kinematicBody);
 		}
 		

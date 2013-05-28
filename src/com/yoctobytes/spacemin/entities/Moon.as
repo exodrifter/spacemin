@@ -21,7 +21,7 @@ package com.yoctobytes.spacemin.entities
 		
 		public function Moon(W:b2World, G:GameState, X:Number, Y:Number, emitter:FlxEmitter) 
 		{
-			super(W, G, X, Y, 250, 200);
+			super(W, G, X, Y, 250, 200, EntityEnum.MOON);
 			loadGraphic(Img);
 			moonEmitter = emitter;
 			
