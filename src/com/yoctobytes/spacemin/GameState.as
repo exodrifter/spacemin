@@ -262,17 +262,15 @@ package com.yoctobytes.spacemin
 			// Spawn Platforms
 			_platforms.update();
 			
-			if (_player._obj.GetPosition().x > 2 || _player._obj.GetPosition().x < 2) {
-				_player._obj.SetPosition(new b2Vec2(2,_player._obj.GetPosition().y));
-			}
+			_player._obj.SetPosition(new b2Vec2(2,_player._obj.GetPosition().y));
 			
-			_distace_delta = _player._obj.GetLinearVelocity().x;
 			_player._obj.SetLinearVelocity(new b2Vec2(3 +.80 * Math.sqrt(Math.sqrt(_distance_traveled)), _player._obj.GetLinearVelocity().y));
-			var ox:Number = _player._obj.GetWorldCenter().x;
+			_distace_delta = _player._obj.GetLinearVelocity().x;
 			_world.Step(FlxG.elapsed, 6, 3);
-			var nx:Number = _player._obj.GetWorldCenter().x;
 			_distance_traveled += _distace_delta;
+			
 			super.update();
+			
 			while (_toRemove.length != 0)
 			{
 				_world.DestroyBody(_toRemove.pop());
