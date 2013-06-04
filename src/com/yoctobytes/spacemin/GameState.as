@@ -12,6 +12,7 @@ package com.yoctobytes.spacemin
 	import com.yoctobytes.spacemin.entities.MovingParticle;
 	import com.yoctobytes.spacemin.entities.Player;
 	import com.yoctobytes.spacemin.entities.Scenery;
+	import com.yoctobytes.spacemin.ui.GameOverScreen;
 	import com.yoctobytes.spacemin.util.Platforms;
 	import org.flixel.FlxButton;
 	import org.flixel.FlxEmitter;
@@ -32,6 +33,9 @@ package com.yoctobytes.spacemin
 		private var _offscreen:FlxText = new FlxText(11, 5, 100, "0");
 		private var _offscreen_disp:Boolean = false;
 		
+		public var _front_ui:FlxGroup;
+		private var _gameoverScreen:GameOverScreen;
+		
 		// Pause UI
 		private var _paused:Boolean = false;
 		private var _title:FlxText = new FlxText(Main.SCREEN_X2-50, 20, 100, "PAUSED");
@@ -40,13 +44,7 @@ package com.yoctobytes.spacemin
 		private var _settings:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 140, "Settings", MenuState.toSettings);
 		
 		// Game Over UI
-		private var _front_ui_group:FlxGroup;
 		private var _gameover:Boolean = false;
-		private var _retry:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 200, "Retry", MenuState.toGame);
-		private var _quitend:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 220, "Quit", MenuState.toMenu);
-		private var _endtitle:FlxText = new FlxText(Main.SCREEN_X2 - 50, 20, 100, "GAME OVER");
-		private var _randomquote:FlxText = new FlxText(Main.SCREEN_X2 - 200, 94, 400, "");
-		private var _finaltotal:FlxText = new FlxText(Main.SCREEN_X2 - 200, 120, 400, "FINAL SCORE: ");
 		
 		// The total distance traveled
 		private var _distance_traveled:Number;
@@ -93,10 +91,8 @@ package com.yoctobytes.spacemin
 			
 			_title.setFormat(null, 16, 0xffffff, "center", 0);
 			
-			_endtitle.setFormat(null, 16, 0xffffff, "center", 0);
-			_randomquote.setFormat(null, 8, 0xffffff, "center", 0);
-			_finaltotal.setFormat(null, 16, 0xffffff, "center", 0);
-			_front_ui_group = new FlxGroup();
+			_front_ui = new FlxGroup();
+			_gameoverScreen = new GameOverScreen(this);
 			
 			scenery = new Vector.<Scenery>();
 			sceneryGroup = new FlxGroup();
@@ -161,7 +157,7 @@ package com.yoctobytes.spacemin
 			
 			beams = new FlxGroup();
 			
-			_player = new Player(_world, this, 50, 200, 20, 20);
+			_player = new Player(_world, this, 50, 150, 20, 20);
 			
 			// Platform initialization
 			_platforms = new Platforms(_world, this);
@@ -187,8 +183,7 @@ package com.yoctobytes.spacemin
 			add(bloodEmiter);
 			
 			add(_platforms);
-			
-			add(_front_ui_group);
+			add(_front_ui);
 			
 			// Reset game variables
 			_distance_traveled = 0;
@@ -220,7 +215,6 @@ package com.yoctobytes.spacemin
 		{
 			if (_gameover) {
 				_paused = false;
-				FlxG.mouse.show();
 				super.update();
 				_world.Step(FlxG.elapsed, 6, 3);
 				return;
@@ -256,7 +250,7 @@ package com.yoctobytes.spacemin
 			
 			// Handle end game
 			if (_player.getScreenXY().y > Main.SCREEN_Y+20) {
-				endgame();
+				endGame();
 			}
 			
 			// Spawn Platforms
@@ -300,18 +294,27 @@ package com.yoctobytes.spacemin
 			remove(_settings);
 		}
 		
-		public function endgame():void {
+		/** Restarts the game by switching to a new instance of GameState */
+		public function restartGame():void {
+			// Check if the game can be restarted
+			if(!_gameover) {
+				return;
+			}
+			
+			// Start over
+			FlxG.switchState(new GameState());
+		}
+		
+		public function endGame():void {
+			// Check if the game can be ended
 			if (_gameover) {
 				return;
 			}
-			remove(_score);
 			_gameover = true;
-			_finaltotal.text = "FINAL SCORE: " + (FlxG.score+(int)(_distance_traveled/3000));
-			_front_ui_group.add(_endtitle);
-			_front_ui_group.add(_randomquote);
-			_front_ui_group.add(_finaltotal);
-			_front_ui_group.add(MenuState.setSounds(_retry));
-			_front_ui_group.add(MenuState.setSounds(_quitend));
+			
+			remove(_score);
+			_gameoverScreen.score = FlxG.score;
+			_front_ui.add(_gameoverScreen);
 			
 			// Halt the scenery
 			for each (var sprite:B2FlxSprite in scenery) {

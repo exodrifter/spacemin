@@ -49,7 +49,7 @@ package com.yoctobytes.spacemin.entities
 			}
 			if (this.getScreenXY().x + 250 < 0) {
 				_gamestate._platforms.remove(this);
-				_gamestate._toRemove.push(this._obj);
+			_gamestate._toRemove.push(this._obj);
 			}
 		}
 		

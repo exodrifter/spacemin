@@ -32,12 +32,8 @@ package com.yoctobytes.spacemin.util
 			_gamestate = G;
 			
 			// Initialize the first two platforms
-			var floor:Platform = new Platform(_world, _gamestate, 0, 230, 250, 125, 125);
-			this.add(floor);
-			_platforms.push(floor);
-			var floor2:Platform = new Platform(_world, _gamestate, 300, 230, 250, 125, 125);
-			this.add(floor2);
-			_platforms.push(floor2);
+			spawnPlatform(0);
+			spawnPlatform(300);
 			
 			_platform_timer = new Timer(1200, 350);
 		}
@@ -51,14 +47,14 @@ package com.yoctobytes.spacemin.util
 			}
 		}
 		
-		public function spawnPlatform():void
+		public function spawnPlatform(xPos:Number = Main.SCREEN_X):void
 		{
 			// Spawn platforms
 			if (_gamestate.distanceTraveled < 5000) {
 				var amt:uint = 125 - (int)((_gamestate.distanceTraveled / 5000.0) * 95);
-				addPlatform(new Platform(_world, _gamestate, _screenX, randHeight(), 250, amt, amt));
+				addPlatform(new Platform(_world, _gamestate, xPos, randHeight(), 250, amt, amt));
 			} else {
-				addPlatform(new Platform(_world, _gamestate, _screenX, randHeight(), 250, 30, 30));
+				addPlatform(new Platform(_world, _gamestate, xPos, randHeight(), 250, 30, 30));
 			}
 			
 			// Spawn the scenery
@@ -79,15 +75,15 @@ package com.yoctobytes.spacemin.util
 		
 		private function addPlatform(platform:Platform):void {
 			_platforms.push(platform);
-			this.add(platform);
+			add(platform);
 		}
 		
 		private function randHeight():Number {
 			_platform_spawn_height = 230 + (int)(Math.random() * 50) - 25
-			if (_platform_spawn_height > _screenY-10) {
-				_platform_spawn_height = _screenY-10;
-			} else if (_platform_spawn_height < _screenY-100) {
-				_platform_spawn_height = _screenY-100;
+			if (_platform_spawn_height > _screenY - 10) {
+				_platform_spawn_height = _screenY - 10;
+			} else if (_platform_spawn_height < _screenY - 100) {
+				_platform_spawn_height = _screenY - 100;
 			}
 			return _platform_spawn_height;
 		}

@@ -78,7 +78,7 @@ package com.yoctobytes.spacemin
 				}
 				else if (_gamestate._player.getScreenXY().y > (_platformBody.GetWorldCenter().y*ratio-110))
 				{
-					_gamestate.endgame();
+					_gamestate.endGame();
 				}
 				_gamestate._player.ground(true);
 				FlxG.play(_ground_sound);
