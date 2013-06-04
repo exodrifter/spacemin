@@ -33,8 +33,10 @@ package com.yoctobits.spacemin.ui
 		
 		override public function update():void
 		{
-			if (FlxG.keys.any() || FlxG.mouse.justPressed()) {
-				_gamestate.restartGame();
+			if (_done) {
+				if(FlxG.keys.any() || FlxG.mouse.justPressed()) {
+					_gamestate.restartGame();
+				}
 				return;
 			}
 			if (!_done && _titleTimer.update(FlxG.elapsed)) {
