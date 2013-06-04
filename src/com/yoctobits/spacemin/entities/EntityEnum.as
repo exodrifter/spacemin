@@ -1,4 +1,4 @@
-package com.yoctobytes.spacemin.entities 
+package com.yoctobits.spacemin.entities 
 {
 	/**
 	 * Enums to identify entities

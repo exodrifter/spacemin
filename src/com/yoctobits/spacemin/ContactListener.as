@@ -1,13 +1,13 @@
-package com.yoctobytes.spacemin 
+package com.yoctobits.spacemin 
 {
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2ContactListener;
 	import Box2D.Dynamics.Contacts.b2Contact;
-	import com.yoctobytes.spacemin.entities.Airplane;
-	import com.yoctobytes.spacemin.entities.B2FlxSprite;
-	import com.yoctobytes.spacemin.entities.EntityEnum;
-	import com.yoctobytes.spacemin.entities.Platform;
+	import com.yoctobits.spacemin.entities.Airplane;
+	import com.yoctobits.spacemin.entities.B2FlxSprite;
+	import com.yoctobits.spacemin.entities.EntityEnum;
+	import com.yoctobits.spacemin.entities.Platform;
 	import org.flixel.FlxCamera;
 	import org.flixel.FlxG;
 	

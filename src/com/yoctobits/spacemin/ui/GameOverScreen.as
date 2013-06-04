@@ -1,11 +1,11 @@
-package com.yoctobytes.spacemin.ui
+package com.yoctobits.spacemin.ui
 {
-	import com.yoctobytes.spacemin.util.Timer;
 	import org.flixel.FlxG;
 	import org.flixel.FlxGroup;
 	import org.flixel.FlxText;
-	import com.yoctobytes.spacemin.GameState;
-	import com.yoctobytes.spacemin.Main;
+	import com.yoctobits.spacemin.GameState;
+	import com.yoctobits.spacemin.Main;
+	import com.yoctobits.spacemin.util.Timer;
 	
 	public class GameOverScreen extends FlxGroup
 	{

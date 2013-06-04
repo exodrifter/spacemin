@@ -1,4 +1,4 @@
-package com.yoctobytes.spacemin 
+package com.yoctobits.spacemin 
 {
 	import org.flixel.FlxButton;
 	import org.flixel.FlxG;

@@ -1,23 +1,23 @@
-package com.yoctobytes.spacemin.bg 
+package com.yoctobits.spacemin.bg 
 {
-	import com.yoctobytes.spacemin.GameState;
+	import com.yoctobits.spacemin.GameState;
 	import org.flixel.FlxSprite;
 	
 	/**
-	 * A ParallaxLayer background that looks like deserts with occasional Pyramids.
+	 * A ParallaxLayer background that looks like mountains.
 	 */
-	public class PyramidLayer extends ParallaxLayer
+	public class MountainLayer extends ParallaxLayer
 	{
-		[Embed(source = "../res/bg1-b1.png")] private var _bg1:Class;
-		[Embed(source = "../res/bg1-b2.png")] private var _bg2:Class;
-		[Embed(source = "../res/bg1-b3.png")] private var _bg3:Class;
-		[Embed(source = "../res/bg1-b4.png")] private var _bg4:Class;
-		[Embed(source = "../res/bg1-b5.png")] private var _bg5:Class;
+		[Embed(source = "../res/bg1-a1.png")] private var _bg1:Class;
+		[Embed(source = "../res/bg1-a2.png")] private var _bg2:Class;
+		[Embed(source = "../res/bg1-a3.png")] private var _bg3:Class;
+		[Embed(source = "../res/bg1-a4.png")] private var _bg4:Class;
+		[Embed(source = "../res/bg1-a5.png")] private var _bg5:Class;
 		
-		private const SCREEN_X:int = com.yoctobytes.spacemin.Main.SCREEN_X;
-		private const SCREEN_Y:int = com.yoctobytes.spacemin.Main.SCREEN_Y;
+		private const SCREEN_X:int = com.yoctobits.spacemin.Main.SCREEN_X;
+		private const SCREEN_Y:int = com.yoctobits.spacemin.Main.SCREEN_Y;
 		
-		public function PyramidLayer(G:GameState, Ratio:Number) 
+		public function MountainLayer(G:GameState, Ratio:Number) 
 		{
 			super(G, Ratio);
 			

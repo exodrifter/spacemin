@@ -1,10 +1,10 @@
-package com.yoctobytes.spacemin.util 
+package com.yoctobits.spacemin.util 
 {
 	import Box2D.Dynamics.b2World;
-	import com.yoctobytes.spacemin.Main;
-	import com.yoctobytes.spacemin.GameState;
-	import com.yoctobytes.spacemin.entities.Platform;
-	import com.yoctobytes.spacemin.entities.Scenery;
+	import com.yoctobits.spacemin.Main;
+	import com.yoctobits.spacemin.GameState;
+	import com.yoctobits.spacemin.entities.Platform;
+	import com.yoctobits.spacemin.entities.Scenery;
 	import org.flixel.FlxGroup;
 	
 	/**

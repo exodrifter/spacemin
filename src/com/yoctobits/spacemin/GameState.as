@@ -1,19 +1,19 @@
-package com.yoctobytes.spacemin 
+package com.yoctobits.spacemin 
 {
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2World;
-	import com.yoctobytes.spacemin.bg.CityLayer;
-	import com.yoctobytes.spacemin.bg.MountainLayer;
-	import com.yoctobytes.spacemin.entities.Airplane;
-	import com.yoctobytes.spacemin.entities.B2FlxSprite;
-	import com.yoctobytes.spacemin.entities.Beam;
-	import com.yoctobytes.spacemin.entities.Moon;
-	import com.yoctobytes.spacemin.entities.MovingParticle;
-	import com.yoctobytes.spacemin.entities.Player;
-	import com.yoctobytes.spacemin.entities.Scenery;
-	import com.yoctobytes.spacemin.ui.GameOverScreen;
-	import com.yoctobytes.spacemin.util.Platforms;
+	import com.yoctobits.spacemin.bg.CityLayer;
+	import com.yoctobits.spacemin.bg.MountainLayer;
+	import com.yoctobits.spacemin.entities.Airplane;
+	import com.yoctobits.spacemin.entities.B2FlxSprite;
+	import com.yoctobits.spacemin.entities.Beam;
+	import com.yoctobits.spacemin.entities.Moon;
+	import com.yoctobits.spacemin.entities.MovingParticle;
+	import com.yoctobits.spacemin.entities.Player;
+	import com.yoctobits.spacemin.entities.Scenery;
+	import com.yoctobits.spacemin.ui.GameOverScreen;
+	import com.yoctobits.spacemin.util.Platforms;
 	import org.flixel.FlxButton;
 	import org.flixel.FlxEmitter;
 	import org.flixel.FlxG;

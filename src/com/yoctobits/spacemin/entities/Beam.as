@@ -1,6 +1,6 @@
-package com.yoctobytes.spacemin.entities 
+package com.yoctobits.spacemin.entities 
 {
-	import com.yoctobytes.spacemin.GameState;
+	import com.yoctobits.spacemin.GameState;
 	import org.flixel.FlxG;
 	import org.flixel.FlxSprite;
 	

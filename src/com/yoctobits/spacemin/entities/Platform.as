@@ -1,10 +1,10 @@
-package com.yoctobytes.spacemin.entities 
+package com.yoctobits.spacemin.entities 
 {
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2FilterData;
 	import Box2D.Dynamics.b2World;
-	import com.yoctobytes.spacemin.GameState;
+	import com.yoctobits.spacemin.GameState;
 	import flash.geom.Rectangle;
 	import org.flixel.FlxRect;
 	

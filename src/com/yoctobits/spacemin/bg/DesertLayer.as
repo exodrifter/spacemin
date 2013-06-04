@@ -1,23 +1,23 @@
-package com.yoctobytes.spacemin.bg 
+package com.yoctobits.spacemin.bg 
 {
 	import com.yoctobytes.spacemin.GameState;
 	import org.flixel.FlxSprite;
 	
 	/**
-	 * A ParallaxLayer background that looks like a cityscape.
+	 * A ParallaxLayer background that looks like deserts.
 	 */
-	public class CityLayer extends ParallaxLayer
+	public class DesertLayer extends ParallaxLayer
 	{
-		[Embed(source = "../res/bg2-a1.png")] private var _bg1:Class;
-		[Embed(source = "../res/bg2-a2.png")] private var _bg2:Class;
-		[Embed(source = "../res/bg2-a3.png")] private var _bg3:Class;
-		[Embed(source = "../res/bg2-a4.png")] private var _bg4:Class;
-		[Embed(source = "../res/bg2-a5.png")] private var _bg5:Class;
+		[Embed(source = "../res/bg2-b1.png")] private var _bg1:Class;
+		[Embed(source = "../res/bg2-b2.png")] private var _bg2:Class;
+		[Embed(source = "../res/bg2-b3.png")] private var _bg3:Class;
+		[Embed(source = "../res/bg2-b4.png")] private var _bg4:Class;
+		[Embed(source = "../res/bg2-b5.png")] private var _bg5:Class;
 		
 		private const SCREEN_X:int = com.yoctobytes.spacemin.Main.SCREEN_X;
 		private const SCREEN_Y:int = com.yoctobytes.spacemin.Main.SCREEN_Y;
 		
-		public function CityLayer(G:GameState, Ratio:Number) 
+		public function DesertLayer(G:GameState, Ratio:Number) 
 		{
 			super(G, Ratio);
 			
