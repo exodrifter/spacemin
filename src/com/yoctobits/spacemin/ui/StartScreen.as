@@ -25,7 +25,7 @@ package com.yoctobits.spacemin.ui
 		
 		override public function update():void
 		{
-			if (FlxG.keys.any() || FlxG.mouse.justPressed()) {
+			if ((FlxG.keys.any() || FlxG.mouse.justPressed()) && !FlxG.keys.M) {
 				_gamestate.startGame();
 			}
 		}

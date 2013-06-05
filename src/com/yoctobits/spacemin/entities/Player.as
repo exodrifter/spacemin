@@ -41,7 +41,7 @@ package com.yoctobits.spacemin.entities
 		override public function update():void
 		{
 			super.update();
-			if ((FlxG.keys.any() || FlxG.mouse.pressed()) && !FlxG.keys.ESCAPE) {
+			if ((FlxG.keys.any() || FlxG.mouse.pressed()) && !FlxG.keys.ESCAPE && !FlxG.keys.M) {
 				if (!_pressed && !_gamestate.gameover && !_gamestate.paused) {
 					if (_canJump) {
 						FlxG.play(JumpSnd);

@@ -34,7 +34,7 @@ package com.yoctobits.spacemin.ui
 		override public function update():void
 		{
 			if (_done) {
-				if(FlxG.keys.any() || FlxG.mouse.justPressed()) {
+				if((FlxG.keys.any() || FlxG.mouse.justPressed()) && !FlxG.keys.ESCAPE && !FlxG.keys.M) {
 					_gamestate.restartGame();
 				}
 				return;

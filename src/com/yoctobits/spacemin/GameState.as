@@ -213,6 +213,10 @@ package com.yoctobits.spacemin
 		
 		override public function update():void
 		{
+			// Handle mute
+			if (FlxG.keys.M) {
+				FlxG.mute = !FlxG.mute;
+			}
 			if (!_started) {
 				super.update();
 				_world.Step(FlxG.elapsed, 6, 3);
