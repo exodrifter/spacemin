@@ -13,6 +13,7 @@ package com.yoctobits.spacemin
 	import com.yoctobits.spacemin.entities.Player;
 	import com.yoctobits.spacemin.entities.Scenery;
 	import com.yoctobits.spacemin.ui.GameOverScreen;
+	import com.yoctobits.spacemin.ui.StartScreen;
 	import com.yoctobits.spacemin.util.Platforms;
 	import org.flixel.FlxButton;
 	import org.flixel.FlxEmitter;
@@ -28,6 +29,9 @@ package com.yoctobits.spacemin
 		[Embed(source = "res/TestTrash.png")] private static const TrashImg:Class;
 		[Embed(source = "res/gameover.mp3")] private static var GameOverSound:Class;
 		
+		[Embed(source="res/select.mp3")] private static var _select:Class;
+		[Embed(source="res/activate.mp3")] private static var _activate:Class;
+		
 		// Game UI
 		private var _score:FlxText = new FlxText(Main.SCREEN_X2 - 50, 60, 100, "0");
 		private var _offscreen:FlxText = new FlxText(11, 5, 100, "0");
@@ -35,16 +39,16 @@ package com.yoctobits.spacemin
 		
 		public var _front_ui:FlxGroup;
 		private var _gameoverScreen:GameOverScreen;
+		private var _startScreen:StartScreen;
 		
 		// Pause UI
 		private var _paused:Boolean = false;
 		private var _title:FlxText = new FlxText(Main.SCREEN_X2-50, 20, 100, "PAUSED");
 		private var _resume:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 100, "Resume", unpause);
-		private var _quit:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 120, "Quit", MenuState.toMenu);
-		private var _settings:FlxButton = new FlxButton(Main.SCREEN_X2 - 40, 140, "Settings", MenuState.toSettings);
 		
 		// Game Over UI
 		private var _gameover:Boolean = false;
+		private var _started:Boolean = false;
 		
 		// The total distance traveled
 		private var _distance_traveled:Number;
@@ -79,9 +83,10 @@ package com.yoctobits.spacemin
 		
 		override public function create():void
 		{
+			FlxG.bgColor = 0xFFFFBEBA;
+			
 			// Set up the world
 			setupWorld();
-			_gameover = false;
 			
 			_toRemove = new Vector.<b2Body>();
 			
@@ -93,6 +98,7 @@ package com.yoctobits.spacemin
 			
 			_front_ui = new FlxGroup();
 			_gameoverScreen = new GameOverScreen(this);
+			_startScreen = new StartScreen(this);
 			
 			scenery = new Vector.<Scenery>();
 			sceneryGroup = new FlxGroup();
@@ -157,11 +163,6 @@ package com.yoctobits.spacemin
 			
 			beams = new FlxGroup();
 			
-			_player = new Player(_world, this, 50, 150, 20, 20);
-			
-			// Platform initialization
-			_platforms = new Platforms(_world, this);
-			
 			// Add the layers in correct rendering order
 			
 			// Back Layer
@@ -179,10 +180,9 @@ package com.yoctobits.spacemin
 			add(beams);
 			add(sceneryGroup);
 			
-			add(_player);
 			add(bloodEmiter);
 			
-			add(_platforms);
+			_front_ui.add(_startScreen);
 			add(_front_ui);
 			
 			// Reset game variables
@@ -213,6 +213,11 @@ package com.yoctobits.spacemin
 		
 		override public function update():void
 		{
+			if (!_started) {
+				super.update();
+				_world.Step(FlxG.elapsed, 6, 3);
+				return;
+			}
 			if (_gameover) {
 				_paused = false;
 				super.update();
@@ -224,9 +229,7 @@ package com.yoctobits.spacemin
 				_paused = !_paused;
 				if (_paused) {
 					add(_title);
-					add(MenuState.setSounds(_resume));
-					add(MenuState.setSounds(_quit));
-					add(MenuState.setSounds(_settings));
+					add(setSounds(_resume));
 				} else {
 					unpause();
 				}
@@ -290,8 +293,21 @@ package com.yoctobits.spacemin
 			_paused = false;
 			remove(_title);
 			remove(_resume);
-			remove(_quit);
-			remove(_settings);
+		}
+		
+		/** Starts the game */
+		public function startGame():void {
+			if (_started) {
+				return;
+			}
+			_started = true;
+			
+			_front_ui.remove(_startScreen);
+			
+			_player = new Player(_world, this, 50, 150, 20, 20);
+			add(_player);
+			_platforms = new Platforms(_world, this);
+			add(_platforms);
 		}
 		
 		/** Restarts the game by switching to a new instance of GameState */
@@ -337,6 +353,12 @@ package com.yoctobits.spacemin
 		
 		public function get distanceDelta():Number {
 			return _distace_delta;
+		}
+		
+		private function setSounds(button:FlxButton):FlxButton
+		{
+			button.setSounds(_select, 1.0, null, 1.0, _activate, 1.0, null, 1.0);
+			return button;
 		}
 	}
 }

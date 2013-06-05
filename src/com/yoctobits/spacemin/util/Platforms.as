@@ -41,7 +41,7 @@ package com.yoctobits.spacemin.util
 		override public function update():void
 		{
 			super.update();
-			if(!_gamestate.gameover && _platform_timer.update(_gamestate.distanceDelta)) {
+			if(!_gamestate.gameover && !_gamestate.paused && _platform_timer.update(_gamestate.distanceDelta)) {
 				spawnPlatform();
 				_platform_timer._time *= 1.05;
 			}

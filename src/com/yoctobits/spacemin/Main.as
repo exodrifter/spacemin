@@ -1,7 +1,7 @@
 package com.yoctobits.spacemin 
 {
 	import com.flashdynamix.utils.SWFProfiler;
-	import org.flixel.*;
+	import org.flixel.FlxGame;
 	
 	[SWF(width = "800", height = "500", backgroundColor = "#FFBEBA")]
 	
@@ -19,7 +19,7 @@ package com.yoctobits.spacemin
 		
 		public function Main():void
 		{
-			super(SCREEN_X, SCREEN_Y, MenuState, ZOOM, LOGIC_FRAMERATE,
+			super(SCREEN_X, SCREEN_Y, GameState, ZOOM, LOGIC_FRAMERATE,
 					RENDER_FRAMERATE, USE_SYSTEM_CURSOR);
 			SWFProfiler.init(stage, this);
 			forceDebugger = false;
