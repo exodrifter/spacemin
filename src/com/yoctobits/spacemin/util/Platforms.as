@@ -49,12 +49,16 @@ package com.yoctobits.spacemin.util
 		
 		public function spawnPlatform(xPos:Number = Main.SCREEN_X):void
 		{
+			trace(_gamestate.distanceTraveled);
 			// Spawn platforms
 			if (_gamestate.distanceTraveled < 5000) {
 				var amt:uint = 125 - (int)((_gamestate.distanceTraveled / 5000.0) * 95);
 				addPlatform(new Platform(_world, _gamestate, xPos, randHeight(), 250, amt, amt));
+			} else if (_gamestate.distanceTraveled < 10000) {
+				addPlatform(new Platform(_world, _gamestate, xPos, randHeight(), 250, 30, 30));
 			} else {
 				addPlatform(new Platform(_world, _gamestate, xPos, randHeight(), 250, 30, 30));
+				addPlatform(new Platform(_world, _gamestate, xPos + _platform_timer._time - 30, randHeight(), 60, 30, 30));
 			}
 			
 			// Spawn the scenery
