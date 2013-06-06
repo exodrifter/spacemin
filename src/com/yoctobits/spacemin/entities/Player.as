@@ -1,5 +1,6 @@
 package com.yoctobits.spacemin.entities
 {
+	import Box2D.Collision.Shapes.b2CircleShape;
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2FilterData;
 	import Box2D.Dynamics.b2World;
@@ -22,6 +23,7 @@ package com.yoctobits.spacemin.entities
 		public function Player(W:b2World, G:GameState, X:Number, Y:Number, Width:Number, Height:Number):void
 		{
 			super(W, G, X, Y, Width, Height, EntityEnum.PLAYER);
+			this._fixDef.shape = new b2CircleShape(Width);
 			this.loadGraphic(JumpImg);
 			
 			// Physics properties
@@ -73,8 +75,8 @@ package com.yoctobits.spacemin.entities
 			}
 		}
 		
-		private var _minGroundPoundVel:Number = 9, _maxGroundPoundVel:Number = 15;
-		private var _minBounceVel:Number = 5, _maxBounceVel:Number =8;
+		private var _minGroundPoundVel:Number = 12, _maxGroundPoundVel:Number = 14;
+		private var _minBounceVel:Number = 7, _maxBounceVel:Number =8;
 		
 		public function ground(grounded:Boolean):void
 		{
