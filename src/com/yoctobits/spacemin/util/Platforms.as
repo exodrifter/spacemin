@@ -49,7 +49,6 @@ package com.yoctobits.spacemin.util
 		
 		public function spawnPlatform(xPos:Number = Main.SCREEN_X):void
 		{
-			trace(_gamestate.distanceTraveled);
 			// Spawn platforms
 			if (_gamestate.distanceTraveled < 5000) {
 				var amt:uint = 125 - (int)((_gamestate.distanceTraveled / 5000.0) * 95);
